@@ -410,8 +410,11 @@ void *Hunk_Alloc(int size)
 {
 	memhunk_t *h;
 
-	if (!size) return (void *) memhunk_high_size;
-	//
+	if (!size)
+	{
+		Error("Hunk_Alloc: Nothing to allocate while remaining %i bytes\n", memhunk_high_size);
+	}
+
 	h = GetClearedMemory(size + sizeof(memhunk_t));
 	h->ptr = (char *) h + sizeof(memhunk_t);
 	h->next = memhunk_high;

@@ -472,7 +472,7 @@ Byte swaps all data in a bsp file.
 =============
 */
 void Q3_SwapBSPFile( void ) {
-	int				i;
+	int				i, *q3_vis;
 	
 	// models	
 	Q3_SwapBlock( (int *)q3_dmodels, q3_nummodels * sizeof( q3_dmodels[0] ) );
@@ -505,8 +505,9 @@ void Q3_SwapBSPFile( void ) {
 	Q3_SwapBlock( (int *)q3_dbrushsides, q3_numbrushsides * sizeof( q3_dbrushsides[0] ) );
 
 	// vis
-	((int *)&q3_visBytes)[0] = LittleLong( ((int *)&q3_visBytes)[0] );
-	((int *)&q3_visBytes)[1] = LittleLong( ((int *)&q3_visBytes)[1] );
+	q3_vis = (int *)&q3_visBytes;
+	q3_vis[0] = LittleLong( q3_vis[0] );
+	q3_vis[1] = LittleLong( q3_vis[1] );
 
 	// drawverts (don't swap colors )
 	for ( i = 0 ; i < q3_numDrawVerts ; i++ ) {

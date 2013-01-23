@@ -325,7 +325,8 @@ winding_t *CopyWinding (winding_t *w)
 	winding_t	*c;
 
 	c = AllocWinding (w->numpoints);
-	size = (int)((winding_t *)0)->p[w->numpoints];
+	// Compute size the same way than in AllocWinding
+	size = sizeof(vec_t)*3*w->numpoints + sizeof(int);
 	memcpy (c, w, size);
 	return c;
 }

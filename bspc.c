@@ -555,6 +555,8 @@ int main (int argc, char **argv)
 	quakefile_t *qfiles, *qf;
 	double start_time;
 
+	qfiles = NULL;
+
 	myargc = argc;
 	myargv = argv;
 

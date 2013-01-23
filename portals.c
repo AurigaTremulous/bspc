@@ -408,8 +408,8 @@ void MakeNodePortal (node_t *node)
 	portal_t	*new_portal, *p;
 	winding_t	*w;
 	vec3_t		normal;
-	float		dist;
-	int			side;
+	float		dist = 0;
+	int			side = 0;
 
 	w = BaseWindingForNode (node);
 

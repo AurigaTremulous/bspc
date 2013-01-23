@@ -68,8 +68,8 @@ void LeakFile (tree_t *tree)
 	while (node->occupied > 1)
 	{
 		int			next;
-		portal_t	*p, *nextportal;
-		node_t		*nextnode;
+		portal_t	*p, *nextportal = NULL;
+		node_t		*nextnode = NULL;
 		int			s;
 
 		// find the best portal exit
@@ -86,7 +86,8 @@ void LeakFile (tree_t *tree)
 			}
 		}
 		node = nextnode;
-		WindingCenter (nextportal->winding, mid);
+		if (nextportal)
+			WindingCenter (nextportal->winding, mid);
 		fprintf (linefile, "%f %f %f\n", mid[0], mid[1], mid[2]);
 		count++;
 	}
