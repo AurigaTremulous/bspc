@@ -68,7 +68,7 @@ int QuakeFileExtensionType(char *extension)
 
 	for (i = 0; quakefiletypes[i].extension; i++)
 	{
-		if (!stricmp(extension, quakefiletypes[i].extension))
+		if (!Q_strcasecmp(extension, quakefiletypes[i].extension))
 		{
 			return quakefiletypes[i].type;
 		} //end if

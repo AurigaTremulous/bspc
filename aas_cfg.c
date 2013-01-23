@@ -212,7 +212,7 @@ int LoadCfgFile(char *filename)
 
 	while(PC_ReadToken(source, &token))
 	{
-		if (!stricmp(token.string, "bbox"))
+		if (!Q_strcasecmp(token.string, "bbox"))
 		{
 			if (cfg.numbboxes >= AAS_MAX_BBOXES)
 			{
@@ -226,7 +226,7 @@ int LoadCfgFile(char *filename)
 			cfg.allpresencetypes |= cfg.bboxes[cfg.numbboxes].presencetype;
 			cfg.numbboxes++;
 		} //end if
-		else if (!stricmp(token.string, "settings"))
+		else if (!Q_strcasecmp(token.string, "settings"))
 		{
 			if (settingsdefined)
 			{

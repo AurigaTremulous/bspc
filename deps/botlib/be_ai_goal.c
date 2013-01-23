@@ -15,7 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Foobar; if not, write to the Free Software
+along with Quake III Arena source code; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  *****************************************************************************/
 
-#include "qcommon/q_shared.h"
+#include "../qcommon/q_shared.h"
 #include "l_utils.h"
 #include "l_libvar.h"
 #include "l_memory.h"
@@ -134,7 +134,7 @@ typedef struct iteminfo_s
 	int number;							//number of the item info
 } iteminfo_t;
 
-#define ITEMINFO_OFS(x)	(int)&(((iteminfo_t *)0)->x)
+#define ITEMINFO_OFS(x)	(size_t)&(((iteminfo_t *)0)->x)
 
 fielddef_t iteminfo_fields[] =
 {
@@ -146,7 +146,7 @@ fielddef_t iteminfo_fields[] =
 {"respawntime", ITEMINFO_OFS(respawntime), FT_FLOAT},
 {"mins", ITEMINFO_OFS(mins), FT_FLOAT|FT_ARRAY, 3},
 {"maxs", ITEMINFO_OFS(maxs), FT_FLOAT|FT_ARRAY, 3},
-{0, 0, 0}
+{NULL, 0, 0}
 };
 
 structdef_t iteminfo_struct =
@@ -176,22 +176,22 @@ typedef struct bot_goalstate_s
 	float avoidgoaltimes[MAX_AVOIDGOALS];		//times to avoid the goals
 } bot_goalstate_t;
 
-bot_goalstate_t *botgoalstates[MAX_CLIENTS + 1]; // bk001206 - FIXME: init?
+bot_goalstate_t *botgoalstates[MAX_CLIENTS + 1]; // FIXME: init?
 //item configuration
-itemconfig_t *itemconfig = NULL; // bk001206 - init
+itemconfig_t *itemconfig = NULL;
 //level items
-levelitem_t *levelitemheap = NULL; // bk001206 - init
-levelitem_t *freelevelitems = NULL; // bk001206 - init
-levelitem_t *levelitems = NULL; // bk001206 - init
+levelitem_t *levelitemheap = NULL;
+levelitem_t *freelevelitems = NULL;
+levelitem_t *levelitems = NULL;
 int numlevelitems = 0;
 //map locations
-maplocation_t *maplocations = NULL; // bk001206 - init
+maplocation_t *maplocations = NULL;
 //camp spots
-campspot_t *campspots = NULL; // bk001206 - init
+campspot_t *campspots = NULL;
 //the game type
-int g_gametype = 0; // bk001206 - init
+int g_gametype = 0;
 //additional dropped item weight
-libvar_t *droppedweight = NULL; // bk001206 - init
+libvar_t *droppedweight = NULL;
 
 //========================================================================
 //
@@ -238,9 +238,9 @@ void BotInterbreedGoalFuzzyLogic(int parent1, int parent2, int child)
 //===========================================================================
 void BotSaveGoalFuzzyLogic(int goalstate, char *filename)
 {
-	bot_goalstate_t *gs;
+	//bot_goalstate_t *gs;
 
-	gs = BotGoalStateFromHandle(goalstate);
+	//gs = BotGoalStateFromHandle(goalstate);
 
 	//WriteWeightConfig(filename, gs->itemweightconfig);
 } //end of the function BotSaveGoalFuzzyLogic
@@ -300,7 +300,7 @@ itemconfig_t *LoadItemConfig(char *filename)
 		{
 			if (ic->numiteminfo >= max_iteminfo)
 			{
-				SourceError(source, "more than %d item info defined\n", max_iteminfo);
+				SourceError(source, "more than %d item info defined", max_iteminfo);
 				FreeMemory(ic);
 				FreeSource(source);
 				return NULL;
@@ -326,7 +326,7 @@ itemconfig_t *LoadItemConfig(char *filename)
 		} //end if
 		else
 		{
-			SourceError(source, "unknown definition %s\n", token.string);
+			SourceError(source, "unknown definition %s", token.string);
 			FreeMemory(ic);
 			FreeSource(source);
 			return NULL;
@@ -522,7 +522,7 @@ void BotInitInfoEntities(void)
 			numcampspots++;
 		} //end else if
 	} //end for
-	if (bot_developer)
+	if (botDeveloper)
 	{
 		botimport.Print(PRT_MESSAGE, "%d map locations\n", numlocations);
 		botimport.Print(PRT_MESSAGE, "%d camp spots\n", numcampspots);
@@ -1018,7 +1018,7 @@ void BotUpdateEntityItems(void)
 	for (li = levelitems; li; li = nextli)
 	{
 		nextli = li->next;
-		//if it is a item that will time out
+		//if it is an item that will time out
 		if (li->timeout)
 		{
 			//timeout the item
