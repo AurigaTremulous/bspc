@@ -409,13 +409,14 @@ void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
 		strcat(filename, "aas");
 	} //end else
 } //end of the function AASOutputFile
+
 //===========================================================================
 //
 // Parameter:			-
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void CreateAASFilesForAllBSPFiles(char *quakepath)
+static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 {
 #if defined(WIN32)|defined(_WIN32)
 	WIN32_FIND_DATA filedata;
@@ -436,7 +437,7 @@ void CreateAASFilesForAllBSPFiles(char *quakepath)
 
 #if defined(WIN32)|defined(_WIN32)
 	handle = FindFirstFile(filter, &filedata);
-	done = (handle == INVALID_HANDLE_VALUE);
+	int done = (handle == INVALID_HANDLE_VALUE);
 	while(!done)
 	{
 		_splitpath(filter, foldername, NULL, NULL, NULL);
