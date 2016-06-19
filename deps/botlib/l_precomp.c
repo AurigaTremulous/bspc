@@ -704,11 +704,7 @@ void PC_AddBuiltinDefines(source_t *source)
 int PC_ExpandBuiltinDefine(source_t *source, token_t *deftoken, define_t *define,
 										token_t **firsttoken, token_t **lasttoken)
 {
-	token_t *token;
-	unsigned long t;	//	time_t t; //to prevent LCC warning
-	char *curtime;
-
-	token = PC_CopyToken(deftoken);
+	token_t *token = PC_CopyToken(deftoken);
 	switch(define->builtin)
 	{
 		case BUILTIN_LINE:
@@ -735,8 +731,8 @@ int PC_ExpandBuiltinDefine(source_t *source, token_t *deftoken, define_t *define
 		} //end case
 		case BUILTIN_DATE:
 		{
-			t = time(NULL);
-			curtime = ctime(&t);
+			time_t t = time(NULL);
+			char *curtime = ctime(&t);
 			strcpy(token->string, "\"");
 			strncat(token->string, curtime+4, 7);
 			strncat(token->string+7, curtime+20, 4);
@@ -750,8 +746,8 @@ int PC_ExpandBuiltinDefine(source_t *source, token_t *deftoken, define_t *define
 		} //end case
 		case BUILTIN_TIME:
 		{
-			t = time(NULL);
-			curtime = ctime(&t);
+			time_t t = time(NULL);
+			char *curtime = ctime(&t);
 			strcpy(token->string, "\"");
 			strncat(token->string, curtime+11, 8);
 			strcat(token->string, "\"");
@@ -1696,7 +1692,6 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 	int questmarkintvalue = 0;
 	double questmarkfloatvalue = 0;
 	int gotquestmarkvalue = qfalse;
-	int lastoperatortype = 0;
 	//
 	operator_t operator_heap[MAX_OPERATORS];
 	int numoperators = 0;
@@ -2085,7 +2080,6 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 		else Log_Write("result value = %f", v1->floatvalue);
 #endif //DEBUG_EVAL
 		if (error) break;
-		lastoperatortype = o->operator;
 		//if not an operator with arity 1
 		if (o->operator != P_LOGIC_NOT
 				&& o->operator != P_BIN_NOT)

@@ -410,7 +410,9 @@ void *Hunk_Alloc(int size)
 {
 	memhunk_t *h;
 
-	if (!size) return (void *) memhunk_high_size;
+	if (!size) {
+		return (void *) memhunk_high_size;
+	}
 	//
 	h = GetClearedMemory(size + sizeof(memhunk_t));
 	h->ptr = (char *) h + sizeof(memhunk_t);

@@ -49,15 +49,16 @@ void LeakFile (tree_t *tree)
 	node_t	*node;
 	int		count;
 
-	if (!tree->outside_node.occupied)
+	if (!tree->outside_node.occupied) {
 		return;
+	}
 
 	qprintf ("--- LeakFile ---\n");
 
 	//
 	// write the points to the file
 	//
-	sprintf (filename, "%s.lin", source);
+	snprintf (filename, sizeof(filename), "%s.lin", source);
 	qprintf ("%s\n", filename);
 	linefile = fopen (filename, "w");
 	if (!linefile)
@@ -67,10 +68,11 @@ void LeakFile (tree_t *tree)
 	node = &tree->outside_node;
 	while (node->occupied > 1)
 	{
-		int			next;
-		portal_t	*p, *nextportal;
-		node_t		*nextnode;
-		int			s;
+		int			next = 0;
+		portal_t	*p = NULL;
+		portal_t	*nextportal = NULL;
+		node_t		*nextnode = NULL;
+		int			s = 0;
 
 		// find the best portal exit
 		next = node->occupied;

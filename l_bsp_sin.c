@@ -588,8 +588,12 @@ void Sin_SwapBSPFile (qboolean todisk)
 //	
 	for (i = 0; i < sin_numtexinfo; i++)
 	{
-		for (j=0 ; j<8 ; j++)
-			sin_texinfo[i].vecs[0][j] = LittleFloat (sin_texinfo[i].vecs[0][j]);
+		
+		for (int k = 0; k<2; k++) {
+			for (j=0 ; j<4 ; j++) {
+				sin_texinfo[i].vecs[k][j] = LittleFloat (sin_texinfo[i].vecs[k][j]);
+			}
+		}
 #ifdef SIN
       sin_texinfo[i].trans_mag = LittleFloat( sin_texinfo[i].trans_mag );     
       sin_texinfo[i].trans_angle = LittleLong( sin_texinfo[i].trans_angle );     
