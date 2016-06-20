@@ -131,7 +131,7 @@ Error
 For abnormal program terminations in windowed apps
 =================
 */
-void Error (char *error, ...)
+void Error (const char *error, ...)
 {
 	va_list argptr;
 	char text[1024];
@@ -141,10 +141,10 @@ void Error (char *error, ...)
 	err = GetLastError ();
 
 	va_start(argptr, error);
-	vsprintf(text, error, argptr);
+	vsnprintf(text, sizeof(text), error, argptr);
 	va_end(argptr);
 
-	sprintf(text2, "%s\nGetLastError() = %i", text, err);
+	snprintf(text2, sizeof(text2), "%s\nGetLastError() = %i", text, err);
    MessageBox(program_hwnd, text2, "Error", 0 /* MB_OK */ );
 
 	Log_Write(text);
@@ -153,13 +153,13 @@ void Error (char *error, ...)
 	exit(1);
 } //end of the function Error
 
-void Warning(char *szFormat, ...)
+void Warning(const char *szFormat, ...)
 {
 	char szBuffer[256];
 	va_list argptr;
 
 	va_start (argptr, szFormat);
-	vsprintf(szBuffer, szFormat, argptr);
+	vsnprintf(szBuffer, sizeof(szBuffer), szFormat, argptr);
 	va_end (argptr);
 
 	MessageBox(program_hwnd, szBuffer, "Warning", MB_OK);
@@ -176,13 +176,13 @@ Error
 For abnormal program terminations in console apps
 =================
 */
-void Error (char *error, ...)
+void Error (const char *error, ...)
 {
 	va_list argptr;
 	char	text[1024];
 
 	va_start(argptr, error);
-	vsprintf(text, error, argptr);
+	vsnprintf(text, sizeof(text), error, argptr);
 	va_end(argptr);
 	printf("ERROR: %s\n", text);
 
@@ -192,13 +192,13 @@ void Error (char *error, ...)
 	exit (1);
 } //end of the function Error
 
-void Warning(char *warning, ...)
+void Warning(const char *warning, ...)
 {
 	va_list argptr;
 	char text[1024];
 
 	va_start(argptr, warning);
-	vsprintf(text, warning, argptr);
+	vsnprintf(text, sizeof(text), warning, argptr);
 	va_end(argptr);
 	printf("WARNING: %s\n", text);
 
@@ -210,7 +210,7 @@ void Warning(char *warning, ...)
 //only printf if in verbose mode
 qboolean verbose = true;
 
-void qprintf(char *format, ...)
+void qprintf(const char *format, ...)
 {
 	va_list argptr;
 #ifdef WINBSPC
@@ -238,7 +238,7 @@ void Com_Error(int level, char *error, ...)
 	va_start(argptr, error);
 	vsprintf(text, error, argptr);
 	va_end(argptr);
-	Error(text);
+	Error("%s", text);
 } //end of the funcion Com_Error
 
 void Com_Printf( const char *fmt, ... )

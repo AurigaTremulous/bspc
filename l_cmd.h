@@ -54,6 +54,11 @@ typedef unsigned char byte;
 // the dec offsetof macro doesnt work very well...
 #define myoffsetof(type,identifier) ((size_t)&((type *)0)->identifier)
 
+#ifndef __GNUC__
+#ifndef __attribute__
+#define __attribute__(x)
+#endif
+#endif
 
 // set these before calling CheckParm
 extern int myargc;
@@ -81,8 +86,8 @@ char *ExpandPathAndArchive (char *path);
 
 double I_FloatTime (void);
 
-void Error(char *error, ...);
-void Warning(char *warning, ...);
+void Error(const char *error, ...) __attribute__ ((format (printf, 1, 2)));
+void Warning(const char *warning, ...) __attribute__ ((format (printf, 1, 2)));
 
 int		CheckParm (char *check);
 
@@ -142,7 +147,7 @@ extern	char			archivedir[1024];
 
 
 extern	qboolean verbose;
-void qprintf (char *format, ...);
+void qprintf (const char *format, ...) __attribute__ ((format (printf, 1, 2)));
 
 void ExpandWildcards (int *argc, char ***argv);
 
