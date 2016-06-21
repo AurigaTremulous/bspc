@@ -1,7 +1,7 @@
 CFLAGS=\
 	-Dstricmp=strcasecmp -DCom_Memcpy=memcpy -DCom_Memset=memset \
 	-DMAC_STATIC= -DQDECL= -DBSPC -D_FORTIFY_SOURCE=2 \
-	-I. -Ideps -Wall
+	-I. -Ideps -Wall 
 
 RELEASE_CFLAGS=-O3 -ffast-math
 DEBUG_CFLAGS=-g -O0 -ffast-math

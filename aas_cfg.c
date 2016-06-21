@@ -153,13 +153,12 @@ char	* QDECL va( char *format, ... )
 	va_list		argptr;
 	static char		string[2][32000];	// in case va is called by nested functions
 	static int		index = 0;
-	char	*buf;
 
-	buf = string[index & 1];
+	char	*buf = string[index & 1];
 	index++;
 
 	va_start (argptr, format);
-	vsprintf (buf, format,argptr);
+	vsnprintf (buf, 32000, format,argptr);
 	va_end (argptr);
 
 	return buf;

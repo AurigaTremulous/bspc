@@ -47,9 +47,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
+#ifndef __cplusplus
 typedef enum {false, true} qboolean;
+#endif
 typedef unsigned char byte;
 #endif
+
 
 // the dec offsetof macro doesnt work very well...
 #define myoffsetof(type,identifier) ((size_t)&((type *)0)->identifier)

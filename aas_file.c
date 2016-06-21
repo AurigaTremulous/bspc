@@ -261,7 +261,7 @@ qboolean AAS_LoadAASFile(char *filename, int fpoffset, int fplength)
 	//seek to the correct position (in the pak file)
 	if (fseek(fp, fpoffset, SEEK_SET))
 	{
-		AAS_Error("can't seek to file %s\n");
+		AAS_Error("can't seek to file %s\n", filename);
 		fclose(fp);
 		return false;
 	} //end if
