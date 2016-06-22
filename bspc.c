@@ -25,14 +25,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
 #include <windows.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #else
 #include <unistd.h>
 #include <glob.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #endif
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "qbsp.h"
 #include "l_mem.h"
 #include "botlib/aasfile.h"
