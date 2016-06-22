@@ -378,6 +378,9 @@ void Q3_FindVisibleBrushSides(void)
 		for (j = 0; j < brush->numSides; j++)
 		{
 			qprintf("\r%6d", numsides++);
+			if (brush->firstSide +j > Q3_MAX_MAP_BRUSHSIDES) {
+				Error("\nQ3_MAX_MAP_BRUSHSIDES exceeded, %d > %d", brush->firstSide +j, Q3_MAX_MAP_BRUSHSIDES);
+			}
 			brushside = &q3_dbrushsides[brush->firstSide + j];
 			//
 			w = Q3_BrushSideWinding(brush, brushside);
