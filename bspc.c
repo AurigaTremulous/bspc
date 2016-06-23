@@ -362,13 +362,12 @@ void Map2Bsp(char *mapfilename, char *outputfilename)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
+static void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
 {
 	char ext[MAX_PATH];
 
 	//
-	if (strlen(outputpath))
-	{
+	if (strlen(outputpath)) {
 		strcpy(filename, outputpath);
 		//append the bsp file base
 		AppendPathSeperator(filename, MAX_PATH);
@@ -389,7 +388,9 @@ void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
 			filename[strlen(filename)-1] = '\0';
 		} //end while
 		strcat(filename, "maps");
-		if (access(filename, 0x04)) CreatePath(filename);
+		if (access(filename, 0x04)) { 
+			CreatePath(filename);
+		}
 		//append the bsp file base
 		AppendPathSeperator(filename, MAX_PATH);
 		ExtractFileBase(qf->origname, &filename[strlen(filename)]);
@@ -399,8 +400,7 @@ void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
 	else
 	{
 		strcpy(filename, qf->filename);
-		while(strlen(filename) &&
-				filename[strlen(filename)-1] != '.')
+		while(strlen(filename) && filename[strlen(filename)-1] != '.')
 		{
 			filename[strlen(filename)-1] = '\0';
 		} //end while
@@ -462,9 +462,9 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 			strcpy(bspfilter, foldername);
 			strcat(bspfilter, "*.pk3/maps/*.bsp");
 			bspfiles = FindQuakeFiles(bspfilter);
-			for (qf = bspfiles; qf; qf = qf->next) if (!qf->next) break;
-			if (qf) qf->next = files;
-			else bspfiles = files;
+			for (qf = bspfiles; qf; qf = qf->next) { if (!qf->next) break; }
+			if (qf) {qf->next = files;}
+			else { bspfiles = files; }
 			//get all the aas files
 			strcpy(aasfilter, foldername);
 			strcat(aasfilter, "maps/*.aas");
@@ -472,9 +472,9 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 			strcpy(aasfilter, foldername);
 			strcat(aasfilter, "*.pk3/maps/*.aas");
 			aasfiles = FindQuakeFiles(aasfilter);
-			for (qf = aasfiles; qf; qf = qf->next) if (!qf->next) break;
-			if (qf) qf->next = files;
-			else aasfiles = files;
+			for (qf = aasfiles; qf; qf = qf->next) { if (!qf->next) break; }
+			if (qf) { qf->next = files; }
+			else { aasfiles = files; }
 			//
 			for (qf = bspfiles; qf; qf = qf->next)
 			{
@@ -507,7 +507,7 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-quakefile_t *GetArgumentFiles(int argc, char *argv[], int *i, char *ext)
+static quakefile_t *GetArgumentFiles(int argc, char * argv[], int *i, const char *ext)
 {
 	quakefile_t *qfiles, *lastqf, *qf;
 	int j;
@@ -518,16 +518,20 @@ quakefile_t *GetArgumentFiles(int argc, char *argv[], int *i, char *ext)
 	for (; (*i)+1 < argc && argv[(*i)+1][0] != '-'; (*i)++)
 	{
 		strcpy(buf, argv[(*i)+1]);
-		for (j = strlen(buf)-1; j >= strlen(buf)-4; j--)
+		for (j = strlen(buf)-1; j >= strlen(buf)-4; j--) {
 			if (buf[j] == '.') break;
-		if (j >= strlen(buf)-4)
+		}
+		if (j >= strlen(buf)-4) {
 			strcpy(&buf[j+1], ext);
+		}
 		qf = FindQuakeFiles(buf);
-		if (!qf) continue;
-		if (lastqf) lastqf->next = qf;
-		else qfiles = qf;
+		if (!qf) { 
+			continue; 
+		}
+		if (lastqf) { lastqf->next = qf; }
+		else { qfiles = qf; }
 		lastqf = qf;
-		while(lastqf->next) lastqf = lastqf->next;
+		while(lastqf->next) { lastqf = lastqf->next; }
 	} //end for
 	return qfiles;
 } //end of the function GetArgumentFiles
@@ -777,7 +781,7 @@ int main (int argc, char **argv)
 		{
 			case COMP_BSP2MAP:
 			{
-				if (!qfiles) Log_Print("no files found\n");
+				if (!qfiles) { Log_Print("no files found\n"); }
 				for (qf = qfiles; qf; qf = qf->next)
 				{
 					//copy the output path
@@ -799,7 +803,7 @@ int main (int argc, char **argv)
 			} //end case
 			case COMP_BSP2AAS:
 			{
-				if (!qfiles) Log_Print("no files found\n");
+				if (!qfiles) { Log_Print("no files found\n"); }
 				for (qf = qfiles; qf; qf = qf->next)
 				{
 					AASOuputFile(qf, outputpath, filename);
@@ -861,7 +865,7 @@ int main (int argc, char **argv)
 						AAS_CalcReachAndClusters(qf);
 					} //end if
 					//
-					if (optimize) AAS_Optimize();
+					if (optimize) { AAS_Optimize(); }
 					//write out the stored AAS file
 					if (!AAS_WriteAASFile(filename))
 					{

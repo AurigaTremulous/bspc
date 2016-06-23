@@ -97,7 +97,7 @@ void ExpandWildcards (int *argc, char ***argv)
 
 		do
 		{
-			sprintf (filename, "%s%s", filebase, fileinfo.name);
+			snprintf (filename, sizeof(filename), "%s%s", filebase, fileinfo.name);
 			ex_argv[ex_argc++] = copystring (filename);
 		} while (_findnext( handle, &fileinfo ) != -1);
 
@@ -236,7 +236,7 @@ void Com_Error(int level, char *error, ...)
 	char text[1024];
 
 	va_start(argptr, error);
-	vsprintf(text, error, argptr);
+	vsnprintf(text, sizeof(text), error, argptr);
 	va_end(argptr);
 	Error("%s", text);
 } //end of the funcion Com_Error
@@ -247,7 +247,7 @@ void Com_Printf( const char *fmt, ... )
 	char text[1024];
 
 	va_start(argptr, fmt);
-	vsprintf(text, fmt, argptr);
+	vsnprintf(text, sizeof(text), fmt, argptr);
 	va_end(argptr);
 	Log_Print(text);
 } //end of the funcion Com_Printf
@@ -325,7 +325,7 @@ char *ExpandPath (char *path)
 		Error ("ExpandPath called without qdir set");
 	if (path[0] == '/' || path[0] == '\\' || path[1] == ':')
 		return path;
-	sprintf (full, "%s%s", qdir, path);
+	snprintf (full, sizeof(full), "%s%s", qdir, path);
 	return full;
 }
 
@@ -338,7 +338,7 @@ char *ExpandPathAndArchive (char *path)
 
 	if (archive)
 	{
-		sprintf (archivename, "%s/%s", archivedir, path);
+		snprintf (archivename, sizeof(archivename), "%s/%s", archivedir, path);
 		QCopyFile (expanded, archivename);
 	}
 	return expanded;
@@ -630,27 +630,25 @@ int Q_filelength (FILE *f)
 }
 
 
-FILE *SafeOpenWrite (char *filename)
+FILE *SafeOpenWrite (const char *filename)
 {
-	FILE	*f;
+	FILE	*f = fopen(filename, "wb");
 
-	f = fopen(filename, "wb");
-
-	if (!f)
+	if (!f) {
 		Error ("Error opening %s: %s",filename,strerror(errno));
+	}	
 
 	return f;
 }
 
-FILE *SafeOpenRead (char *filename)
+FILE *SafeOpenRead (const char *filename)
 {
-	FILE	*f;
+	FILE	*f = fopen(filename, "rb");
 
-	f = fopen(filename, "rb");
-
-	if (!f)
+	if (!f) {
 		Error ("Error opening %s: %s",filename,strerror(errno));
-
+	}
+	
 	return f;
 }
 
@@ -790,8 +788,9 @@ void    StripFilename (char *path)
 	int             length;
 
 	length = strlen(path)-1;
-	while (length > 0 && path[length] != PATHSEPERATOR)
+	while (length > 0 && path[length] != PATHSEPERATOR) {
 		length--;
+	}
 	path[length] = 0;
 }
 
@@ -843,8 +842,9 @@ void ExtractFileBase (char *path, char *dest)
 //
 // back up until a \ or the start
 //
-	while (src != path && *(src-1) != '\\' && *(src-1) != '/')
+	while (src != path && *(src-1) != '\\' && *(src-1) != '/') {
 		src--;
+	}
 
 	while (*src && *src != '.')
 	{
@@ -862,8 +862,9 @@ void ExtractFileExtension (char *path, char *dest)
 //
 // back up until a . or the start
 //
-	while (src != path && *(src-1) != '.')
+	while (src != path && *(src-1) != '.') {
 		src--;
+	}
 	if (src == path)
 	{
 		*dest = 0;	// no extension

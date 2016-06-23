@@ -89,13 +89,13 @@ char *ExpandPathAndArchive (char *path);
 
 double I_FloatTime (void);
 
-void Error(const char *error, ...) __attribute__ ((format (printf, 1, 2)));
+void Error(const char *error, ...) __attribute__ ((format (printf, 1, 2))) __attribute__ ((noreturn));
 void Warning(const char *warning, ...) __attribute__ ((format (printf, 1, 2)));
 
 int		CheckParm (char *check);
 
-FILE	*SafeOpenWrite (char *filename);
-FILE	*SafeOpenRead (char *filename);
+FILE	*SafeOpenWrite (const char *filename);
+FILE	*SafeOpenRead (const char *filename);
 void	SafeRead (FILE *f, void *buffer, int count);
 void	SafeWrite (FILE *f, void *buffer, int count);
 

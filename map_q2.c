@@ -1099,6 +1099,7 @@ void Q2_ResetMapLoading(void)
 
 //====================================================================
 
+#if 0
 /*
 ================
 TestExpandBrushes
@@ -1106,7 +1107,7 @@ TestExpandBrushes
 Expands all the brush planes and saves a new map out
 ================
 */
-void TestExpandBrushes (void)
+static void TestExpandBrushes (void) 
 {
 	FILE	*f;
 	side_t	*s;
@@ -1151,4 +1152,5 @@ void TestExpandBrushes (void)
 
 	Error ("can't proceed after expanding brushes");
 } //end of the function TestExpandBrushes
+#endif
 
