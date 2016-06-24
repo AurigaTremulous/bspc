@@ -71,7 +71,7 @@ winding_t *AllocWinding (int points)
 	winding_t	*w;
 	int			s;
 
-	s = sizeof(vec_t)*3*points + sizeof(int);
+	s = sizeof(*w) + (points > 4 ? sizeof(vec3_t)*(points-4) : 0);
 	w = GetMemory(s);
 	memset(w, 0, s);
 
@@ -325,8 +325,7 @@ winding_t *CopyWinding (winding_t *w)
 	winding_t	*c;
 
 	c = AllocWinding (w->numpoints);
-	// Compute size the same way than in AllocWinding
-	size = sizeof(vec_t)*3*w->numpoints + sizeof(int);
+	size = sizeof(*w) + (w->numpoints > 4 ? sizeof(vec3_t)*(w->numpoints-4) : 0);
 	memcpy (c, w, size);
 	return c;
 }

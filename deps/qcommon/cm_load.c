@@ -15,7 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with Quake III Arena source code; if not, write to the Free Software
+along with Foobar; if not, write to the Free Software
 Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #ifdef BSPC
 
-#include "../bspc/l_qfiles.h"
+#include "l_qfiles.h"
 
 void SetPlaneSignbits (cplane_t *out) {
 	int	bits, j;
@@ -434,6 +434,40 @@ void CMod_LoadBrushSides (lump_t *l)
 	}
 }
 
+/*
+=================
+CMod_LoadRBrushSides
+=================
+*/
+void CMod_LoadRBrushSides (lump_t *l)
+{
+	int				i;
+	cbrushside_t	*out;
+	drbrushside_t 	*in;
+	int				count;
+	int				num;
+
+	in = (void *)(cmod_base + l->fileofs);
+	if ( l->filelen % sizeof(*in) ) {
+		Com_Error (ERR_DROP, "MOD_LoadBmodel: funny lump size");
+	}
+	count = l->filelen / sizeof(*in);
+
+	cm.brushsides = Hunk_Alloc( ( BOX_SIDES + count ) * sizeof( *cm.brushsides ), h_high );
+	cm.numBrushSides = count;
+
+	out = cm.brushsides;	
+
+	for ( i=0 ; i<count ; i++, in++, out++) {
+		num = LittleLong( in->planeNum );
+		out->plane = &cm.planes[num];
+		out->shaderNum = LittleLong( in->shaderNum );
+		if ( out->shaderNum < 0 || out->shaderNum >= cm.numShaders ) {
+			Com_Error( ERR_DROP, "CMod_LoadBrushSides: bad shaderNum: %i", out->shaderNum );
+		}
+		out->surfaceFlags = cm.shaders[out->shaderNum].surfaceFlags;
+	}
+}
 
 /*
 =================
@@ -474,6 +508,7 @@ void CMod_LoadVisibility( lump_t *l ) {
 
 //==================================================================
 
+#define	MAX_PATCH_VERTS		1024
 
 /*
 =================
@@ -567,14 +602,12 @@ Loads in the map and all submodels
 ==================
 */
 void CM_LoadMap( const char *name, qboolean clientload, int *checksum ) {
-	union {
-		int				*i;
-		void			*v;
-	} buf;
+	int				*buf;
 	int				i;
 	dheader_t		header;
 	int				length;
 	static unsigned	last_checksum;
+	int             raven;
 
 	if ( !name || !name[0] ) {
 		Com_Error( ERR_DROP, "CM_LoadMap: NULL name" );
@@ -609,29 +642,39 @@ void CM_LoadMap( const char *name, qboolean clientload, int *checksum ) {
 	// load the file
 	//
 #ifndef BSPC
-	length = FS_ReadFile( name, &buf.v );
+	length = FS_ReadFile( name, (void **)&buf );
 #else
-	length = LoadQuakeFile((quakefile_t *) name, &buf.v);
+	length = LoadQuakeFile((quakefile_t *) name, (void **)&buf);
 #endif
 
-	if ( !buf.i ) {
+	if ( !buf ) {
 		Com_Error (ERR_DROP, "Couldn't load %s", name);
 	}
 
-	last_checksum = LittleLong (Com_BlockChecksum (buf.i, length));
+	last_checksum = LittleLong (Com_BlockChecksum (buf, length));
 	*checksum = last_checksum;
 
-	header = *(dheader_t *)buf.i;
+	header = *(dheader_t *)buf;
 	for (i=0 ; i<sizeof(dheader_t)/4 ; i++) {
 		((int *)&header)[i] = LittleLong ( ((int *)&header)[i]);
 	}
 
-	if ( header.version != BSP_VERSION ) {
-		Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i)"
-		, name, header.version, BSP_VERSION );
+	if ( header.ident == BSP_IDENT_QF ) {
+		if ( header.version != BSP_VERSION_QF ) {
+			Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i)"
+			, name, header.version, BSP_VERSION_QF );
+		}
+		raven = 1;
+	} 
+	else {
+		if ( header.version != BSP_VERSION && header.version != BSP_VERSION_QL ) {
+			Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i or %i)"
+			, name, header.version, BSP_VERSION, BSP_VERSION_QL );
+		}
+		raven = 0;
 	}
 
-	cmod_base = (byte *)buf.i;
+	cmod_base = (byte *)buf;
 
 	// load into heap
 	CMod_LoadShaders( &header.lumps[LUMP_SHADERS] );
@@ -648,7 +691,7 @@ void CM_LoadMap( const char *name, qboolean clientload, int *checksum ) {
 	CMod_LoadPatches( &header.lumps[LUMP_SURFACES], &header.lumps[LUMP_DRAWVERTS] );
 
 	// we are NOT freeing the file, because it is cached for the ref
-	FS_FreeFile (buf.v);
+	FS_FreeFile (buf);
 
 	CM_InitBoxHull ();
 
