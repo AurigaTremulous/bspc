@@ -29,7 +29,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  *****************************************************************************/
 
-#include <stddef.h>
 
 #define MAX_STRINGFIELD				80
 //field types
@@ -49,7 +48,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 typedef struct fielddef_s
 {
 	char *name;										//name of the field
-	size_t offset;										//offset in the structure
+	int offset;										//offset in the structure
 	int type;										//type of the field
 	//type specific fields
 	int maxarray;									//maximum array size

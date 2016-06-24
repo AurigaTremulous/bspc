@@ -954,6 +954,9 @@ qboolean WriteMapFileSafe(FILE *fp)
 	if (fprintf(fp,"//=====================================================\n"
 			"//\n"
 			"// map file created with BSPC "BSPC_VERSION"\n"
+#ifdef SMOKINGUNS
+			"// "SMOKINGUNS_MESSAGE"\n"
+#endif
 			"//\n"
 			"// BSPC is designed to decompile material in which you own the copyright\n"
 			"// or have obtained permission to decompile from the copyright owner. Unless\n"
@@ -981,7 +984,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 		//
 		if (loadedmaptype == MAPTYPE_QUAKE3)
 		{
-			if (!stricmp(ValueForKey(mapent, "classname"), "light"))
+			if (!Q_strcasecmp(ValueForKey(mapent, "classname"), "light"))
 			{
 				SetKeyValue(mapent, "light", "10000");
 			} //end if

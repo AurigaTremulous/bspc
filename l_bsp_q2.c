@@ -642,7 +642,7 @@ Byte swaps all data in a bsp file.
 */
 void Q2_SwapBSPFile (qboolean todisk)
 {
-	int				i, j;
+	int				i, j, k;
 	dmodel_t		*d;
 
 	
@@ -920,7 +920,8 @@ void	Q2_LoadBSPFileTexinfo (char *filename)
 	header = GetMemory(sizeof(dheader_t));
 
 	f = fopen (filename, "rb");
-	fread (header, sizeof(dheader_t), 1, f);
+	if (fread (header, sizeof(dheader_t), 1, f) != sizeof(dheader_t))
+		Error ("%s file is corrupted at the header", filename);
 
 // swap the header
 	for (i=0 ; i< sizeof(dheader_t)/4 ; i++)
@@ -936,7 +937,8 @@ void	Q2_LoadBSPFileTexinfo (char *filename)
 	ofs = header->lumps[LUMP_TEXINFO].fileofs;
 
 	fseek (f, ofs, SEEK_SET);
-	fread (texinfo, length, 1, f);
+	if (fread (texinfo, length, 1, f) != length)
+		Error ("%s file is corrupted", filename);
 	fclose (f);
 
 	numtexinfo = length / sizeof(texinfo_t);

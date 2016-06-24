@@ -20,8 +20,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#include <float.h>
+
 #include "qbsp.h"
-#include "float.h"
 #include "botlib/aasfile.h"
 #include "aas_store.h"
 #include "aas_cfg.h"
@@ -210,7 +211,7 @@ int LoadCfgFile(char *filename)
 
 	while(PC_ReadToken(source, &token))
 	{
-		if (!stricmp(token.string, "bbox"))
+		if (!Q_strcasecmp(token.string, "bbox"))
 		{
 			if (cfg.numbboxes >= AAS_MAX_BBOXES)
 			{
@@ -224,7 +225,7 @@ int LoadCfgFile(char *filename)
 			cfg.allpresencetypes |= cfg.bboxes[cfg.numbboxes].presencetype;
 			cfg.numbboxes++;
 		} //end if
-		else if (!stricmp(token.string, "settings"))
+		else if (!Q_strcasecmp(token.string, "settings"))
 		{
 			if (settingsdefined)
 			{

@@ -482,7 +482,7 @@ void SplitNodePortals (node_t *node)
 {
 	portal_t	*p, *next_portal, *new_portal;
 	node_t *f, *b, *other_node;
-	int side = 0;
+	int side;
 	plane_t *plane;
 	winding_t *frontwinding, *backwinding;
 

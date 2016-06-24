@@ -49,16 +49,15 @@ void LeakFile (tree_t *tree)
 	node_t	*node;
 	int		count;
 
-	if (!tree->outside_node.occupied) {
+	if (!tree->outside_node.occupied)
 		return;
-	}
 
 	qprintf ("--- LeakFile ---\n");
 
 	//
 	// write the points to the file
 	//
-	snprintf (filename, sizeof(filename), "%s.lin", source);
+	sprintf (filename, "%s.lin", source);
 	qprintf ("%s\n", filename);
 	linefile = fopen (filename, "w");
 	if (!linefile)

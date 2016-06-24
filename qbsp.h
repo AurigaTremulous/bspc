@@ -39,6 +39,25 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define BSPC_VERSION		"2.1h"
 
+#ifdef SMOKINGUNS
+#define SMOKINGUNS_MESSAGE	"Customized for Smokin'Guns v0.2"
+#endif
+
+// vsnprintf is ISO/IEC 9899:1999
+// abstracting this to make it portable
+#ifdef _WIN32
+  #define Q_vsnprintf _vsnprintf
+  #define Q_snprintf _snprintf
+#else
+  #define Q_vsnprintf vsnprintf
+  #define Q_snprintf snprintf
+#endif
+
+#define Com_sprintf (void)Q_snprintf
+
+#define Com_Memset memset
+#define Com_Memcpy memcpy
+
 #define ME
 #define DEBUG
 #define NODELIST
@@ -233,8 +252,8 @@ extern	char source[1024];
 // map.c
 //=============================================================================
 
-#define MAX_MAPFILE_PLANES			256000
-#define MAX_MAPFILE_BRUSHES			65535
+#define MAX_MAPFILE_PLANES			512000
+#define MAX_MAPFILE_BRUSHES			(65535*2)
 #define MAX_MAPFILE_BRUSHSIDES		(MAX_MAPFILE_BRUSHES*8)
 #define MAX_MAPFILE_TEXINFO			8192
 
