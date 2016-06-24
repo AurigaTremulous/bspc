@@ -425,7 +425,7 @@ bspbrush_t *AllocBrush (int numsides)
 	bspbrush_t	*bb;
 	size_t		c;
 
-	c = sizeof(*bb) + (numsides > 6 ? sizeof(side_t)*(numsides-6) : 0);
+	c = offsetof(bspbrush_t, sides[numsides]);
 	bb = GetMemory(c);
 	memset (bb, 0, c);
 	if (numthreads == 1)
@@ -488,7 +488,7 @@ bspbrush_t *CopyBrush (bspbrush_t *brush)
 	size_t		size;
 	int			i;
 	
-	size = sizeof(*newbrush) + (brush->numsides > 6 ? sizeof(side_t)*(brush->numsides-6) : 0);
+	size = offsetof(bspbrush_t, sides[brush->numsides]);
 
 	newbrush = AllocBrush (brush->numsides);
 	memcpy (newbrush, brush, size);
