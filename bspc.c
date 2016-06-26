@@ -420,7 +420,6 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 	WIN32_FIND_DATA filedata;
 	HWND handle;
 	struct _stat statbuf;
-	int done;
 #else
 	glob_t globbuf;
 	struct stat statbuf;
