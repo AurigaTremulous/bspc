@@ -1,16 +1,23 @@
 # bspc
 
 This is the [Quake III: Arena](http://www.idsoftware.com/games/quake/quake3-arena/) BSP-to-AAS compiler.
+This is a slight variaction that combines a couple of different versions from github into one.
 
 ## Downloading
 
-You can download the latest version [here](https://github.com/bnoordhuis/bspc).
+You can download the latest version [here](https://github.com/sago007/bspc).
 
 ## Compiling
 
 Dead simple:
 
 	make
+	
+Cross compile for Windows?
+The docker image sago007/mxe_basic is used.
+After checing out all that is required is:
+
+	CC=i686-w64-mingw32.static-gcc make && mv bspc bspc.exe
 
 ## Usage
 
@@ -39,9 +46,13 @@ Straight from the source:
 	   forcesidesvisible                    = force all sides to be visible
 	   grapplereach                         = calculate grapple reachabilities
 
+## Works on
+
+This version is primarily targeted [OpenArena](http://www.openarena.ws). It is tested on http://files.poulsander.com/~poul19/public_files/intooa.pk3 and http://files.poulsander.com/~poul19/public_files/islandctf4a3.pk3
+
 ## Support
 
-[File a bug report](https://github.com/bnoordhuis/bspc/issues) if you run into issues.
+[File a bug report](https://github.com/sago007/bspc/issues) if you run into issues.
 
 ## License
 
