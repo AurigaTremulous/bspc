@@ -11,14 +11,8 @@ You can download the latest version [here](https://github.com/sago007/bspc).
 
 Dead simple:
 
-	make
+	cmake . && make
 	
-Cross compile for Windows?
-The docker image sago007/mxe_basic is used.
-After checing out all that is required is:
-
-	CC=i686-w64-mingw32.static-gcc make && mv bspc bspc.exe
-
 ## Usage
 
 Straight from the source:
