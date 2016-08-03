@@ -2,3 +2,9 @@ bspc_g
 bspc
 *.log
 *.o
+*.orig
+
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
