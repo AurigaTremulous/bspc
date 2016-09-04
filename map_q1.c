@@ -256,7 +256,7 @@ void Q1_SplitBrush(bspbrush_t *brush, int planenum, int nodenum,
 	*back = b[1];
 } //end of the function Q1_SplitBrush
 //===========================================================================
-// returns true if the tree starting at nodenum has only solid leaves
+// returns qtrue if the tree starting at nodenum has only solid leaves
 //
 // Parameter:				-
 // Returns:					-
@@ -270,7 +270,7 @@ int Q1_SolidTree_r(int nodenum)
 		{
 			case Q1_CONTENTS_EMPTY:
 			{
-				return false;
+				return qfalse;
 			} //end case
 			case Q1_CONTENTS_SOLID:
 #ifdef HLCONTENTS
@@ -281,7 +281,7 @@ int Q1_SolidTree_r(int nodenum)
 			case Q1_CONTENTS_TRANSLUCENT:
 #endif
 			{
-				return true;
+				return qtrue;
 			} //end case
 			case Q1_CONTENTS_WATER:
 			case Q1_CONTENTS_SLIME:
@@ -298,14 +298,14 @@ int Q1_SolidTree_r(int nodenum)
 #endif
 			default:
 			{
-				return false;
+				return qfalse;
 			} //end default
 		} //end switch
-		return false;
+		return qfalse;
 	} //end if
-	if (!Q1_SolidTree_r(q1_dnodes[nodenum].children[0])) return false;
-	if (!Q1_SolidTree_r(q1_dnodes[nodenum].children[1])) return false;
-	return true;
+	if (!Q1_SolidTree_r(q1_dnodes[nodenum].children[0])) return qfalse;
+	if (!Q1_SolidTree_r(q1_dnodes[nodenum].children[1])) return qfalse;
+	return qtrue;
 } //end of the function Q1_SolidTree_r
 //===========================================================================
 //
@@ -1060,7 +1060,7 @@ void Q1_BSPBrushToMapBrush(bspbrush_t *bspbrush, entity_t *mapent)
 	if (create_aas)
 	{
 		//create the AAS brushes from this brush, add brush bevels
-		AAS_CreateMapBrushes(mapbrush, mapent, true);
+		AAS_CreateMapBrushes(mapbrush, mapent, qtrue);
 		return;
 	} //end if
 	//create windings for sides and bounds for brush

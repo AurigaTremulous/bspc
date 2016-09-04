@@ -381,7 +381,7 @@ void Q3_FindVisibleBrushSides(void)
 	q3_dsurface_t *surface;
 	winding_t *w;
 
-	memset(q3_dbrushsidetextured, false, Q3_MAX_MAP_BRUSHSIDES);
+	memset(q3_dbrushsidetextured, qfalse, Q3_MAX_MAP_BRUSHSIDES);
 	//
 	numsides = 0;
 	//create planes for the planar surfaces
@@ -404,7 +404,7 @@ void Q3_FindVisibleBrushSides(void)
 			w = Q3_BrushSideWinding(brush, brushside);
 			if (!w)
 			{
-				q3_dbrushsidetextured[brush->firstSide + j] = true;
+				q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 				continue;
 			} //end if
 			else
@@ -413,7 +413,7 @@ void Q3_FindVisibleBrushSides(void)
 				if (WindingIsTiny(w))
 				{
 					FreeWinding(w);
-					q3_dbrushsidetextured[brush->firstSide + j] = true;
+					q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 					continue;
 				} //end if
 				else
@@ -426,14 +426,14 @@ void Q3_FindVisibleBrushSides(void)
 						)
 					{
 						FreeWinding(w);
-						q3_dbrushsidetextured[brush->firstSide + j] = true;
+						q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 						continue;
 					} //end if
 				} //end else
 			} //end else
 			if (WindingArea(w) < 20)
 			{
-				q3_dbrushsidetextured[brush->firstSide + j] = true;
+				q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 				continue;
 			} //end if
 			//find a face for texturing this brush
@@ -451,7 +451,7 @@ void Q3_FindVisibleBrushSides(void)
 				//if the face is partly or totally on the brush side
 				if (Q3_FaceOnWinding(surface, w))
 				{
-					q3_dbrushsidetextured[brush->firstSide + j] = true;
+					q3_dbrushsidetextured[brush->firstSide + j] = qtrue;
 					//Log_Write("Q3_FaceOnWinding");
 					break;
 				} //end if
@@ -463,7 +463,7 @@ void Q3_FindVisibleBrushSides(void)
 	numtextured = 0;
 	for (i = 0; i < q3_numbrushsides; i++)
 	{
-		if (forcesidesvisible) q3_dbrushsidetextured[i] = true;
+		if (forcesidesvisible) q3_dbrushsidetextured[i] = qtrue;
 		if (q3_dbrushsidetextured[i]) numtextured++;
 	} //end for
 	Log_Print("%d brush sides textured out of %d\n", numtextured, q3_numbrushsides);

@@ -295,8 +295,8 @@ qboolean TH_PlaneEqual(th_plane_t *p, vec3_t normal, vec_t dist)
 	&& fabs(p->normal[1] - normal[1]) < NORMAL_EPSILON
 	&& fabs(p->normal[2] - normal[2]) < NORMAL_EPSILON
 	&& fabs(p->dist - dist) < DIST_EPSILON )
-		return true;
-	return false;
+		return qtrue;
+	return qfalse;
 } //end of the function TH_PlaneEqual
 //===========================================================================
 //
@@ -682,7 +682,7 @@ int TH_FindTriangle(int verts[3])
 	for (i = 0; i < 3; i++)
 	{
 		edges[i] = TH_FindEdge(verts[i], verts[(i+1)%3]);
-		if (!edges[i]) return false;
+		if (!edges[i]) return qfalse;
 	} //end for
 	hashvalue = (abs(edges[0]) + abs(edges[1]) + abs(edges[2])) & (TRIANGLEHASH_SIZE-1);
 	for (tri = thworld.trianglehash[hashvalue]; tri; tri = tri->next)
@@ -813,8 +813,8 @@ int TH_IntersectTrianglePlanes(int v1, int v2, th_plane_t *triplane, th_plane_t 
 	front = DotProduct(p1, triplane->normal) - triplane->dist;
 	back = DotProduct(p2, triplane->normal) - triplane->dist;
 	//if both points at the same side of the plane
-	if (front < 0.1 && back < 0.1) return false;
-	if (front > -0.1 && back > -0.1) return false;
+	if (front < 0.1 && back < 0.1) return qfalse;
+	if (front > -0.1 && back > -0.1) return qfalse;
 	//
 	frac = front/(front-back);
 	mid[0] = p1[0] + (p2[0] - p1[0]) * frac;
@@ -826,10 +826,10 @@ int TH_IntersectTrianglePlanes(int v1, int v2, th_plane_t *triplane, th_plane_t 
 	{
 		d = DotProduct(mid, planes[i].normal) - planes[i].dist;
 		side = d < 0;
-		if (i && side != lastside) return false;
+		if (i && side != lastside) return qfalse;
 		lastside = side;
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function TH_IntersectTrianglePlanes
 //===========================================================================
 //
@@ -847,10 +847,10 @@ int TH_OutsideBoundingBox(int v1, int v2, vec3_t mins, vec3_t maxs)
 	//if both points are at the outer side of one of the bounding box planes
 	for (i = 0; i < 3; i++)
 	{
-		if (p1[i] < mins[i] && p2[i] < mins[i]) return true;
-		if (p1[i] > maxs[i] && p2[i] > maxs[i]) return true;
+		if (p1[i] < mins[i] && p2[i] < mins[i]) return qtrue;
+		if (p1[i] > maxs[i] && p2[i] > maxs[i]) return qtrue;
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function TH_OutsideBoundingBox
 //===========================================================================
 //
@@ -865,7 +865,7 @@ int TH_TryEdge(int v1, int v2)
 	th_triangle_t *tri;
 
 	//if the edge already exists it must be valid
-	if (TH_FindEdge(v1, v2)) return true;
+	if (TH_FindEdge(v1, v2)) return qtrue;
 	//test the edge with all existing triangles
 	for (i = 1; i < thworld.numtriangles; i++)
 	{
@@ -886,9 +886,9 @@ int TH_TryEdge(int v1, int v2)
 		//get the triangle plane
 		plane = &thworld.planes[tri->planenum];
 		//if the edge intersects with a triangle then it's not valid
-		if (TH_IntersectTrianglePlanes(v1, v2, plane, tri->planes)) return false;
+		if (TH_IntersectTrianglePlanes(v1, v2, plane, tri->planes)) return qfalse;
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function TH_TryEdge
 //===========================================================================
 //
@@ -927,9 +927,9 @@ int TH_TryTriangle(int verts[3])
 		} //end for
 		if (j < 3) continue;
 		//if this edge intersects with the triangle
-		if (TH_IntersectTrianglePlanes(thworld.edges[i].v[0], thworld.edges[i].v[1], &triplane, planes)) return false;
+		if (TH_IntersectTrianglePlanes(thworld.edges[i].v[0], thworld.edges[i].v[1], &triplane, planes)) return qfalse;
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function TH_TryTriangle
 //===========================================================================
 //
@@ -1017,13 +1017,13 @@ int TH_FindTetrahedron1(th_triangle_t *tri, int *triangles)
 						triangles[1] = tri2 - thworld.triangles;
 						if (!triangles[2]) triangles[2] = TH_CreateTriangle(verts1);
 						if (!triangles[3]) triangles[3] = TH_CreateTriangle(verts2);
-						return true;
+						return qtrue;
 					} //end if
 				} //end if
 			} //end if
 		} //end if
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function TH_FindTetrahedron
 //===========================================================================
 //
@@ -1088,9 +1088,9 @@ int TH_FindTetrahedron2(th_triangle_t *tri, int *triangles)
 		//add the existing triangle
 		triangles[3] = tri - thworld.triangles;
 		//
-		return true;
+		return qtrue;
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function TH_FindTetrahedron2
 //===========================================================================
 //
@@ -1223,9 +1223,9 @@ int TH_Colinear(float *v0, float *v1, float *v2)
 	// if cross product is zero point is colinear
 	if (d < 10)
 	{
-		return true;
+		return qtrue;
 	} //end if
-	return false;
+	return qfalse;
 } //end of the function TH_Colinear
 //===========================================================================
 //

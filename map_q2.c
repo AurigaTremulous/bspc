@@ -364,7 +364,7 @@ void Q2_ParseBrush (script_t *script, entity_t *mapent)
 	if (create_aas)
 	{
 		//create AAS brushes, and add brush bevels
-		AAS_CreateMapBrushes(b, mapent, true);
+		AAS_CreateMapBrushes(b, mapent, qtrue);
 		//NOTE: if we return here then duplicate plane errors occur for the non world entities
 		return;
 	} //end if
@@ -498,7 +498,7 @@ qboolean	Q2_ParseMapEntity(script_t *script)
 	mapbrush_t *b;
 	token_t token;
 
-	if (!PS_ReadToken(script, &token)) return false;
+	if (!PS_ReadToken(script, &token)) return qfalse;
 
 	if (strcmp(token.string, "{") )
 		Error ("ParseEntity: { not found");
@@ -563,7 +563,7 @@ qboolean	Q2_ParseMapEntity(script_t *script)
 	{
 		Q2_MoveBrushesToWorld (mapent);
 		mapent->numbrushes = 0;
-		return true;
+		return qtrue;
 	}
 
 	// areaportal entities move their brushes, but don't eliminate
@@ -583,10 +583,10 @@ qboolean	Q2_ParseMapEntity(script_t *script)
 		sprintf (str, "%i", c_areaportals);
 		SetKeyValue (mapent, "style", str);
 		Q2_MoveBrushesToWorld (mapent);
-		return true;
+		return qtrue;
 	}
 
-	return true;
+	return qtrue;
 }
 
 //===================================================================
@@ -890,7 +890,7 @@ void Q2_BSPBrushToMapBrush(dbrush_t *bspbrush, entity_t *mapent)
 	if (create_aas)
 	{
 		//create the AAS brushes from this brush, don't add brush bevels
-		AAS_CreateMapBrushes(b, mapent, false);
+		AAS_CreateMapBrushes(b, mapent, qfalse);
 		return;
 	} //end if
 
@@ -1032,9 +1032,9 @@ qboolean Q2_ParseBSPEntity(int entnum)
 	{
 		c_areaportals++;
 		mapent->areaportalnum = c_areaportals;
-		return true;
+		return qtrue;
 	} //end if
-	return true;
+	return qtrue;
 } //end of the function Q2_ParseBSPEntity
 //===========================================================================
 //

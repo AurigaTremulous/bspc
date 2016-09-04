@@ -95,7 +95,7 @@ byte				sin_dpop[256];
 
 char				sin_dbrushsidetextured[SIN_MAX_MAP_BRUSHSIDES];
 
-int sin_bspallocated = false;
+int sin_bspallocated = qfalse;
 int sin_allocatedbspmem = 0;
 
 void Sin_AllocMaxBSP(void)
@@ -371,11 +371,11 @@ int Sin_HintSkipBrush(sin_dbrush_t *brush)
 		{
 			if (sin_texinfo[brushside->texinfo].flags & (SURF_SKIP|SURF_HINT))
 			{
-				return true;
+				return qtrue;
 			} //end if
 		} //end if
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function Sin_HintSkipBrush
 //===========================================================================
 // fix screwed brush texture references
@@ -394,7 +394,7 @@ void Sin_FixTextureReferences(void)
 	sin_dface_t *face;
 	winding_t *w;
 
-	memset(sin_dbrushsidetextured, false, SIN_MAX_MAP_BRUSHSIDES);
+	memset(sin_dbrushsidetextured, qfalse, SIN_MAX_MAP_BRUSHSIDES);
 	//go over all the brushes
    for (i = 0; i < sin_numbrushes; i++)
    {
@@ -409,7 +409,7 @@ void Sin_FixTextureReferences(void)
 			w = Sin_BrushSideWinding(brush, brushside);
 			if (!w)
 			{
-				sin_dbrushsidetextured[brush->firstside + j] = true;
+				sin_dbrushsidetextured[brush->firstside + j] = qtrue;
 				continue;
 			} //end if
 			else
@@ -418,7 +418,7 @@ void Sin_FixTextureReferences(void)
 				if (WindingIsTiny(w))
 				{
 					FreeWinding(w);
-					sin_dbrushsidetextured[brush->firstside + j] = true;
+					sin_dbrushsidetextured[brush->firstside + j] = qtrue;
 					continue;
 				} //end if
 				else
@@ -431,14 +431,14 @@ void Sin_FixTextureReferences(void)
 						)
 					{
 						FreeWinding(w);
-						sin_dbrushsidetextured[brush->firstside + j] = true;
+						sin_dbrushsidetextured[brush->firstside + j] = qtrue;
 						continue;
 					} //end if
 				} //end else
 			} //end else
 			if (WindingArea(w) < 20)
 			{
-				sin_dbrushsidetextured[brush->firstside + j] = true;
+				sin_dbrushsidetextured[brush->firstside + j] = qtrue;
 			} //end if
 			//find a face for texturing this brush
 			for (k = 0; k < sin_numfaces; k++)
@@ -450,7 +450,7 @@ void Sin_FixTextureReferences(void)
 				if (Sin_FaceOnWinding(face, w))
 				{
 					brushside->texinfo = face->texinfo;
-					sin_dbrushsidetextured[brush->firstside + j] = true;
+					sin_dbrushsidetextured[brush->firstside + j] = qtrue;
 					break;
 				} //end if
 			} //end for
@@ -896,7 +896,7 @@ void	Sin_LoadBSPFile(char *filename, int offset, int length)
 //
 // swap everything
 //	
-	Sin_SwapBSPFile (false);
+	Sin_SwapBSPFile (qfalse);
 } //end of the function Sin_LoadBSPFile
 
 /*
@@ -940,7 +940,7 @@ void	Sin_LoadBSPFileTexinfo (char *filename)
 
 	FreeMemory(header);		// everything has been copied out
 		
-	Sin_SwapBSPFile (false);
+	Sin_SwapBSPFile (qfalse);
 } //end of the function Sin_LoadBSPFilesTexinfo
 
 
@@ -990,7 +990,7 @@ void	Sin_WriteBSPFile (char *filename)
 	header = &outheader;
 	memset (header, 0, sizeof(sin_dheader_t));
 	
-	Sin_SwapBSPFile (true);
+	Sin_SwapBSPFile (qtrue);
 
 	header->ident = LittleLong (SIN_BSPHEADER);
 	header->version = LittleLong (SIN_BSPVERSION);

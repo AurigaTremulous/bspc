@@ -138,15 +138,15 @@ qboolean	PlaneEqual(plane_t *p, vec3_t normal, vec_t dist)
 	&& fabs(p->normal[1] - normal[1]) < NORMAL_EPSILON
 	&& fabs(p->normal[2] - normal[2]) < NORMAL_EPSILON
 	&& fabs(p->dist - dist) < DIST_EPSILON )
-		return true;
+		return qtrue;
 #else
 	if (p->normal[0] == normal[0]
 		&& p->normal[1] == normal[1]
 		&& p->normal[2] == normal[2]
 		&& p->dist == dist)
-		return true;
+		return qtrue;
 #endif
-	return false;
+	return qfalse;
 } //end of the function PlaneEqual
 //===========================================================================
 //
@@ -543,7 +543,7 @@ qboolean MakeBrushWindings(mapbrush_t *ob)
 			break;
 		} //end if
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function MakeBrushWindings
 //===========================================================================
 // FIXME: currently doesn't mark all bevels
@@ -604,7 +604,7 @@ void MarkBrushBevels(mapbrush_t *brush)
 	} //end for
 } //end of the function MarkBrushBevels
 //===========================================================================
-// returns true if the map brush already exists
+// returns qtrue if the map brush already exists
 //
 // Parameter:				-
 // Returns:					-
@@ -640,9 +640,9 @@ int BrushExists(mapbrush_t *brush)
 			} //end if
 			if (s2 >= brush2->numsides) break;
 		} //end for
-		if (s1 >= brush1->numsides) return true;
+		if (s1 >= brush1->numsides) return qtrue;
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function BrushExists
 //===========================================================================
 //
@@ -664,13 +664,13 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 	{
 		if (brush->contents & (CONTENTS_WATER|CONTENTS_SLIME|CONTENTS_LAVA))
 		{
-			return true;
+			return qtrue;
 		} //end if
 	} //end if
 	//if the brush has no contents
-	if (!brush->contents) return true;
+	if (!brush->contents) return qtrue;
 	//print the leading {
-	if (fprintf(fp, " { //brush %d\n", brush->brushnum) < 0) return false;
+	if (fprintf(fp, " { //brush %d\n", brush->brushnum) < 0) return qfalse;
 	//write brush sides
 	for (sn = 0; sn < brush->numsides; sn++)
 	{
@@ -705,9 +705,9 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 			//three non-colinear points to define the plane
 			if (planenum & 1) p1 = 1;
 			else p1 = 0;
-			if (fprintf(fp,"  ( %5i %5i %5i ) ", (int)w->p[p1][0], (int)w->p[p1][1], (int)w->p[p1][2]) < 0) return false;
-			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[!p1][0], (int)w->p[!p1][1], (int)w->p[!p1][2]) < 0) return false;
-			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[2][0], (int)w->p[2][1], (int)w->p[2][2]) < 0) return false;
+			if (fprintf(fp,"  ( %5i %5i %5i ) ", (int)w->p[p1][0], (int)w->p[p1][1], (int)w->p[p1][2]) < 0) return qfalse;
+			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[!p1][0], (int)w->p[!p1][1], (int)w->p[!p1][2]) < 0) return qfalse;
+			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[2][0], (int)w->p[2][1], (int)w->p[2][2]) < 0) return qfalse;
 			//free the winding
 			FreeWinding(w);
 			//
@@ -718,19 +718,19 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 					//player clip
 					if (loadedmaptype == MAPTYPE_SIN)
 					{
-						if (fprintf(fp, "generic/misc/clip 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "generic/misc/clip 0 0 0 1 1") < 0) return qfalse;
 					} //end if
 					else if (loadedmaptype == MAPTYPE_QUAKE2)
 					{	//FIXME: don't always use e1u1
-						if (fprintf(fp, "e1u1/clip 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "e1u1/clip 0 0 0 1 1") < 0) return qfalse;
 					} //end else
 					else if (loadedmaptype == MAPTYPE_QUAKE3)
 					{
-						if (fprintf(fp, "e1u1/clip 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "e1u1/clip 0 0 0 1 1") < 0) return qfalse;
 					} //end else if
 					else
 					{
-						if (fprintf(fp, "clip 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "clip 0 0 0 1 1") < 0) return qfalse;
 					} //end else
 				} //end if
 				else if (brush->contents == CONTENTS_MONSTERCLIP)
@@ -738,20 +738,20 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 					//monster clip
 					if (loadedmaptype == MAPTYPE_SIN)
 					{
-						if (fprintf(fp, "generic/misc/monster 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "generic/misc/monster 0 0 0 1 1") < 0) return qfalse;
 					} //end if
 					else if (loadedmaptype == MAPTYPE_QUAKE2)
 					{
-						if (fprintf(fp, "e1u1/clip_mon 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "e1u1/clip_mon 0 0 0 1 1") < 0) return qfalse;
 					} //end else
 					else
 					{
-						if (fprintf(fp, "clip 0 0 0 1 1") < 0) return false;
+						if (fprintf(fp, "clip 0 0 0 1 1") < 0) return qfalse;
 					} //end else
 				} //end else
 				else
 				{
-					if (fprintf(fp, "clip 0 0 0 1 1") < 0) return false;
+					if (fprintf(fp, "clip 0 0 0 1 1") < 0) return qfalse;
 					Log_Write("brush->contents = %d\n", brush->contents);
 				} //end else
 			} //end if
@@ -759,21 +759,21 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 			{
 				if (brush->contents & CONTENTS_DUMMYFENCE)
 				{
-					if (fprintf(fp, "generic/misc/fence 0 0 0 1 1") < 0) return false;
+					if (fprintf(fp, "generic/misc/fence 0 0 0 1 1") < 0) return qfalse;
 				} //end if
 				else if (brush->contents & CONTENTS_MIST)
 				{
-					if (fprintf(fp, "generic/misc/volumetric_base 0 0 0 1 1") < 0) return false;
+					if (fprintf(fp, "generic/misc/volumetric_base 0 0 0 1 1") < 0) return qfalse;
 				} //end if
 				else //unknown so far
 				{
-					if (fprintf(fp, "generic/misc/red 0 0 0 1 1") < 0) return false;
+					if (fprintf(fp, "generic/misc/red 0 0 0 1 1") < 0) return qfalse;
 				} //end else
 			} //end if
 			else if (loadedmaptype == MAPTYPE_QUAKE3)
 			{
 				//always use the same texture
-				if (fprintf(fp, "e2u3/floor1_2 0 0 0 1 1 1 0 0") < 0) return false;
+				if (fprintf(fp, "e2u3/floor1_2 0 0 0 1 1 1 0 0") < 0) return qfalse;
 			} //end else if
 			else
 			{
@@ -810,36 +810,36 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 				if (rotate < 0) rotate += 360;
 				if (rotate >= 360) rotate -= 360;
 				//write the texture info
-				if (fprintf(fp, "%s %d %d %d", ti->texture, shift[0], shift[1], rotate) < 0) return false;
+				if (fprintf(fp, "%s %d %d %d", ti->texture, shift[0], shift[1], rotate) < 0) return qfalse;
 				if (fabs(scale[0] - ((int) scale[0])) < 0.001)
 				{
-					if (fprintf(fp, " %d", (int) scale[0]) < 0) return false;
+					if (fprintf(fp, " %d", (int) scale[0]) < 0) return qfalse;
 				} //end if
 				else
 				{
-					if (fprintf(fp, " %4f", scale[0]) < 0) return false;
+					if (fprintf(fp, " %4f", scale[0]) < 0) return qfalse;
 				} //end if
 				if (fabs(scale[1] - ((int) scale[1])) < 0.001)
 				{
-					if (fprintf(fp, " %d", (int) scale[1]) < 0) return false;
+					if (fprintf(fp, " %d", (int) scale[1]) < 0) return qfalse;
 				} //end if
 				else
 				{
-					if (fprintf(fp, " %4f", scale[1]) < 0) return false;
+					if (fprintf(fp, " %4f", scale[1]) < 0) return qfalse;
 				} //end else
 				//write the extra brush side info
 				if (loadedmaptype == MAPTYPE_QUAKE2)
 				{
-					if (fprintf(fp, " %d %d %d", s->contents, ti->flags, ti->value) < 0) return false;
+					if (fprintf(fp, " %d %d %d", s->contents, ti->flags, ti->value) < 0) return qfalse;
 				} //end if
 				//*/
 			} //end else
-			if (fprintf(fp, "\n") < 0) return false;
+			if (fprintf(fp, "\n") < 0) return qfalse;
 		} //end if
 	} //end if
-	if (fprintf(fp, " }\n") < 0) return false;
+	if (fprintf(fp, " }\n") < 0) return qfalse;
 	c_writtenbrushes++;
-	return true;
+	return qtrue;
 } //end of the function WriteMapBrush
 //===========================================================================
 //
@@ -854,7 +854,7 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 	int i, s;
 	winding_t *w;
 
-	if (fprintf(fp, " {\n") < 0) return false;
+	if (fprintf(fp, " {\n") < 0) return qfalse;
 	//
 	for (i = 0; i < 3; i++)
 	{
@@ -867,9 +867,9 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 			//
 			w = BaseWindingForPlane(normal, dist);
 			//three non-colinear points to define the plane
-			if (fprintf(fp,"  ( %5i %5i %5i ) ", (int)w->p[0][0], (int)w->p[0][1], (int)w->p[0][2]) < 0) return false;
-			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[1][0], (int)w->p[1][1], (int)w->p[1][2]) < 0) return false;
-			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[2][0], (int)w->p[2][1], (int)w->p[2][2]) < 0) return false;
+			if (fprintf(fp,"  ( %5i %5i %5i ) ", (int)w->p[0][0], (int)w->p[0][1], (int)w->p[0][2]) < 0) return qfalse;
+			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[1][0], (int)w->p[1][1], (int)w->p[1][2]) < 0) return qfalse;
+			if (fprintf(fp,"( %5i %5i %5i ) ", (int)w->p[2][0], (int)w->p[2][1], (int)w->p[2][2]) < 0) return qfalse;
 			//free the winding
 			FreeWinding(w);
 			//write origin texture:
@@ -877,27 +877,27 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 			// SURF_NODRAW = 128
 			if (loadedmaptype == MAPTYPE_SIN)
 			{
-				if (fprintf(fp, "generic/misc/origin 0 0 0 1 1") < 0) return false;
+				if (fprintf(fp, "generic/misc/origin 0 0 0 1 1") < 0) return qfalse;
 			} //end if
 			else if (loadedmaptype == MAPTYPE_HALFLIFE)
 			{
-				if (fprintf(fp, "origin 0 0 0 1 1") < 0) return false;
+				if (fprintf(fp, "origin 0 0 0 1 1") < 0) return qfalse;
 			} //end if
 			else
 			{
-				if (fprintf(fp, "e1u1/origin 0 0 0 1 1") < 0) return false;
+				if (fprintf(fp, "e1u1/origin 0 0 0 1 1") < 0) return qfalse;
 			} //end else
 			//Quake2 extra brush side info
 			if (loadedmaptype == MAPTYPE_QUAKE2)
 			{
 				//if (fprintf(fp, " 16777216 128 0") < 0) return false;
 			} //end if
-			if (fprintf(fp, "\n") < 0) return false;
+			if (fprintf(fp, "\n") < 0) return qfalse;
 		} //end for
 	} //end for
-	if (fprintf(fp, " }\n") < 0) return false;
+	if (fprintf(fp, " }\n") < 0) return qfalse;
 	c_writtenbrushes++;
-	return true;
+	return qtrue;
 } //end of the function WriteOriginBrush
 //===========================================================================
 //
@@ -964,14 +964,14 @@ qboolean WriteMapFileSafe(FILE *fp)
 			"// owner, you may be violating copyright law and be subject to payment of\n"
 			"// damages and other remedies. If you are uncertain about your rights, contact\n"
 			"// your legal advisor.\n"
-			"//\n") < 0) return false;
+			"//\n") < 0) return qfalse;
 	if (loadedmaptype == MAPTYPE_SIN)
 	{
 		if (fprintf(fp,
-						"// generic/misc/red is used for unknown textures\n") < 0) return false;
+						"// generic/misc/red is used for unknown textures\n") < 0) return qfalse;
 	} //end if
 	if (fprintf(fp,"//\n"
-						"//=====================================================\n") < 0) return false;
+						"//=====================================================\n") < 0) return qfalse;
 	//write out all the entities
 	for (i = 0; i < num_entities; i++)
 	{
@@ -980,7 +980,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 		{
 			continue;
 		} //end if
-		if (fprintf(fp, "{\n") < 0) return false;
+		if (fprintf(fp, "{\n") < 0) return qfalse;
 		//
 		if (loadedmaptype == MAPTYPE_QUAKE3)
 		{
@@ -1006,7 +1006,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 			//don't write BSP model numbers
 			if (mapent->modelnum >= 0 && !strcmp(key, "model") && value[0] == '*') continue;
 			//
-			if (fprintf(fp, " \"%s\" \"%s\"\n", key, value) < 0) return false;
+			if (fprintf(fp, " \"%s\" \"%s\"\n", key, value) < 0) return qfalse;
 		} //end for
 		//
 		if (ValueForKey(mapent, "origin")) GetVectorForKey(mapent, "origin", mapent->origin);
@@ -1015,12 +1015,12 @@ qboolean WriteMapFileSafe(FILE *fp)
 		if (!strcmp("func_areaportal", ValueForKey(mapent, "classname")))
 		{
 			brush = GetAreaPortalBrush(mapent);
-			if (!brush) return false;
-			if (!WriteMapBrush(fp, brush, mapent->origin)) return false;
+			if (!brush) return qfalse;
+			if (!WriteMapBrush(fp, brush, mapent->origin)) return qfalse;
 		} //end if
 		else
 		{
-			entitybrushes = false;
+			entitybrushes = qfalse;
 			//write brushes
 			for (bn = 0; bn < nummapbrushes; bn++)
 			{
@@ -1039,9 +1039,9 @@ qboolean WriteMapFileSafe(FILE *fp)
 						} //end if
 						else //*/
 						{
-							if (!WriteMapBrush(fp, brush, mapent->origin)) return false;
+							if (!WriteMapBrush(fp, brush, mapent->origin)) return qfalse;
 						} //end else
-						entitybrushes = true;
+						entitybrushes = qtrue;
 					} //end if
 				} //end if
 			} //end for
@@ -1051,14 +1051,14 @@ qboolean WriteMapFileSafe(FILE *fp)
 				//if the entity has an origin set
 				if (mapent->origin[0] || mapent->origin[1] || mapent->origin[2])
 				{
-					if (!WriteOriginBrush(fp, mapent->origin)) return false;
+					if (!WriteOriginBrush(fp, mapent->origin)) return qfalse;
 				} //end if
 			} //end if
 		} //end else
-		if (fprintf(fp, "}\n") < 0) return false;
+		if (fprintf(fp, "}\n") < 0) return qfalse;
 	} //end for
-	if (fprintf(fp, "//total of %d brushes\n", c_writtenbrushes) < 0) return false;
-	return true;
+	if (fprintf(fp, "//total of %d brushes\n", c_writtenbrushes) < 0) return qfalse;
+	return qtrue;
 } //end of the function WriteMapFileSafe
 //===========================================================================
 //
@@ -1210,7 +1210,7 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 
 	if (ReadQuakeFile(qf, &idheader, 0, sizeof(idheader_t)) != sizeof(idheader_t))
 	{
-		return false;
+		return qfalse;
 	} //end if
 
 	idheader.ident = LittleLong(idheader.ident);
@@ -1277,8 +1277,8 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 										((idheader.ident >> 8) & 0xFF),
 										((idheader.ident >> 16) & 0xFF),
 										((idheader.ident >> 24) & 0xFF), idheader.version);
-		return false;
+		return qfalse;
 	} //end if
 	//
-	return true;
+	return qtrue;
 } //end of the function LoadMapFromBSP

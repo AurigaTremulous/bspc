@@ -196,7 +196,7 @@ void AAS_FreeTmpNode(tmp_node_t *tmpnode)
 	tmpaasworld.numnodes--;
 } //end of the function AAS_FreeTmpNode
 //===========================================================================
-// returns true if the face is a gap from the given side
+// returns qtrue if the face is a gap from the given side
 //
 // Parameter:				-
 // Returns:					-
@@ -215,7 +215,7 @@ int AAS_GapFace(tmp_face_t *tmpface, int side)
 	return (DotProduct(invgravity, mapplanes[tmpface->planenum ^ side].normal) > cfg.phys_maxsteepness);
 } //end of the function AAS_GapFace
 //===========================================================================
-// returns true if the face is a ground face
+// returns qtrue if the face is a ground face
 //
 // Parameter:				-
 // Returns:					-

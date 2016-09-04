@@ -65,8 +65,6 @@ typedef enum {qfalse, qtrue}	qboolean;
 #include "l_memory.h"
 #include "l_log.h"
 
-#define qtrue	true
-#define qfalse	false
 #endif //MEQCC
 
 #ifdef BSPC
@@ -75,8 +73,6 @@ typedef enum {qfalse, qtrue}	qboolean;
 #include "l_log.h"
 #include "l_mem.h"
 
-#define qtrue	true
-#define qfalse	false
 #endif //BSPC
 
 

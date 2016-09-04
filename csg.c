@@ -412,8 +412,8 @@ bspbrush_t *IntersectBrush (bspbrush_t *a, bspbrush_t *b)
 	return in;
 } //end of the function IntersectBrush
 //===========================================================================
-// Returns true if the two brushes definately do not intersect.
-// There will be false negatives for some non-axial combinations.
+// Returns qtrue if the two brushes definately do not intersect.
+// There will be qfalse negatives for some non-axial combinations.
 //
 // Parameter:				-
 // Returns:					-
@@ -427,7 +427,7 @@ qboolean BrushesDisjoint (bspbrush_t *a, bspbrush_t *b)
 	for (i=0 ; i<3 ; i++)
 		if (a->mins[i] >= b->maxs[i]
 		|| a->maxs[i] <= b->mins[i])
-			return true;	// bounding boxes don't overlap
+			return qtrue;	// bounding boxes don't overlap
 
 	// check for opposing planes
 	for (i=0 ; i<a->numsides ; i++)
@@ -436,11 +436,11 @@ qboolean BrushesDisjoint (bspbrush_t *a, bspbrush_t *b)
 		{
 			if (a->sides[i].planenum ==
 			(b->sides[j].planenum^1) )
-				return true;	// opposite planes, so not touching
+				return qtrue;	// opposite planes, so not touching
 		}
 	}
 
-	return false;	// might intersect
+	return qfalse;	// might intersect
 } //end of the function BrushesDisjoint
 //===========================================================================
 // Returns a content word for the intersection of two brushes.
@@ -690,7 +690,7 @@ void WriteBrushMap(char *name, bspbrush_t *list)
 } //end of the function WriteBrushMap
 */
 //===========================================================================
-// Returns true if b1 is allowed to bite b2
+// Returns qtrue if b1 is allowed to bite b2
 //
 // Parameter:				-
 // Returns:					-
@@ -703,14 +703,14 @@ qboolean BrushGE (bspbrush_t *b1, bspbrush_t *b2)
 	{
 		if (b1->original->expansionbbox != b2->original->expansionbbox)
 		{
-			return false;
+			return qfalse;
 		} //end if
 		//never have something else bite a ladder brush
 		//never have a ladder brush bite something else
 		if ( (b1->original->contents & CONTENTS_LADDER)
 			&& !(b2->original->contents & CONTENTS_LADDER))
 		{ 
-			return false;
+			return qfalse;
 		} //end if
 	} //end if
 #endif //ME
@@ -718,13 +718,13 @@ qboolean BrushGE (bspbrush_t *b1, bspbrush_t *b2)
 	if ( (b1->original->contents & CONTENTS_DETAIL) 
 		&& !(b2->original->contents & CONTENTS_DETAIL) )
 	{
-		return false;
+		return qfalse;
 	} //end if
 	if (b1->original->contents & CONTENTS_SOLID)
 	{
-		return true;
+		return qtrue;
 	} //end if
-	return false;
+	return qfalse;
 } //end of the function BrushGE
 //===========================================================================
 // Carves any intersecting solid brushes into the minimum number
@@ -751,7 +751,7 @@ bspbrush_t *ChopBrushes (bspbrush_t *head)
 
 #if 0
 	if (startbrush == 0)
-		WriteBrushList ("before.gl", head, false);
+		WriteBrushList ("before.gl", head, qfalse);
 #endif
 	keep = NULL;
 
@@ -859,7 +859,7 @@ newlist:
 
 #if 0
 	{
-		WriteBrushList ("after.gl", keep, false);
+		WriteBrushList ("after.gl", keep, qfalse);
 		WriteBrushMap ("after.map", keep);
 	}
 #endif
@@ -898,7 +898,7 @@ bspbrush_t *InitialBrushList (bspbrush_t *list)
 		for (i=0 ; i<b->numsides ; i++)
 		{
 			newb->sides[i].original = &b->sides[i];
-//			newb->sides[i].visible = true;
+//			newb->sides[i].visible = qtrue;
 			b->sides[i].flags &= ~SFL_VISIBLE;
 		}
 	}
@@ -931,7 +931,7 @@ bspbrush_t *OptimizedBrushList (bspbrush_t *list)
 		out = newb;
 	} //end for
 
-//	WriteBrushList ("vis.gl", out, true);
+//	WriteBrushList ("vis.gl", out, qtrue);
 	return out;
 } //end of the function OptimizeBrushList
 //===========================================================================

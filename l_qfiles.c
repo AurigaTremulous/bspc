@@ -162,7 +162,7 @@ int FileFilter(char *filter, char *filename, int casesensitive)
 			if (strlen(buf))
 			{
 				ptr = StringContains(filename, buf, casesensitive);
-				if (!ptr) return false;
+				if (!ptr) return qfalse;
 				filename = ptr + strlen(buf);
 			} //end if
 		} //end if
@@ -178,7 +178,7 @@ int FileFilter(char *filter, char *filename, int casesensitive)
 		else if (*filter == '[')
 		{
 			filter++;
-			found = false;
+			found = qfalse;
 			while(*filter && !found)
 			{
 				if (*filter == ']' && *(filter+1) != ']') break;
@@ -186,12 +186,12 @@ int FileFilter(char *filter, char *filename, int casesensitive)
 				{
 					if (casesensitive)
 					{
-						if (*filename >= *filter && *filename <= *(filter+2)) found = true;
+						if (*filename >= *filter && *filename <= *(filter+2)) found = qtrue;
 					} //end if
 					else
 					{
 						if (toupper(*filename) >= toupper(*filter) &&
-							toupper(*filename) <= toupper(*(filter+2))) found = true;
+							toupper(*filename) <= toupper(*(filter+2))) found = qtrue;
 					} //end else
 					filter += 3;
 				} //end if
@@ -199,16 +199,16 @@ int FileFilter(char *filter, char *filename, int casesensitive)
 				{
 					if (casesensitive)
 					{
-						if (*filter == *filename) found = true;
+						if (*filter == *filename) found = qtrue;
 					} //end if
 					else
 					{
-						if (toupper(*filter) == toupper(*filename)) found = true;
+						if (toupper(*filter) == toupper(*filename)) found = qtrue;
 					} //end else
 					filter++;
 				} //end else
 			} //end while
-			if (!found) return false;
+			if (!found) return qfalse;
 			while(*filter)
 			{
 				if (*filter == ']' && *(filter+1) != ']') break;
@@ -221,17 +221,17 @@ int FileFilter(char *filter, char *filename, int casesensitive)
 		{
 			if (casesensitive)
 			{
-				if (*filter != *filename) return false;
+				if (*filter != *filename) return qfalse;
 			} //end if
 			else
 			{
-				if (toupper(*filter) != toupper(*filename)) return false;
+				if (toupper(*filter) != toupper(*filename)) return qfalse;
 			} //end else
 			filter++;
 			filename++;
 		} //end else
 	} //end while
-	return true;
+	return qtrue;
 } //end of the function FileFilter
 //===========================================================================
 //
@@ -264,7 +264,7 @@ quakefile_t *FindQuakeFilesInZip(char *zipfile, char *filter)
 		if (err != UNZ_OK) break;
 
 		ConvertPath(filename_inzip);
-		if (FileFilter(filter, filename_inzip, false))
+		if (FileFilter(filter, filename_inzip, qfalse))
 		{
 			qf = malloc(sizeof(quakefile_t));
 			if (!qf) Error("out of memory");
@@ -272,7 +272,7 @@ quakefile_t *FindQuakeFilesInZip(char *zipfile, char *filter)
 			strcpy(qf->pakfile, zipfile);
 			strcpy(qf->filename, zipfile);
 			strcpy(qf->origname, filename_inzip);
-			qf->zipfile = true;
+			qf->zipfile = qtrue;
 			//memcpy( &buildBuffer[i].zipfileinfo, (unz_s*)uf, sizeof(unz_s));
 			memcpy(&qf->zipinfo, (unz_s*)uf, sizeof(unz_s));
 			qf->offset = 0;
@@ -377,7 +377,7 @@ quakefile_t *FindQuakeFilesInPak(char *pakfile, char *filter)
 	for (i = 0; i < numpackdirs; i++)
 	{
 		ConvertPath(packfiles[i].name);
-		if (FileFilter(filter, packfiles[i].name, false))
+		if (FileFilter(filter, packfiles[i].name, qfalse))
 		{
 			qf = malloc(sizeof(quakefile_t));
 			if (!qf) Error("out of memory");
@@ -385,7 +385,7 @@ quakefile_t *FindQuakeFilesInPak(char *pakfile, char *filter)
 			strcpy(qf->pakfile, pakfile);
 			strcpy(qf->filename, pakfile);
 			strcpy(qf->origname, packfiles[i].name);
-			qf->zipfile = false;
+			qf->zipfile = qfalse;
 			qf->offset = packfiles[i].filepos;
 			qf->length = packfiles[i].filelen;
 			qf->type = QuakeFileType(packfiles[i].name);
@@ -456,9 +456,9 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 			else
 			{
 #if defined(WIN32)|defined(_WIN32)
-				str = StringContains(pakfile, ".pk3", false);
+				str = StringContains(pakfile, ".pk3", qfalse);
 #else
-				str = StringContains(pakfile, ".pk3", true);
+				str = StringContains(pakfile, ".pk3", qtrue);
 #endif
 				if (str && str == pakfile + strlen(pakfile) - strlen(".pk3"))
 				{
@@ -547,8 +547,8 @@ quakefile_t *FindQuakeFiles(char *filter)
 	ConvertPath(newfilter);
 	strcpy(pakfilter, newfilter);
 
-	str = StringContains(pakfilter, ".pak", false);
-	if (!str) str = StringContains(pakfilter, ".pk3", false);
+	str = StringContains(pakfilter, ".pak", qfalse);
+	if (!str) str = StringContains(pakfilter, ".pk3", qfalse);
 
 	if (str)
 	{

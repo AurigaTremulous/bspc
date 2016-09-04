@@ -117,7 +117,7 @@ int ClusterContents (node_t *node)
 } //end of the function ClusterContents
 
 //===========================================================================
-// Returns true if the portal is empty or translucent, allowing
+// Returns qtrue if the portal is empty or translucent, allowing
 // the PVS calculation to see through it.
 // The nodes on either side of the portal may actually be clusters,
 // not leaves, so all contents should be ored together
@@ -131,13 +131,13 @@ qboolean Portal_VisFlood (portal_t *p)
 	int		c1, c2;
 
 	if (!p->onnode)
-		return false;	// to global outsideleaf
+		return qfalse;	// to global outsideleaf
 
 	c1 = ClusterContents(p->nodes[0]);
 	c2 = ClusterContents(p->nodes[1]);
 
 	if (!VisibleContents (c1^c2))
-		return true;
+		return qtrue;
 
 	if (c1 & (CONTENTS_Q2TRANSLUCENT|CONTENTS_DETAIL))
 		c1 = 0;
@@ -145,14 +145,14 @@ qboolean Portal_VisFlood (portal_t *p)
 		c2 = 0;
 
 	if ( (c1|c2) & CONTENTS_SOLID )
-		return false;		// can't see through solid
+		return qfalse;		// can't see through solid
 
 	if (! (c1 ^ c2))
-		return true;		// identical on both sides
+		return qtrue;		// identical on both sides
 
 	if (!VisibleContents (c1^c2))
-		return true;
-	return false;
+		return qtrue;
+	return qfalse;
 } //end of the function Portal_VisFlood
 //===========================================================================
 // The entity flood determines which areas are
@@ -172,10 +172,10 @@ qboolean Portal_EntityFlood (portal_t *p, int s)
 	// can never cross to a solid 
 	if ( (p->nodes[0]->contents & CONTENTS_SOLID)
 	|| (p->nodes[1]->contents & CONTENTS_SOLID) )
-		return false;
+		return qfalse;
 
 	// can flood through everything else
-	return true;
+	return qtrue;
 }
 
 
@@ -818,9 +818,9 @@ qboolean PlaceOccupant (node_t *headnode, vec3_t origin, entity_t *occupant)
 //	if (node->contents == CONTENTS_SOLID)
 	//ME: replaced because in LeafNode in brushbsp.c
 	//    some nodes have contents solid with other contents
-	if (node->contents & CONTENTS_SOLID) return false;
+	if (node->contents & CONTENTS_SOLID) return qfalse;
 	//if the node is already occupied
-	if (node->occupied) return false;
+	if (node->occupied) return qfalse;
 
 	//place the occupant in the first leaf
 	node->occupant = occupant;
@@ -831,7 +831,7 @@ qboolean PlaceOccupant (node_t *headnode, vec3_t origin, entity_t *occupant)
 //	Log_Print("\n");
 	FloodPortals(node);
 
-	return true;
+	return qtrue;
 } //end of the function PlaceOccupant
 //===========================================================================
 // Marks all nodes that can be reached by entites
@@ -851,7 +851,7 @@ qboolean FloodEntities (tree_t *tree)
 
 	headnode = tree->headnode;
 	Log_Print("------ FloodEntities -------\n");
-	inside = false;
+	inside = qfalse;
 	tree->outside_node.occupied = 0;
 
 	//start at entity 1 not the world ( = 0)
@@ -876,7 +876,7 @@ qboolean FloodEntities (tree_t *tree)
 					origin[1] += y;
 					if (PlaceOccupant(headnode, origin, &entities[i]))
 					{
-						inside = true;
+						inside = qtrue;
 						x = 999; //stop for this info_player_start
 						break;
 					} //end if
@@ -889,7 +889,7 @@ qboolean FloodEntities (tree_t *tree)
 		{
 			if (PlaceOccupant(headnode, origin, &entities[i]))
 			{
-				inside = true;
+				inside = qtrue;
 			} //end if
 		} //end else
 	} //end for
@@ -1231,7 +1231,7 @@ gotit:
 	if (!bestside)
 		Log_Print("WARNING: side not found for portal\n");
 
-	p->sidefound = true;
+	p->sidefound = qtrue;
 	p->side = bestside;
 } //end of the function FindPortalSide
 //===========================================================================

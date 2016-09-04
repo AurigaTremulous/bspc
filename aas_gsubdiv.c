@@ -137,7 +137,7 @@ int AAS_TestSplitPlane(tmp_area_t *tmparea, vec3_t normal, float dist,
 	planenum = FindFloatPlane(normal, dist);
 
 	w = AAS_SplitWinding(tmparea, planenum);
-	if (!w) return false;
+	if (!w) return qfalse;
 	FreeWinding(w);
 	//
 	for (face = tmparea->tmpfaces; face; face = face->next[side])
@@ -148,7 +148,7 @@ int AAS_TestSplitPlane(tmp_area_t *tmparea, vec3_t normal, float dist,
 		if ((face->planenum & ~1) == (planenum & ~1))
 		{
 			Log_Print("AAS_TestSplitPlane: tried face plane as splitter\n");
-			return false;
+			return qfalse;
 		} //end if
 		w = face->winding;
 		//reset distance at front and back side of plane
@@ -182,7 +182,7 @@ int AAS_TestSplitPlane(tmp_area_t *tmparea, vec3_t normal, float dist,
 			} //end if
 		} //end if
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function AAS_TestSplitPlane
 //===========================================================================
 //
@@ -294,7 +294,7 @@ void AAS_SplitArea(tmp_area_t *tmparea, int planenum, tmp_area_t **frontarea, tm
 	if (!(*frontarea)->tmpfaces) Log_Print("AAS_SplitArea: front area without faces\n");
 	if (!(*backarea)->tmpfaces) Log_Print("AAS_SplitArea: back area without faces\n");
 
-	tmparea->invalid = true;
+	tmparea->invalid = qtrue;
 /*
 #ifdef AW_DEBUG
 	for (i = 0, face = frontarea->tmpfaces; face; face = face->next[side])
@@ -337,7 +337,7 @@ int AAS_FindBestAreaSplitPlane(tmp_area_t *tmparea, vec3_t normal, float *dist)
 	VectorCopy(cfg.phys_gravitydirection, invgravity);
 	VectorInverse(invgravity);
 
-	foundsplitter = false;
+	foundsplitter = qfalse;
 	bestvalue = -999999;
 	bestepsilonfaces = 0;
 	//
@@ -398,7 +398,7 @@ int AAS_FindBestAreaSplitPlane(tmp_area_t *tmparea, vec3_t normal, float *dist)
 				*dist = tmpdist;
 				bestvalue = value;
 				bestepsilonfaces = epsilonfaces;
-				foundsplitter = true;
+				foundsplitter = qtrue;
 			} //end if
 		} //end for
 	} //end for
@@ -540,8 +540,8 @@ tmp_node_t *AAS_LadderSubdivideArea_r(tmp_node_t *tmpnode)
 	//must be possible to stand in the area
 	if (!(tmparea->presencetype & PRESENCE_NORMAL)) return tmpnode;
 	//
-	foundladderface = false;
-	foundgroundface = false;
+	foundladderface = qfalse;
+	foundgroundface = qfalse;
 	//
 	for (face1 = tmparea->tmpfaces; face1; face1 = face1->next[side1])
 	{
@@ -554,7 +554,7 @@ tmp_node_t *AAS_LadderSubdivideArea_r(tmp_node_t *tmpnode)
 			//the ladder face plane should be pretty much vertical
 			if (DotProduct(plane->normal, normal) > -0.1)
 			{
-				foundladderface = true;
+				foundladderface = qtrue;
 				//find lowest point
 				for (i = 0; i < face1->winding->numpoints; i++)
 				{
@@ -567,7 +567,7 @@ tmp_node_t *AAS_LadderSubdivideArea_r(tmp_node_t *tmpnode)
 		} //end if
 		else if (face1->faceflags & FACE_GROUND)
 		{
-			foundgroundface = true;
+			foundgroundface = qtrue;
 		} //end else if
 	} //end for
 	//

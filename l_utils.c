@@ -123,7 +123,7 @@ qboolean FindFileInPak(char *pakfile, char *filename, foundfile_t *file)
 	fp = fopen(pakfile, "rb");
 	if (!fp)
 	{
-		return false;
+		return qfalse;
 	} //end if
 	//read pak header, check for valid pak id and seek to the dir entries
 	if ((fread(&packheader, 1, sizeof(dpackheader_t), fp) != sizeof(dpackheader_t))
@@ -132,7 +132,7 @@ qboolean FindFileInPak(char *pakfile, char *filename, foundfile_t *file)
 		)
 	{
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//number of dir entries in the pak file
 	numdirs = LittleLong(packheader.dirlen) / sizeof(dpackfile_t);
@@ -142,7 +142,7 @@ qboolean FindFileInPak(char *pakfile, char *filename, foundfile_t *file)
 	{
 		fclose(fp);
 		FreeMemory(packfiles);
-		return false;
+		return qfalse;
 	} //end if
 	fclose(fp);
 	//
@@ -160,11 +160,11 @@ qboolean FindFileInPak(char *pakfile, char *filename, foundfile_t *file)
 			file->offset = LittleLong(packfiles[i].filepos);
 			file->length = LittleLong(packfiles[i].filelen);
 			FreeMemory(packfiles);
-			return true;
+			return qtrue;
 		} //end if
 	} //end for
 	FreeMemory(packfiles);
-	return false;
+	return qfalse;
 } //end of the function FindFileInPak
 //===========================================================================
 // find a Quake2 file
@@ -209,7 +209,7 @@ qboolean FindQuakeFile2(char *basedir, char *gamedir, char *filename, foundfile_
 			strcpy(file->filename, filedir);
 			file->length = 0;
 			file->offset = 0;
-			return true;
+			return qtrue;
 		} //end if
 		//check if the file is in a pak?.pak
 		for (i = 0; i < 10; i++)
@@ -229,13 +229,13 @@ qboolean FindQuakeFile2(char *basedir, char *gamedir, char *filename, foundfile_
 			if (!access(filedir, 0x04))
 			{
 				Log_Write("searching %s in %s", filename, filedir);
-				if (FindFileInPak(filedir, filename, file)) return true;
+				if (FindFileInPak(filedir, filename, file)) return qtrue;
 			} //end if
 		} //end for
 	} //end for
 	file->offset = 0;
 	file->length = 0;
-	return false;
+	return qfalse;
 } //end of the function FindQuakeFile2
 //===========================================================================
 //

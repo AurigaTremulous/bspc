@@ -309,6 +309,10 @@ extern	int c_areaportals;
 extern	int c_clipbrushes;
 extern	int c_squattbrushes;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //finds a float plane for the given normal and distance
 int FindFloatPlane(vec3_t normal, vec_t dist);
 //returns the plane type for the given normal
@@ -494,3 +498,8 @@ void Tree_Print_r(node_t *node, int depth);
 void Tree_FreePortals_r(node_t *node);
 void Tree_PruneNodes_r(node_t *node);
 void Tree_PruneNodes(node_t *node);
+
+#ifdef __cplusplus
+}
+#endif
+

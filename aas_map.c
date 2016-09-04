@@ -395,7 +395,7 @@ qboolean AAS_MakeBrushWindings(mapbrush_t *ob)
 			break;
 		} //end if
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function AAS_MakeBrushWindings
 //===========================================================================
 //
@@ -454,7 +454,7 @@ int AAS_AlwaysTriggered_r(char *targetname)
 	int i;
 
 	if (!strlen(targetname)) {
-		return false;
+		return qfalse;
 	}
 	//
 	for (i = 0; i < num_entities; i++) {
@@ -464,22 +464,22 @@ int AAS_AlwaysTriggered_r(char *targetname)
 			if (!(atoi(ValueForKey(&entities[i], "spawnflags")) & SPAWNFLAG_NOT_DEATHMATCH)) {
 				// if it is a trigger_always entity
 				if (!strcmp("trigger_always", ValueForKey(&entities[i], "classname"))) {
-					return true;
+					return qtrue;
 				}
 				// check for possible trigger_always entities activating this entity
 				if ( mark_entities[i] ) {
 					Warning( "entity %d, classname %s has recursive targetname %s\n", i,
 										ValueForKey(&entities[i], "classname"), targetname );
-					return false;
+					return qfalse;
 				}
-				mark_entities[i] = true;
+				mark_entities[i] = qtrue;
 				if ( AAS_AlwaysTriggered_r(ValueForKey(&entities[i], "targetname")) ) {
-					return true;
+					return qtrue;
 				}
 			}
 		}
 	}
-	return false;
+	return qfalse;
 }
 
 int AAS_AlwaysTriggered(char *targetname) {
@@ -500,7 +500,7 @@ int AAS_ValidEntity(entity_t *mapent)
 	//all world brushes are used for AAS
 	if (mapent == &entities[0])
 	{
-		return true;
+		return qtrue;
 	} //end if
 	//some of the func_wall brushes are also used for AAS
 	else if (!strcmp("func_wall", ValueForKey(mapent, "classname")))
@@ -510,7 +510,7 @@ int AAS_ValidEntity(entity_t *mapent)
 		if (!(atoi(ValueForKey(mapent, "spawnflags")) & SPAWNFLAG_NOT_DEATHMATCH))
 		{
 			//Log_Print("func_wall USED in deathmatch mode %d\n", atoi(ValueForKey(mapent, "spawnflags")));
-			return true;
+			return qtrue;
 		} //end if
 	} //end else if
 	else if (!strcmp("func_door_rotating", ValueForKey(mapent, "classname")))
@@ -522,18 +522,18 @@ int AAS_ValidEntity(entity_t *mapent)
 			if (AAS_AlwaysTriggered(ValueForKey(mapent, "targetname")))
 			{
 				//Log_Print("found func_door_rotating in deathmatch\ntargetname %s\n", ValueForKey(mapent, "targetname"));
-				return true;
+				return qtrue;
 			} //end if
 		} //end if
 	} //end else if
 	else if (!strcmp("trigger_hurt", ValueForKey(mapent, "classname")))
 	{
 		//"dmg" is the damage, for instance: "dmg" "666"
-		return true;
+		return qtrue;
 	} //end else if
 	else if (!strcmp("trigger_push", ValueForKey(mapent, "classname")))
 	{
-		return true;
+		return qtrue;
 	} //end else if
 	else if (!strcmp("trigger_multiple", ValueForKey(mapent, "classname")))
 	{
@@ -546,25 +546,25 @@ int AAS_ValidEntity(entity_t *mapent)
 			{
 				if (!strcmp("target_teleporter", ValueForKey(&entities[i], "classname")))
 				{
-					return true;
+					return qtrue;
 				} //end if
 			} //end if
 		} //end for
 	} //end else if
 	else if (!strcmp("trigger_teleport", ValueForKey(mapent, "classname")))
 	{
-		return true;
+		return qtrue;
 	} //end else if
 	else if (!strcmp("func_static", ValueForKey(mapent, "classname")))
 	{
 		//FIXME: easy/medium/hard/deathmatch specific?
-		return true;
+		return qtrue;
 	} //end else if
 	else if (!strcmp("func_door", ValueForKey(mapent, "classname")))
 	{
-		return true;
+		return qtrue;
 	} //end else if
-	return false;
+	return qfalse;
 } //end of the function AAS_ValidEntity
 //===========================================================================
 //

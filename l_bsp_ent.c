@@ -89,7 +89,7 @@ qboolean	ParseEntity(script_t *script)
 	token_t token;
 
 	if (!PS_ReadToken(script, &token))
-		return false;
+		return qfalse;
 
 	if (strcmp(token.string, "{"))
 		Error ("ParseEntity: { not found");
@@ -112,7 +112,7 @@ qboolean	ParseEntity(script_t *script)
 		mapent->epairs = e;
 	} while (1);
 	
-	return true;
+	return qtrue;
 } //end of the function ParseEntity
 
 void PrintEntity (entity_t *ent)

@@ -70,9 +70,6 @@ typedef enum {qfalse, qtrue}	qboolean;
 #include "l_script.h"
 #include "l_precomp.h"
 #include "l_log.h"
-
-#define qtrue	true
-#define qfalse	false
 #endif //MEQCC
 
 #ifdef BSPC
@@ -82,8 +79,6 @@ typedef enum {qfalse, qtrue}	qboolean;
 #include "l_mem.h"
 #include "l_precomp.h"
 
-#define qtrue	true
-#define qfalse	false
 #define Q_stricmp	stricmp
 
 #endif //BSPC

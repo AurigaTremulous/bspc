@@ -47,9 +47,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
-#ifndef __cplusplus
-typedef enum {false, true} qboolean;
-#endif
+typedef enum {qfalse, qtrue} qboolean;
 typedef unsigned char byte;
 #endif
 

@@ -184,7 +184,7 @@ void AAS_DumpAASData(void)
 	if (aasworld.reachability) FreeMemory(aasworld.reachability);
 	aasworld.reachability = NULL;
 	*/
-	aasworld.loaded = false;
+	aasworld.loaded = qfalse;
 } //end of the function AAS_DumpAASData
 //===========================================================================
 // allocate memory and read a lump of a AAS file
@@ -256,21 +256,21 @@ qboolean AAS_LoadAASFile(char *filename, int fpoffset, int fplength)
 	if (!fp)
 	{
 		AAS_Error("can't open %s\n", filename);
-		return false;
+		return qfalse;
 	} //end if
 	//seek to the correct position (in the pak file)
 	if (fseek(fp, fpoffset, SEEK_SET))
 	{
 		AAS_Error("can't seek to file %s\n", filename);
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//read the header
 	if (fread(&header, sizeof(aas_header_t), 1, fp) != 1)
 	{
 		AAS_Error("can't read header of file %s\n", filename);
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//check header identification
 	header.ident = LittleLong(header.ident);
@@ -278,7 +278,7 @@ qboolean AAS_LoadAASFile(char *filename, int fpoffset, int fplength)
 	{
 		AAS_Error("%s is not an AAS file\n", filename);
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//check the version
 	header.version = LittleLong(header.version);
@@ -286,7 +286,7 @@ qboolean AAS_LoadAASFile(char *filename, int fpoffset, int fplength)
 	{
 		AAS_Error("%s is version %i, not %i\n", filename, header.version, AASVERSION);
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//
 	if (header.version == AASVERSION)
@@ -299,93 +299,93 @@ qboolean AAS_LoadAASFile(char *filename, int fpoffset, int fplength)
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_BBOXES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_BBOXES].filelen);
 	aasworld.bboxes = (aas_bbox_t *) AAS_LoadAASLump(fp, offset, length, aasworld.bboxes);
-	if (length && !aasworld.bboxes) return false;
+	if (length && !aasworld.bboxes) return qfalse;
 	aasworld.numbboxes = length / sizeof(aas_bbox_t);
 	//vertexes
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_VERTEXES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_VERTEXES].filelen);
 	aasworld.vertexes = (aas_vertex_t *) AAS_LoadAASLump(fp, offset, length, aasworld.vertexes);
-	if (length & !aasworld.vertexes) return false;
+	if (length & !aasworld.vertexes) return qfalse;
 	aasworld.numvertexes = length / sizeof(aas_vertex_t);
 	//planes
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_PLANES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_PLANES].filelen);
 	aasworld.planes = (aas_plane_t *) AAS_LoadAASLump(fp, offset, length, aasworld.planes);
-	if (length && !aasworld.planes) return false;
+	if (length && !aasworld.planes) return qfalse;
 	aasworld.numplanes = length / sizeof(aas_plane_t);
 	//edges
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_EDGES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_EDGES].filelen);
 	aasworld.edges = (aas_edge_t *) AAS_LoadAASLump(fp, offset, length, aasworld.edges);
-	if (length && !aasworld.edges) return false;
+	if (length && !aasworld.edges) return qfalse;
 	aasworld.numedges = length / sizeof(aas_edge_t);
 	//edgeindex
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_EDGEINDEX].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_EDGEINDEX].filelen);
 	aasworld.edgeindex = (aas_edgeindex_t *) AAS_LoadAASLump(fp, offset, length, aasworld.edgeindex);
-	if (length && !aasworld.edgeindex) return false;
+	if (length && !aasworld.edgeindex) return qfalse;
 	aasworld.edgeindexsize = length / sizeof(aas_edgeindex_t);
 	//faces
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_FACES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_FACES].filelen);
 	aasworld.faces = (aas_face_t *) AAS_LoadAASLump(fp, offset, length, aasworld.faces);
-	if (length && !aasworld.faces) return false;
+	if (length && !aasworld.faces) return qfalse;
 	aasworld.numfaces = length / sizeof(aas_face_t);
 	//faceindex
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_FACEINDEX].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_FACEINDEX].filelen);
 	aasworld.faceindex = (aas_faceindex_t *) AAS_LoadAASLump(fp, offset, length, aasworld.faceindex);
-	if (length && !aasworld.faceindex) return false;
+	if (length && !aasworld.faceindex) return qfalse;
 	aasworld.faceindexsize = length / sizeof(int);
 	//convex areas
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_AREAS].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_AREAS].filelen);
 	aasworld.areas = (aas_area_t *) AAS_LoadAASLump(fp, offset, length, aasworld.areas);
-	if (length && !aasworld.areas) return false;
+	if (length && !aasworld.areas) return qfalse;
 	aasworld.numareas = length / sizeof(aas_area_t);
 	//area settings
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_AREASETTINGS].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_AREASETTINGS].filelen);
 	aasworld.areasettings = (aas_areasettings_t *) AAS_LoadAASLump(fp, offset, length, aasworld.areasettings);
-	if (length && !aasworld.areasettings) return false;
+	if (length && !aasworld.areasettings) return qfalse;
 	aasworld.numareasettings = length / sizeof(aas_areasettings_t);
 	//reachability list
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_REACHABILITY].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_REACHABILITY].filelen);
 	aasworld.reachability = (aas_reachability_t *) AAS_LoadAASLump(fp, offset, length, aasworld.reachability);
-	if (length && !aasworld.reachability) return false;
+	if (length && !aasworld.reachability) return qfalse;
 	aasworld.reachabilitysize = length / sizeof(aas_reachability_t);
 	//nodes
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_NODES].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_NODES].filelen);
 	aasworld.nodes = (aas_node_t *) AAS_LoadAASLump(fp, offset, length, aasworld.nodes);
-	if (length && !aasworld.nodes) return false;
+	if (length && !aasworld.nodes) return qfalse;
 	aasworld.numnodes = length / sizeof(aas_node_t);
 	//cluster portals
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_PORTALS].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_PORTALS].filelen);
 	aasworld.portals = (aas_portal_t *) AAS_LoadAASLump(fp, offset, length, aasworld.portals);
-	if (length && !aasworld.portals) return false;
+	if (length && !aasworld.portals) return qfalse;
 	aasworld.numportals = length / sizeof(aas_portal_t);
 	//cluster portal index
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_PORTALINDEX].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_PORTALINDEX].filelen);
 	aasworld.portalindex = (aas_portalindex_t *) AAS_LoadAASLump(fp, offset, length, aasworld.portalindex);
-	if (length && !aasworld.portalindex) return false;
+	if (length && !aasworld.portalindex) return qfalse;
 	aasworld.portalindexsize = length / sizeof(aas_portalindex_t);
 	//clusters
 	offset = fpoffset + LittleLong(header.lumps[AASLUMP_CLUSTERS].fileofs);
 	length = LittleLong(header.lumps[AASLUMP_CLUSTERS].filelen);
 	aasworld.clusters = (aas_cluster_t *) AAS_LoadAASLump(fp, offset, length, aasworld.clusters);
-	if (length && !aasworld.clusters) return false;
+	if (length && !aasworld.clusters) return qfalse;
 	aasworld.numclusters = length / sizeof(aas_cluster_t);
 	//swap everything
 	AAS_SwapAASData();
 	//aas file is loaded
-	aasworld.loaded = true;
+	aasworld.loaded = qtrue;
 	//close the file
 	fclose(fp);
-	return true;
+	return qtrue;
 } //end of the function AAS_LoadAASFile
 //===========================================================================
 //
@@ -408,10 +408,10 @@ int AAS_WriteAASLump(FILE *fp, aas_header_t *h, int lumpnum, void *data, int len
 		{
 			Log_Print("error writing lump %s\n", lumpnum);
 			fclose(fp);
-			return false;
+			return qfalse;
 		} //end if
 	} //end if
-	return true;
+	return qtrue;
 } //end of the function AAS_WriteAASLump
 //===========================================================================
 //
@@ -497,53 +497,53 @@ qboolean AAS_WriteAASFile(char *filename)
 	if (!fp)
 	{
 		Log_Print("error opening %s\n", filename);
-		return false;
+		return qfalse;
 	} //end if
 	//write the header
 	if (fwrite(&header, sizeof(aas_header_t), 1, fp) < 1)
 	{
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//add the data lumps to the file
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_BBOXES, aasworld.bboxes,
-		aasworld.numbboxes * sizeof(aas_bbox_t))) return false;
+		aasworld.numbboxes * sizeof(aas_bbox_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_VERTEXES, aasworld.vertexes,
-		aasworld.numvertexes * sizeof(aas_vertex_t))) return false;
+		aasworld.numvertexes * sizeof(aas_vertex_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_PLANES, aasworld.planes,
-		aasworld.numplanes * sizeof(aas_plane_t))) return false;
+		aasworld.numplanes * sizeof(aas_plane_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_EDGES, aasworld.edges,
-		aasworld.numedges * sizeof(aas_edge_t))) return false;
+		aasworld.numedges * sizeof(aas_edge_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_EDGEINDEX, aasworld.edgeindex,
-		aasworld.edgeindexsize * sizeof(aas_edgeindex_t))) return false;
+		aasworld.edgeindexsize * sizeof(aas_edgeindex_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_FACES, aasworld.faces,
-		aasworld.numfaces * sizeof(aas_face_t))) return false;
+		aasworld.numfaces * sizeof(aas_face_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_FACEINDEX, aasworld.faceindex,
-		aasworld.faceindexsize * sizeof(aas_faceindex_t))) return false;
+		aasworld.faceindexsize * sizeof(aas_faceindex_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_AREAS, aasworld.areas,
-		aasworld.numareas * sizeof(aas_area_t))) return false;
+		aasworld.numareas * sizeof(aas_area_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_AREASETTINGS, aasworld.areasettings,
-		aasworld.numareasettings * sizeof(aas_areasettings_t))) return false;
+		aasworld.numareasettings * sizeof(aas_areasettings_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_REACHABILITY, aasworld.reachability,
-		aasworld.reachabilitysize * sizeof(aas_reachability_t))) return false;
+		aasworld.reachabilitysize * sizeof(aas_reachability_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_NODES, aasworld.nodes,
-		aasworld.numnodes * sizeof(aas_node_t))) return false;
+		aasworld.numnodes * sizeof(aas_node_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_PORTALS, aasworld.portals,
-		aasworld.numportals * sizeof(aas_portal_t))) return false;
+		aasworld.numportals * sizeof(aas_portal_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_PORTALINDEX, aasworld.portalindex,
-		aasworld.portalindexsize * sizeof(aas_portalindex_t))) return false;
+		aasworld.portalindexsize * sizeof(aas_portalindex_t))) return qfalse;
 	if (!AAS_WriteAASLump(fp, &header, AASLUMP_CLUSTERS, aasworld.clusters,
-		aasworld.numclusters * sizeof(aas_cluster_t))) return false;
+		aasworld.numclusters * sizeof(aas_cluster_t))) return qfalse;
 	//rewrite the header with the added lumps
 	fseek(fp, 0, SEEK_SET);
 	AAS_DData((unsigned char *) &header + 8, sizeof(aas_header_t) - 8);
 	if (fwrite(&header, sizeof(aas_header_t), 1, fp) < 1)
 	{
 		fclose(fp);
-		return false;
+		return qfalse;
 	} //end if
 	//close the file
 	fclose(fp);
-	return true;
+	return qtrue;
 } //end of the function AAS_WriteAASFile
 

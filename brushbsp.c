@@ -335,11 +335,11 @@ int BrushOutOfBounds(bspbrush_t *brush, vec3_t mins, vec3_t maxs, float epsilon)
 		{
 			for (n = 0; n < 3; n++)
 			{
-				if (w->p[j][n] < (mins[n] + epsilon) || w->p[j][n] > (maxs[n] - epsilon)) return true;
+				if (w->p[j][n] < (mins[n] + epsilon) || w->p[j][n] > (maxs[n] - epsilon)) return qtrue;
 			} //end for
 		} //end for
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function BrushOutOfBounds
 //===========================================================================
 //
@@ -712,7 +712,7 @@ int TestBrushToPlanenum (bspbrush_t *brush, int planenum,
 	float dist;
 
 	*numsplits = 0;
-	*hintsplit = false;
+	*hintsplit = qfalse;
 
 	plane = &mapplanes[planenum];
 
@@ -786,7 +786,7 @@ int TestBrushToPlanenum (bspbrush_t *brush, int planenum,
 				(*numsplits)++;
 				if (brush->sides[i].surf & SURF_HINT)
 				{
-					*hintsplit = true;
+					*hintsplit = qtrue;
 				} //end if
 			} //end if
 		} //end if
@@ -808,7 +808,7 @@ int TestBrushToPlanenum (bspbrush_t *brush, int planenum,
 	return s;
 } //end of the function TestBrushToPlanenum
 //===========================================================================
-// Returns true if the winding would be crunched out of
+// Returns qtrue if the winding would be crunched out of
 // existance by the vertex snapping.
 //
 // Parameter:			-
@@ -820,8 +820,8 @@ qboolean WindingIsTiny (winding_t *w)
 {
 #if 0
 	if (WindingArea (w) < 1)
-		return true;
-	return false;
+		return qtrue;
+	return qfalse;
 #else
 	int		i, j;
 	vec_t	len;
@@ -837,14 +837,14 @@ qboolean WindingIsTiny (winding_t *w)
 		if (len > EDGE_LENGTH)
 		{
 			if (++edges == 3)
-				return false;
+				return qfalse;
 		}
 	}
-	return true;
+	return qtrue;
 #endif
 } //end of the function WindingIsTiny
 //===========================================================================
-// Returns true if the winding still has one of the points
+// Returns qtrue if the winding still has one of the points
 // from basewinding for plane
 //
 // Parameter:			-
@@ -859,9 +859,9 @@ qboolean WindingIsHuge (winding_t *w)
 	{
 		for (j=0 ; j<3 ; j++)
 			if (w->p[i][j] < -BOGUS_RANGE+1 || w->p[i][j] > BOGUS_RANGE-1)
-				return true;
+				return qtrue;
 	}
-	return false;
+	return qfalse;
 } //end of the function WindingIsHuge
 //===========================================================================
 // creates a leaf out of the given nodes with the given brushes
@@ -974,7 +974,7 @@ side_t *SelectSplitSide (bspbrush_t *brushes, node_t *node)
 	int			front, back, both, facing, splits;
 	int			bsplits;
 	int			epsilonbrush;
-	qboolean	hintsplit = false;
+	qboolean	hintsplit = qfalse;
 
 	bestside = NULL;
 	bestvalue = -99999;
@@ -1079,7 +1079,7 @@ side_t *SelectSplitSide (bspbrush_t *brushes, node_t *node)
 			{
 				if (numthreads == 1) c_nonvis++;
 			}
-			if (pass > 0) node->detail_seperator = true;	// not needed for vis
+			if (pass > 0) node->detail_seperator = qtrue;	// not needed for vis
 			break;
 		} //end if
 	} //end for (pass = 0;

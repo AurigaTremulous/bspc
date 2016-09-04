@@ -148,7 +148,7 @@ void ParseBrush (entity_t *mapent)
 
 	do
 	{
-		if (!GetToken (true))
+		if (!GetToken (qtrue))
 			break;
 		if (!strcmp (token, "}") )
 			break;
@@ -161,17 +161,17 @@ void ParseBrush (entity_t *mapent)
 		for (i=0 ; i<3 ; i++)
 		{
 			if (i != 0)
-				GetToken (true);
+				GetToken (qtrue);
 			if (strcmp (token, "(") )
 				Error ("parsing brush");
 			
 			for (j=0 ; j<3 ; j++)
 			{
-				GetToken (false);
+				GetToken (qfalse);
 				planepts[i][j] = atoi(token);
 			}
 			
-			GetToken (false);
+			GetToken (qfalse);
 			if (strcmp (token, ")") )
 				Error ("parsing brush");
 				
@@ -181,22 +181,22 @@ void ParseBrush (entity_t *mapent)
 		//
 		// read the texturedef
 		//
-		GetToken (false);
+		GetToken (qfalse);
 		strcpy (td.name, token);
 
-		GetToken (false);
+		GetToken (qfalse);
 		td.shift[0] = atoi(token);
-		GetToken (false);
+		GetToken (qfalse);
 		td.shift[1] = atoi(token);
-		GetToken (false);
+		GetToken (qfalse);
 #ifdef SIN
 		td.rotate = atof(token);	
 #else
 		td.rotate = atoi(token);	
 #endif
-		GetToken (false);
+		GetToken (qfalse);
 		td.scale[0] = atof(token);
-		GetToken (false);
+		GetToken (qfalse);
 		td.scale[1] = atof(token);
 
 		// find default flags and values
@@ -219,11 +219,11 @@ void ParseBrush (entity_t *mapent)
 
 		if (TokenAvailable())
 		{
-			GetToken (false);
+			GetToken (qfalse);
 			side->contents = atoi(token);
-			GetToken (false);
+			GetToken (qfalse);
 			side->surf = td.flags = atoi(token);
-			GetToken (false);
+			GetToken (qfalse);
 			td.value = atoi(token);
 		}
 #endif
@@ -447,8 +447,8 @@ qboolean	Sin_ParseMapEntity (void)
 	vec_t		newdist;
 	mapbrush_t	*b;
 
-	if (!GetToken (true))
-		return false;
+	if (!GetToken (qtrue))
+		return qfalse;
 
 	if (strcmp (token, "{") )
 		Error ("ParseEntity: { not found");
@@ -469,7 +469,7 @@ qboolean	Sin_ParseMapEntity (void)
 
 	do
 	{
-		if (!GetToken (true))
+		if (!GetToken (qtrue))
 			Error ("ParseEntity: EOF without closing brace");
 		if (!strcmp (token, "}") )
 			break;
@@ -582,9 +582,9 @@ qboolean	Sin_ParseMapEntity (void)
 	{
 		MoveBrushesToWorld (mapent);
 		mapent->numbrushes = 0;
-		mapent->wasdetail = true;
+		mapent->wasdetail = qtrue;
       FreeValueKeys( mapent );
-		return true;
+		return qtrue;
 	}
 #ifdef SIN
 	// detail entities are just for editor convenience
@@ -623,11 +623,11 @@ qboolean	Sin_ParseMapEntity (void)
             }
 		}
 		MoveBrushesToWorld (mapent);
-		mapent->wasdetail = true;
+		mapent->wasdetail = qtrue;
       FreeValueKeys( mapent );
       // kill off the entity
    	// num_entities--;
-		return true;
+		return qtrue;
 	}
 #endif
 
@@ -648,10 +648,10 @@ qboolean	Sin_ParseMapEntity (void)
 		sprintf (str, "%i", c_areaportals);
 		SetKeyValue (mapent, "style", str);
 		MoveBrushesToWorld (mapent);
-		return true;
+		return qtrue;
 	}
 
-	return true;
+	return qtrue;
 } //end of the function Sin_ParseMapEntity */
 
 //===================================================================
@@ -1002,7 +1002,7 @@ void Sin_BSPBrushToMapBrush(sin_dbrush_t *bspbrush, entity_t *mapent)
 	if (create_aas)
 	{
 		//create the AAS brushes from this brush, don't add brush bevels
-		AAS_CreateMapBrushes(b, mapent, false);
+		AAS_CreateMapBrushes(b, mapent, qfalse);
 		return;
 	} //end if
 
@@ -1142,9 +1142,9 @@ qboolean Sin_ParseBSPEntity(int entnum)
 	{
 		c_areaportals++;
 		mapent->areaportalnum = c_areaportals;
-		return true;
+		return qtrue;
 	} //end if
-	return true;
+	return qtrue;
 } //end of the function Sin_ParseBSPEntity
 //===========================================================================
 //

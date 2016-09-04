@@ -53,7 +53,7 @@ tmp_node_t *AAS_RefreshMergedTree_r(tmp_node_t *tmpnode)
 	return tmpnode;
 } //end of the function AAS_RefreshMergedTree_r
 //===========================================================================
-// returns true if the two given faces would create a non-convex area at
+// returns qtrue if the two given faces would create a non-convex area at
 // the given sides, otherwise false is returned
 //
 // Parameter:				-
@@ -75,15 +75,15 @@ int NonConvex(tmp_face_t *face1, tmp_face_t *face2, int side1, int side2)
 	//check if one of the points of face1 is at the back of the plane of face2
 	for (i = 0; i < w1->numpoints; i++)
 	{
-		if (DotProduct(plane2->normal, w1->p[i]) - plane2->dist < -CONVEX_EPSILON) return true;
+		if (DotProduct(plane2->normal, w1->p[i]) - plane2->dist < -CONVEX_EPSILON) return qtrue;
 	} //end for
 	//check if one of the points of face2 is at the back of the plane of face1
 	for (i = 0; i < w2->numpoints; i++)
 	{
-		if (DotProduct(plane1->normal, w2->p[i]) - plane1->dist < -CONVEX_EPSILON) return true;
+		if (DotProduct(plane1->normal, w2->p[i]) - plane1->dist < -CONVEX_EPSILON) return qtrue;
 	} //end for
 
-	return false;
+	return qfalse;
 } //end of the function NonConvex
 //===========================================================================
 // try to merge the areas at both sides of the given face
@@ -102,11 +102,11 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 	tmparea2 = seperatingface->backarea;
 
 	//areas must have the same presence type
-	if (tmparea1->presencetype != tmparea2->presencetype) return false;
+	if (tmparea1->presencetype != tmparea2->presencetype) return qfalse;
 	//areas must have the same area contents
-	if (tmparea1->contents != tmparea2->contents) return false;
+	if (tmparea1->contents != tmparea2->contents) return qfalse;
 	//areas must have the same bsp model inside (or both none)
-	if (tmparea1->modelnum != tmparea2->modelnum) return false;
+	if (tmparea1->modelnum != tmparea2->modelnum) return qfalse;
 
 	area1faceflags = 0;
 	area2faceflags = 0;
@@ -144,7 +144,7 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 			area2faceflags |= face2->faceflags;
 			if (AAS_GapFace(face2, side2)) area2faceflags |= FACE_GAP;
 			//if the two faces would create a non-convex area
-			if (NonConvex(face1, face2, side1, side2)) return false;
+			if (NonConvex(face1, face2, side1, side2)) return qfalse;
 		} //end for
 	} //end for
 	//if one area has gap faces (that aren't seperating the two areas)
@@ -154,11 +154,11 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 			((area2faceflags & FACE_GROUND) && (area1faceflags & FACE_GAP)))
 	{
 //		Log_Print("   can't merge: ground/gap\n");
-		return false;
+		return qfalse;
 	} //end if
 
 //	Log_Print("merged area %d & %d to %d with %d faces\n", tmparea1->areanum, tmparea2->areanum, newarea->areanum, numfaces);
-//	return false;
+//	return qfalse;
 	//
 	//AAS_CheckArea(tmparea1);
 	//AAS_CheckArea(tmparea2);
@@ -217,14 +217,14 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 	} //end for
 	//
 	tmparea1->mergedarea = newarea;
-	tmparea1->invalid = true;
+	tmparea1->invalid = qtrue;
 	tmparea2->mergedarea = newarea;
-	tmparea2->invalid = true;
+	tmparea2->invalid = qtrue;
 	//
 	AAS_CheckArea(newarea);
 	AAS_FlipAreaFaces(newarea);
 //	Log_Print("merged area %d & %d to %d with %d faces\n", tmparea1->areanum, tmparea2->areanum, newarea->areanum);
-	return true;
+	return qtrue;
 } //end of the function AAS_TryMergeFaceAreas
 //===========================================================================
 // try to merge areas
@@ -317,9 +317,9 @@ int AAS_GroundArea(tmp_area_t *tmparea)
 	for (face = tmparea->tmpfaces; face; face = face->next[side])
 	{
 		side = (face->frontarea != tmparea);
-		if (face->faceflags & FACE_GROUND) return true;
+		if (face->faceflags & FACE_GROUND) return qtrue;
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function AAS_GroundArea
 
 void AAS_MergeAreas(void)
@@ -332,11 +332,11 @@ void AAS_MergeAreas(void)
 	Log_Write("AAS_MergeAreas\r\n");
 	qprintf("%6d areas merged", 1);
 	//
-	groundfirst = true;
+	groundfirst = qtrue;
 	//for (i = 0; i < 4 || merges; i++)
 	while(1)
 	{
-		//if (i < 2) groundfirst = true;
+		//if (i < 2) groundfirst = qtrue;
 		//else groundfirst = false;
 		//
 		merges = 0;
@@ -379,7 +379,7 @@ void AAS_MergeAreas(void)
 		} //end for
 		if (!merges)
 		{
-			if (groundfirst) groundfirst = false;
+			if (groundfirst) groundfirst = qfalse;
 			else break;
 		} //end if
 	} //end for

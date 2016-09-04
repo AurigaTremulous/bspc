@@ -61,7 +61,7 @@ int aas_hashedges[EDGE_HASH_SIZE];
 
 int allocatedaasmem = 0;
 
-int groundfacesonly = false;//true;
+int groundfacesonly = qfalse;
 //
 typedef struct max_aas_s
 {
@@ -320,7 +320,7 @@ unsigned AAS_HashVec(vec3_t vec)
 	return y*VERTEX_HASH_SIZE + x;
 } //end of the function AAS_HashVec
 //===========================================================================
-// returns true if the vertex was found in the list
+// returns qtrue if the vertex was found in the list
 // stores the vertex number in *vnum
 // stores a new vertex if not stored already
 //
@@ -352,7 +352,7 @@ qboolean AAS_GetVertex(vec3_t v, int *vnum)
 	if (h == -1)
 	{
 		*vnum = -1;
-		return true;
+		return qtrue;
 	} //end if
 
 	for (vn = aas_hashverts[h]; vn >= 0; vn = aas_vertexchain[vn])
@@ -362,7 +362,7 @@ qboolean AAS_GetVertex(vec3_t v, int *vnum)
 				&& fabs(aasworld.vertexes[vn][2] - vert[2]) < VERTEX_EPSILON)
 		{
 			*vnum = vn;
-			return true;
+			return qtrue;
 		} //end if
 	} //end for
 #else //VERTEX_HASHING
@@ -380,7 +380,7 @@ qboolean AAS_GetVertex(vec3_t v, int *vnum)
 				if (diff < VERTEX_EPSILON && diff > -VERTEX_EPSILON)
 				{
 					*vnum = i;
-					return true;
+					return qtrue;
 				} //end if
 			} //end if
 		} //end if
@@ -400,7 +400,7 @@ qboolean AAS_GetVertex(vec3_t v, int *vnum)
 #endif //VERTEX_HASHING
 
 	aasworld.numvertexes++;
-	return false;
+	return qfalse;
 } //end of the function AAS_GetVertex
 //===========================================================================
 //
@@ -462,7 +462,7 @@ qboolean AAS_FindHashedEdge(int v1num, int v2num, int *edgenum)
 			if (edge->v[1] == v2num)
 			{
 				*edgenum = e;
-				return true;
+				return qtrue;
 			} //end if
 		} //end if
 		else if (edge->v[1] == v1num)
@@ -471,14 +471,14 @@ qboolean AAS_FindHashedEdge(int v1num, int v2num, int *edgenum)
 			{
 				//negative for a reversed edge
 				*edgenum = -e;
-				return true;
+				return qtrue;
 			} //end if
 		} //end else
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function AAS_FindHashedPlane
 //===========================================================================
-// returns true if the edge was found
+// returns qtrue if the edge was found
 // stores the edge number in *edgenum (negative if reversed edge)
 // stores new edge if not stored already
 // returns zero when the edge is degenerate
@@ -501,19 +501,19 @@ qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 	if (v1num == -1 || v2num == -1)
 	{
 		*edgenum = 0;
-		return true;
+		return qtrue;
 	} //end if
 	//if both vertexes are the same or snapped onto each other
 	if (v1num == v2num)
 	{
 		*edgenum = 0;
-		return true;
+		return qtrue;
 	} //end if
 	//if both vertexes where already stored
 	if (found)
 	{
 #ifdef EDGE_HASHING
-		if (AAS_FindHashedEdge(v1num, v2num, edgenum)) return true;
+		if (AAS_FindHashedEdge(v1num, v2num, edgenum)) return qtrue;
 #else
 		int i;
 		for (i = 1; i < aasworld.numedges; i++)
@@ -523,7 +523,7 @@ qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 				if (aasworld.edges[i].v[1] == v2num)
 				{
 					*edgenum = i;
-					return true;
+					return qtrue;
 				} //end if
 			} //end if
 			else if (aasworld.edges[i].v[1] == v1num)
@@ -532,7 +532,7 @@ qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 				{
 					//negative for a reversed edge
 					*edgenum = -i;
-					return true;
+					return qtrue;
 				} //end if
 			} //end else
 		} //end for
@@ -549,7 +549,7 @@ qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 	AAS_AddEdgeToHash(*edgenum);
 #endif //EDGE_HASHING
 	aasworld.numedges++;
-	return false;
+	return qfalse;
 } //end of the function AAS_GetEdge
 //===========================================================================
 //
@@ -618,12 +618,12 @@ int AAS_PlaneEqual(vec3_t normal, float dist, int planenum)
 				diff = normal[2] - aasworld.planes[planenum].normal[2];
 				if (diff > -NORMAL_EPSILON && diff < NORMAL_EPSILON)
 				{
-					return true;
+					return qtrue;
 				} //end if
 			} //end if
 		} //end if
 	} //end if
-	return false;
+	return qfalse;
 } //end of the function AAS_PlaneEqual
 //===========================================================================
 //
@@ -640,10 +640,10 @@ qboolean AAS_FindPlane(vec3_t normal, float dist, int *planenum)
 		if (AAS_PlaneEqual(normal, dist, i))
 		{
 			*planenum = i;
-			return true;
+			return qtrue;
 		} //end if
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function AAS_FindPlane
 //===========================================================================
 //
@@ -668,11 +668,11 @@ qboolean AAS_FindHashedPlane(vec3_t normal, float dist, int *planenum)
 			if (AAS_PlaneEqual(normal, dist, p))
 			{
 				*planenum = p;
-				return true;
+				return qtrue;
 			} //end if
 		} //end for
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function AAS_FindHashedPlane
 //===========================================================================
 //
@@ -684,8 +684,8 @@ qboolean AAS_GetPlane(vec3_t normal, vec_t dist, int *planenum)
 {
 	aas_plane_t *plane, temp;
 
-	//if (AAS_FindPlane(normal, dist, planenum)) return true;
-	if (AAS_FindHashedPlane(normal, dist, planenum)) return true;
+	//if (AAS_FindPlane(normal, dist, planenum)) return qtrue;
+	if (AAS_FindHashedPlane(normal, dist, planenum)) return qtrue;
 
 	if (aasworld.numplanes >= max_aas.max_planes-1)
 	{
@@ -714,14 +714,14 @@ qboolean AAS_GetPlane(vec3_t normal, vec_t dist, int *planenum)
 			*plane = *(plane+1);
 			*(plane+1) = temp;
 			*planenum = aasworld.numplanes - 1;
-			return false;
+			return qfalse;
 		} //end if
 	} //end if
 	*planenum = aasworld.numplanes - 2;
 	//add the planes to the hash
 	AAS_AddPlaneToHash(aasworld.numplanes - 1);
 	AAS_AddPlaneToHash(aasworld.numplanes - 2);
-	return false;
+	return qfalse;
 #else
 	plane = &aasworld.planes[aasworld.numplanes];
 	VectorCopy(normal, plane->normal);
@@ -732,7 +732,7 @@ qboolean AAS_GetPlane(vec3_t normal, vec_t dist, int *planenum)
 	aasworld.numplanes++;
 	//add the plane to the hash
 	AAS_AddPlaneToHash(aasworld.numplanes - 1);
-	return false;
+	return qfalse;
 #endif //STOREPLANESDOUBLE
 } //end of the function AAS_GetPlane
 //===========================================================================
@@ -788,11 +788,11 @@ qboolean AAS_GetFace(winding_t *w, plane_t *p, int side, int *facenum)
 	{
 		memset(&aasworld.faces[aasworld.numfaces], 0, sizeof(aas_face_t));
 		Log_Write("AAS_GetFace: face %d was tiny\r\n", aasworld.numfaces);
-		return false;
+		return qfalse;
 	} //end if
 	*facenum = aasworld.numfaces;
 	aasworld.numfaces++;
-	return true;
+	return qtrue;
 } //end of the function AAS_GetFace
 //===========================================================================
 //
@@ -814,7 +814,7 @@ qboolean AAS_GetFace(winding_t *w, plane_t *p, int side, int *facenum)
 
 	foundplane = AAS_GetPlane(p->normal, p->dist, &planenum);
 
-	foundedges = true;
+	foundedges = qtrue;
 	numedges = w->numpoints;
 	for (i = 0; i < w->numpoints; i++)
 	{
@@ -842,7 +842,7 @@ qboolean AAS_GetFace(winding_t *w, plane_t *p, int side, int *facenum)
 					{
 						//jippy found the face
 						*facenum = -i;
-						return true;
+						return qtrue;
 					} //end if
 				} //end if
 			} //end if
@@ -869,7 +869,7 @@ qboolean AAS_GetFace(winding_t *w, plane_t *p, int side, int *facenum)
 	} //end for
 	*facenum = aasworld.numfaces;
 	aasworld.numfaces++;
-	return false;
+	return qfalse;
 } //end of the function AAS_GetFace*/
 //===========================================================================
 //
@@ -1076,5 +1076,5 @@ void AAS_StoreFile(char *filename)
 	AAS_StoreTree_r(tmpaasworld.nodes);
 	qprintf("\n");
 	Log_Write("%6d areas stored\r\n", aasworld.numareas);
-	aasworld.loaded = true;
+	aasworld.loaded = qtrue;
 } //end of the function AAS_StoreFile

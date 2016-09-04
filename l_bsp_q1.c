@@ -77,7 +77,7 @@ int				*q1_dsurfedges;//[MAX_MAP_SURFEDGES];
 
 //=============================================================================
 
-int q1_bspallocated = false;
+int q1_bspallocated = qfalse;
 int q1_allocatedbspmem = 0;
 
 void Q1_AllocMaxBSP(void)
@@ -452,7 +452,7 @@ void	Q1_LoadBSPFile(char *filename, int offset, int length)
 //
 // swap everything
 //	
-	Q1_SwapBSPFile (false);
+	Q1_SwapBSPFile (qfalse);
 }
 
 //============================================================================
@@ -483,7 +483,7 @@ void	Q1_WriteBSPFile (char *filename)
 	q1_header = &q1_outheader;
 	memset (q1_header, 0, sizeof(q1_dheader_t));
 	
-	Q1_SwapBSPFile (true);
+	Q1_SwapBSPFile (qtrue);
 
 	q1_header->version = LittleLong (Q1_BSPVERSION);
 	

@@ -48,13 +48,13 @@ int	Q3_BrushContents(mapbrush_t *b)
 	s = &b->original_sides[0];
 	contents = s->contents;
 	//
-	mixed = false;
-	hint = false;
+	mixed = qfalse;
+	hint = qfalse;
 	for (i = 1; i < b->numsides; i++)
 	{
 		s = &b->original_sides[i];
-		if (s->contents != contents) mixed = true;
-		if (s->surf & (SURF_HINT|SURF_SKIP)) hint = true;
+		if (s->contents != contents) mixed = qtrue;
+		if (s->surf & (SURF_HINT|SURF_SKIP)) hint = qtrue;
 		contents |= s->contents;
 	} //end for
 	//
@@ -289,7 +289,7 @@ void Q3_BSPBrushToMapBrush(q3_dbrush_t *bspbrush, entity_t *mapent)
 	if (create_aas)
 	{
 		//create the AAS brushes from this brush, don't add brush bevels
-		AAS_CreateMapBrushes(b, mapent, false);
+		AAS_CreateMapBrushes(b, mapent, qfalse);
 		return;
 	} //end if
 
@@ -431,9 +431,9 @@ qboolean Q3_ParseBSPEntity(int entnum)
 	{
 		c_areaportals++;
 		mapent->areaportalnum = c_areaportals;
-		return true;
+		return qtrue;
 	} //end if
-	return true;
+	return qtrue;
 } //end of the function Q3_ParseBSPEntity
 //===========================================================================
 //
@@ -579,7 +579,7 @@ void AAS_CreateCurveBrushes(void)
 			{
 				//NOTE: brush bevels now already added
 				//AddBrushBevels(brush);
-				AAS_CreateMapBrushes(brush, mapent, false);
+				AAS_CreateMapBrushes(brush, mapent, qfalse);
 			} //end if
 			else
 			{

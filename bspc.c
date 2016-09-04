@@ -72,7 +72,7 @@ qboolean	freetree;			//free the bsp tree when not needed anymore
 qboolean	create_aas;			//create an .AAS file
 qboolean	nobrushmerge;		//don't merge brushes
 qboolean	lessbrushes;		//create less brushes instead of correct texture placement
-qboolean	cancelconversion;	//true if the conversion is being cancelled
+qboolean	cancelconversion;	//qtrue if the conversion is being cancelled
 qboolean	noliquids;			//no liquids when writing map file
 qboolean	forcesidesvisible;	//force all brush sides to be visible when loaded from bsp
 qboolean	capsule_collision = 0;
@@ -153,7 +153,7 @@ void ProcessWorldModel (void)
 	else
 	{
 		Log_Print("**** leaked ****\n");
-		leaked = true;
+		leaked = qtrue;
 		LeakFile(tree);
 		if (leaktest)
 		{
@@ -582,77 +582,77 @@ int main (int argc, char **argv)
 		else if (!Q_strcasecmp(argv[i], "-noverbose"))
 		{
 			Log_Print("verbose = false\n");
-			verbose = false;
+			verbose = qfalse;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nocsg"))
 		{
-			Log_Print("nocsg = true\n");
-			nocsg = true;
+			Log_Print("nocsg = qtrue\n");
+			nocsg = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-optimize"))
 		{
-			Log_Print("optimize = true\n");
-			optimize = true;
+			Log_Print("optimize = qtrue\n");
+			optimize = qtrue;
 		} //end else if
 		/*
 		else if (!Q_strcasecmp(argv[i],"-glview"))
 		{
-			glview = true;
+			glview = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-draw"))
 		{
-			Log_Print("drawflag = true\n");
-			drawflag = true;
+			Log_Print("drawflag = qtrue\n");
+			drawflag = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-noweld"))
 		{
-			Log_Print("noweld = true\n");
-			noweld = true;
+			Log_Print("noweld = qtrue\n");
+			noweld = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-noshare"))
 		{
-			Log_Print("noshare = true\n");
-			noshare = true;
+			Log_Print("noshare = qtrue\n");
+			noshare = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-notjunc"))
 		{
-			Log_Print("notjunc = true\n");
-			notjunc = true;
+			Log_Print("notjunc = qtrue\n");
+			notjunc = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nowater"))
 		{
-			Log_Print("nowater = true\n");
-			nowater = true;
+			Log_Print("nowater = qtrue\n");
+			nowater = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-noprune"))
 		{
-			Log_Print("noprune = true\n");
-			noprune = true;
+			Log_Print("noprune = qtrue\n");
+			noprune = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nomerge"))
 		{
-			Log_Print("nomerge = true\n");
-			nomerge = true;
+			Log_Print("nomerge = qtrue\n");
+			nomerge = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nosubdiv"))
 		{
-			Log_Print("nosubdiv = true\n");
-			nosubdiv = true;
+			Log_Print("nosubdiv = qtrue\n");
+			nosubdiv = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nodetail"))
 		{
-			Log_Print("nodetail = true\n");
-			nodetail = true;
+			Log_Print("nodetail = qtrue\n");
+			nodetail = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-fulldetail"))
 		{
-			Log_Print("fulldetail = true\n");
-			fulldetail = true;
+			Log_Print("fulldetail = qtrue\n");
+			fulldetail = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-onlyents"))
 		{
-			Log_Print("onlyents = true\n");
-			onlyents = true;
+			Log_Print("onlyents = qtrue\n");
+			onlyents = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-micro"))
 		{
@@ -662,13 +662,13 @@ int main (int argc, char **argv)
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-leaktest"))
 		{
-			Log_Print("leaktest = true\n");
-			leaktest = true;
+			Log_Print("leaktest = qtrue\n");
+			leaktest = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-verboseentities"))
 		{
-			Log_Print("verboseentities = true\n");
-			verboseentities = true;
+			Log_Print("verboseentities = qtrue\n");
+			verboseentities = qtrue;
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-chop"))
 		{
@@ -685,28 +685,28 @@ int main (int argc, char **argv)
 #ifdef ME
 		else if (!Q_strcasecmp(argv[i], "-freetree"))
 		{
-			freetree = true;
-			Log_Print("freetree = true\n");
+			freetree = qtrue;
+			Log_Print("freetree = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-grapplereach"))
 		{
-			calcgrapplereach = true;
-			Log_Print("grapplereach = true\n");
+			calcgrapplereach = qtrue;
+			Log_Print("grapplereach = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-nobrushmerge"))
 		{
-			nobrushmerge = true;
-			Log_Print("nobrushmerge = true\n");
+			nobrushmerge = qtrue;
+			Log_Print("nobrushmerge = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-noliquids"))
 		{
-			noliquids = true;
-			Log_Print("noliquids = true\n");
+			noliquids = qtrue;
+			Log_Print("noliquids = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-forcesidesvisible"))
 		{
-			forcesidesvisible = true;
-			Log_Print("forcesidesvisible = true\n");
+			forcesidesvisible = qtrue;
+			Log_Print("forcesidesvisible = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-output"))
 		{
@@ -716,13 +716,13 @@ int main (int argc, char **argv)
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-breadthfirst"))
 		{
-			use_nodequeue = true;
-			Log_Print("breadthfirst = true\n");
+			use_nodequeue = qtrue;
+			Log_Print("breadthfirst = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-capsule"))
 		{
-			capsule_collision = true;
-			Log_Print("capsule_collision = true\n");
+			capsule_collision = qtrue;
+			Log_Print("capsule_collision = qtrue\n");
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-cfg"))
 		{

@@ -39,7 +39,7 @@ int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
 	if (!face2->winding) Error("face2 %d without winding", face2->num);
 #endif //DEBUG
 	//
-	if (face1->faceflags != face2->faceflags) return false;
+	if (face1->faceflags != face2->faceflags) return qfalse;
 	//NOTE: if the front or back area is zero this doesn't mean there's
 	//a real area. It means there's solid at that side of the face
 	//if both faces have the same front area
@@ -70,7 +70,7 @@ int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
 					if (face2->frontarea) AAS_RemoveFaceFromArea(face2, face2->frontarea);
 					if (face2->backarea) AAS_RemoveFaceFromArea(face2, face2->backarea);
 					AAS_FreeTmpFace(face2);
-					return true;
+					return qtrue;
 				} //end if
 			} //end if
 			else if ((face1->planenum & ~1) == (face2->planenum & ~1))
@@ -80,7 +80,7 @@ int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
 			} //end if
 		} //end if
 	} //end if
-	return false;
+	return qfalse;
 } //end of the function AAS_TryMergeFaces
 /*
 int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
@@ -109,7 +109,7 @@ int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
 	//this function is to be found in l_poly.c
 	neww = TryMergeWinding(face1->winding, face2->winding,
 					mapplanes[face1->planenum].normal);
-	if (!neww) return false;
+	if (!neww) return qfalse;
 	//
 	FreeWinding(face1->winding);
 	face1->winding = neww;
@@ -118,7 +118,7 @@ int AAS_TryMergeFaces(tmp_face_t *face1, tmp_face_t *face2)
 		AAS_RemoveFaceFromArea(face2, &tmpaasworld.areas[face2->frontarea]);
 	if (face2->backarea)
 		AAS_RemoveFaceFromArea(face2, &tmpaasworld.areas[face2->backarea]);
-	return true;
+	return qtrue;
 } //end of the function AAS_TryMergeFaces*/
 //===========================================================================
 //
@@ -139,7 +139,7 @@ void AAS_MergeAreaFaces(void)
 	lasttmparea = tmpaasworld.areas;
 	for (tmparea = tmpaasworld.areas; tmparea; tmparea = tmparea->l_next)
 	{
-		restart = false;
+		restart = qfalse;
 		//
 		if (tmparea->invalid) continue;
 		//
@@ -153,7 +153,7 @@ void AAS_MergeAreaFaces(void)
 				if (AAS_TryMergeFaces(face1, face2))
 				{
 					//start over again after merging two faces
-					restart = true;
+					restart = qtrue;
 					num_facemerges++;
 					qprintf("\r%6d", num_facemerges);
 					AAS_CheckArea(tmparea);
@@ -220,7 +220,7 @@ int AAS_CanMergePlaneFaces(tmp_area_t *tmparea, int planenum)
 	int side1, merge, faceflags = 0;
 
 	frontarea = backarea = NULL;
-	merge = false;
+	merge = qfalse;
 	for (face1 = tmparea->tmpfaces; face1; face1 = face1->next[side1])
 	{
 		side1 = face1->frontarea != tmparea;
@@ -233,10 +233,10 @@ int AAS_CanMergePlaneFaces(tmp_area_t *tmparea, int planenum)
 		} //end if
 		else
 		{
-			if (frontarea != face1->frontarea) return false;
-			if (backarea != face1->backarea) return false;
-			if (faceflags != face1->faceflags) return false;
-			merge = true;
+			if (frontarea != face1->frontarea) return qfalse;
+			if (backarea != face1->backarea) return qfalse;
+			if (faceflags != face1->faceflags) return qfalse;
+			merge = qtrue;
 		} //end else
 	} //end for
 	return merge;

@@ -143,9 +143,9 @@ qboolean VectorCompare (vec3_t v1, vec3_t v2)
 	
 	for (i=0 ; i<3 ; i++)
 		if (fabs(v1[i]-v2[i]) > EQUAL_EPSILON)
-			return false;
+			return qfalse;
 			
-	return true;
+	return qtrue;
 }
 
 vec_t Q_rint (vec_t in)

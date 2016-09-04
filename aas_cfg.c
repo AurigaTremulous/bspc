@@ -204,10 +204,10 @@ int LoadCfgFile(char *filename)
 	if (!source)
 	{
 		Log_Print("couldn't open cfg file %s\n", filename);
-		return false;
+		return qfalse;
 	} //end if
 
-	settingsdefined = false;
+	settingsdefined = qfalse;
 	memset(&cfg, 0, sizeof(cfg_t));
 
 	while(PC_ReadToken(source, &token))
@@ -221,7 +221,7 @@ int LoadCfgFile(char *filename)
 			if (!ReadStructure(source, &bbox_struct, (char *) &cfg.bboxes[cfg.numbboxes]))
 			{
 				FreeSource(source);
-				return false;
+				return qfalse;
 			} //end if
 			cfg.allpresencetypes |= cfg.bboxes[cfg.numbboxes].presencetype;
 			cfg.numbboxes++;
@@ -232,11 +232,11 @@ int LoadCfgFile(char *filename)
 			{
 				SourceWarning(source, "settings already defined\n");
 			} //end if
-			settingsdefined = true;
+			settingsdefined = qtrue;
 			if (!ReadStructure(source, &cfg_struct, (char *) &cfg))
 			{
 				FreeSource(source);
-				return false;
+				return qfalse;
 			} //end if
 		} //end else if
 	} //end while
@@ -251,5 +251,5 @@ int LoadCfgFile(char *filename)
 	FreeSource(source);
 	SetCfgLibVars();
 	Log_Print("using cfg file %s\n", filename);
-	return true;
+	return qtrue;
 } //end of the function LoadCfgFile

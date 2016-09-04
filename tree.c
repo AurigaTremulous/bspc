@@ -248,7 +248,7 @@ void Tree_PruneNodes_r (node_t *node)
 		// FIXME: free stuff
 		node->planenum = PLANENUM_LEAF;
 		node->contents = CONTENTS_SOLID;
-		node->detail_seperator = false;
+		node->detail_seperator = qfalse;
 
 		if (node->brushlist)
 			Error ("PruneNodes: node->brushlist");

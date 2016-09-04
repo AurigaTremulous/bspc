@@ -95,7 +95,7 @@ int				hl_dsurfedges_checksum;
 
 //#ifdef //ME
 
-int hl_bspallocated = false;
+int hl_bspallocated = qfalse;
 int hl_allocatedbspmem = 0;
 
 void HL_AllocMaxBSP(void)
@@ -561,7 +561,7 @@ void	HL_LoadBSPFile (char *filename, int offset, int length)
 //
 // swap everything
 //	
-	HL_SwapBSPFile (false);
+	HL_SwapBSPFile (qfalse);
 
 	hl_dmodels_checksum = FastChecksum( hl_dmodels, hl_nummodels*sizeof(hl_dmodels[0]) );
 	hl_dvertexes_checksum = FastChecksum( hl_dvertexes, hl_numvertexes*sizeof(hl_dvertexes[0]) );
@@ -609,7 +609,7 @@ void HL_WriteBSPFile (char *filename)
 	hl_header = &outheader;
 	memset (hl_header, 0, sizeof(hl_dheader_t));
 	
-	HL_SwapBSPFile (true);
+	HL_SwapBSPFile (qtrue);
 
 	hl_header->version = LittleLong (HL_BSPVERSION);
 	
@@ -729,7 +729,7 @@ epair_t *ParseEpair (void)
 	if (strlen(token) >= MAX_KEY-1)
 		Error ("ParseEpar: token too long");
 	e->key = copystring(token);
-	GetToken (false);
+	GetToken (qfalse);
 	if (strlen(token) >= MAX_VALUE-1)
 		Error ("ParseEpar: token too long");
 	e->value = copystring(token);
@@ -748,8 +748,8 @@ qboolean	ParseEntity (void)
 	epair_t		*e;
 	entity_t	*mapent;
 
-	if (!GetToken (true))
-		return false;
+	if (!GetToken (qtrue))
+		return qfalse;
 
 	if (strcmp (token, "{") )
 		Error ("ParseEntity: { not found");
@@ -762,7 +762,7 @@ qboolean	ParseEntity (void)
 
 	do
 	{
-		if (!GetToken (true))
+		if (!GetToken (qtrue))
 			Error ("ParseEntity: EOF without closing brace");
 		if (!strcmp (token, "}") )
 			break;
@@ -771,7 +771,7 @@ qboolean	ParseEntity (void)
 		mapent->epairs = e;
 	} while (1);
 	
-	return true;
+	return qtrue;
 } //*/
 
 /*

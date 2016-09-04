@@ -145,7 +145,7 @@ char brushsidetextured[MAX_MAP_BRUSHSIDES];
 
 //#ifdef ME
 
-int bspallocated = false;
+int bspallocated = qfalse;
 int allocatedbspmem = 0;
 
 void Q2_AllocMaxBSP(void)
@@ -336,9 +336,9 @@ int InsideWinding(winding_t *w, vec3_t point, int planenum)
 		VectorNormalize(normal);
 		dist = DotProduct(normal, v1);
 		//
-		if (DotProduct(normal, point) - dist > WCONVEX_EPSILON) return false;
+		if (DotProduct(normal, point) - dist > WCONVEX_EPSILON) return qfalse;
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function InsideWinding
 
 int InsideFace(dface_t *face, vec3_t point)
@@ -364,9 +364,9 @@ int InsideFace(dface_t *face, vec3_t point)
 		VectorNormalize(normal);
 		dist = DotProduct(normal, v1);
 		//
-		if (DotProduct(normal, point) - dist > WCONVEX_EPSILON) return false;
+		if (DotProduct(normal, point) - dist > WCONVEX_EPSILON) return qfalse;
 	} //end for
-	return true;
+	return qtrue;
 } //end of the function InsideFace
 //===========================================================================
 // returns the amount the face and the winding overlap
@@ -468,11 +468,11 @@ int Q2_HintSkipBrush(dbrush_t *brush)
 		{
 			if (texinfo[brushside->texinfo].flags & (SURF_SKIP|SURF_HINT))
 			{
-				return true;
+				return qtrue;
 			} //end if
 		} //end if
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function Q2_HintSkipBrush
 //===========================================================================
 // fix screwed brush texture references
@@ -491,7 +491,7 @@ void Q2_FixTextureReferences(void)
 	dface_t *face;
 	winding_t *w;
 
-	memset(brushsidetextured, false, MAX_MAP_BRUSHSIDES);
+	memset(brushsidetextured, qfalse, MAX_MAP_BRUSHSIDES);
 	//go over all the brushes
    for (i = 0; i < numbrushes; i++)
    {
@@ -506,7 +506,7 @@ void Q2_FixTextureReferences(void)
 			w = Q2_BrushSideWinding(brush, brushside);
 			if (!w)
 			{
-				brushsidetextured[brush->firstside + j] = true;
+				brushsidetextured[brush->firstside + j] = qtrue;
 				continue;
 			} //end if
 			else
@@ -515,7 +515,7 @@ void Q2_FixTextureReferences(void)
 				if (WindingIsTiny(w))
 				{
 					FreeWinding(w);
-					brushsidetextured[brush->firstside + j] = true;
+					brushsidetextured[brush->firstside + j] = qtrue;
 					continue;
 				} //end if
 				else
@@ -528,14 +528,14 @@ void Q2_FixTextureReferences(void)
 						)
 					{
 						FreeWinding(w);
-						brushsidetextured[brush->firstside + j] = true;
+						brushsidetextured[brush->firstside + j] = qtrue;
 						continue;
 					} //end if
 				} //end else
 			} //end else
 			if (WindingArea(w) < 20)
 			{
-				brushsidetextured[brush->firstside + j] = true;
+				brushsidetextured[brush->firstside + j] = qtrue;
 			} //end if
 			//find a face for texturing this brush
 			for (k = 0; k < numfaces; k++)
@@ -547,7 +547,7 @@ void Q2_FixTextureReferences(void)
 				if (Q2_FaceOnWinding(face, w))
 				{
 					brushside->texinfo = face->texinfo;
-					brushsidetextured[brush->firstside + j] = true;
+					brushsidetextured[brush->firstside + j] = qtrue;
 					break;
 				} //end if
 			} //end for
@@ -898,7 +898,7 @@ void Q2_LoadBSPFile(char *filename, int offset, int length)
 //
 // swap everything
 //	
-	Q2_SwapBSPFile (false);
+	Q2_SwapBSPFile (qfalse);
 
 	Q2_FixTextureReferences();
 } //end of the function Q2_LoadBSPFile
@@ -945,7 +945,7 @@ void	Q2_LoadBSPFileTexinfo (char *filename)
 
 	FreeMemory(header);		// everything has been copied out
 		
-	Q2_SwapBSPFile (false);
+	Q2_SwapBSPFile (qfalse);
 } //end of the function Q2_LoadBSPFileTexinfo
 
 
@@ -977,7 +977,7 @@ void	Q2_WriteBSPFile (char *filename)
 	header = &outheader;
 	memset (header, 0, sizeof(dheader_t));
 	
-	Q2_SwapBSPFile (true);
+	Q2_SwapBSPFile (qtrue);
 
 	header->ident = LittleLong (IDBSPHEADER);
 	header->version = LittleLong (BSPVERSION);

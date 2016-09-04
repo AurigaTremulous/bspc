@@ -661,8 +661,8 @@ int WindingOnPlaneSide (winding_t *w, vec3_t normal, vec_t dist)
 	int			i;
 	vec_t		d;
 
-	front = false;
-	back = false;
+	front = qfalse;
+	back = qfalse;
 	for (i=0 ; i<w->numpoints ; i++)
 	{
 		d = DotProduct (w->p[i], normal) - dist;
@@ -670,14 +670,14 @@ int WindingOnPlaneSide (winding_t *w, vec3_t normal, vec_t dist)
 		{
 			if (front)
 				return SIDE_CROSS;
-			back = true;
+			back = qtrue;
 			continue;
 		}
 		if (d > ON_EPSILON)
 		{
 			if (back)
 				return SIDE_CROSS;
-			front = true;
+			front = qtrue;
 			continue;
 		}
 	}
@@ -872,14 +872,14 @@ winding_t *MergeWindings(winding_t *w1, winding_t *w2, vec3_t planenormal)
 			} //end else
 		} //end for
 		//
-		found = false;
+		found = qfalse;
 		for (j = 0; j < numpoints; j++)
 		{
 			if (sides[j] == SIDE_FRONT
 				&& sides[(j+1)%numpoints] == SIDE_BACK)
 			{
 				if (found) Log_Print("Warning: MergeWindings: front to back found twice\n");
-				found = true;
+				found = qtrue;
 			} //end if
 		} //end for
 		//
@@ -1074,7 +1074,7 @@ winding_t *AddWindingPoint(winding_t *w, vec3_t point, int spot)
 // stored in *spot
 //
 // Parameter:				-
-// Returns:					true if the point is on the winding
+// Returns:					qtrue if the point is on the winding
 // Changes Globals:		-
 //===========================================================================
 #define MELT_ON_EPSILON		0.2
@@ -1089,7 +1089,7 @@ int PointOnWinding(winding_t *w, vec3_t normal, float dist, vec3_t point, int *s
 	*spot = 0;
 	//the point must be on the winding plane
 	dot = DotProduct(point, normal) - dist;
-	if (dot < -MELT_ON_EPSILON || dot > MELT_ON_EPSILON) return false;
+	if (dot < -MELT_ON_EPSILON || dot > MELT_ON_EPSILON) return qfalse;
 	//
 	for (i = 0; i < w->numpoints; i++)
 	{
@@ -1108,18 +1108,18 @@ int PointOnWinding(winding_t *w, vec3_t normal, float dist, vec3_t point, int *s
 		VectorSubtract(point, w->p[j], v2);
 		//if the length of the vector is not larger than 0.5 units then
 		//the point is assumend to be the same as one of the winding points
-		if (VectorNormalize(v1) < 0.5) return false;
-		if (VectorNormalize(v2) < 0.5) return false;
+		if (VectorNormalize(v1) < 0.5) return qfalse;
+		if (VectorNormalize(v2) < 0.5) return qfalse;
 		//point must be between the two winding points
 		//(the two vectors must be directed towards each other, and on the
 		//same straight line)
 		if (DotProduct(v1, v2) < -0.99)
 		{
 			*spot = i + 1;
-			return true;
+			return qtrue;
 		} //end if
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function PointOnWinding
 //===========================================================================
 //
@@ -1223,11 +1223,11 @@ int FindPlaneSeperatingWindings(winding_t *w1, winding_t *w2, vec3_t dir,
 			{
 				VectorCopy(normal1, normal);
 				*dist = dist1;
-				return true;
+				return qtrue;
 			} //end if
 		} //end for
 	} //end for
-	return false;
+	return qfalse;
 } //end of the function FindPlaneSeperatingWindings
 //===========================================================================
 //
@@ -1243,20 +1243,20 @@ int WindingsNonConvex(winding_t *w1, winding_t *w2,
 {
 	int i;
 
-	if (!w1 || !w2) return false;
+	if (!w1 || !w2) return qfalse;
 
 	//check if one of the points of face1 is at the back of the plane of face2
 	for (i = 0; i < w1->numpoints; i++)
 	{
-		if (DotProduct(normal2, w1->p[i]) - dist2 > WCONVEX_EPSILON) return true;
+		if (DotProduct(normal2, w1->p[i]) - dist2 > WCONVEX_EPSILON) return qtrue;
 	} //end for
 	//check if one of the points of face2 is at the back of the plane of face1
 	for (i = 0; i < w2->numpoints; i++)
 	{
-		if (DotProduct(normal1, w2->p[i]) - dist1 > WCONVEX_EPSILON) return true;
+		if (DotProduct(normal1, w2->p[i]) - dist1 > WCONVEX_EPSILON) return qtrue;
 	} //end for
 
-	return false;
+	return qfalse;
 } //end of the function WindingsNonConvex
 //===========================================================================
 //
@@ -1280,11 +1280,11 @@ qboolean EqualVertexes(vec3_t v1, vec3_t v2)
 			diff = v1[2] - v2[2];
 			if (diff > -VERTEX_EPSILON && diff < VERTEX_EPSILON)
 			{
-				return true;
+				return qtrue;
 			} //end if
 		} //end if
 	} //end if
-	return false;
+	return qfalse;
 } //end of the function EqualVertexes
 
 #define	CONTINUOUS_EPSILON	0.001

@@ -199,7 +199,7 @@ void ThreadSetupLock(void)
 {
 	Log_Print("Win32 multi-threading\n");
 	InitializeCriticalSection(&crit);
-	threaded = true;	//Stupid me... forgot this!!!
+	threaded = qtrue;	//Stupid me... forgot this!!!
 	currentnumthreads = 0;
 	currentthreadid = 0;
 } //end of the function ThreadInitLock
@@ -212,7 +212,7 @@ void ThreadSetupLock(void)
 void ThreadShutdownLock(void)
 {
 	DeleteCriticalSection(&crit);
-	threaded = false;	//Stupid me... forgot this!!!
+	threaded = qfalse;	//Stupid me... forgot this!!!
 } //end of the function ThreadShutdownLock
 //===========================================================================
 //
@@ -272,7 +272,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 	workcount = workcnt;
 	oldf = -1;
 	pacifier = showpacifier;
-	threaded = true;
+	threaded = qtrue;
 
 	if (numthreads == -1)
 		ThreadSetDefault ();
@@ -309,7 +309,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 	} //end else
 	DeleteCriticalSection (&crit);
 
-	threaded = false;
+	threaded = qfalse;
 	end = I_FloatTime ();
 	if (pacifier) printf (" (%i)\n", end-start);
 } //end of the function RunThreadsOn
@@ -555,7 +555,7 @@ void ThreadSetupLock(void)
 	if (pthread_attr_setstacksize (&attrib, 0x100000) == -1)
 		Error ("pthread_attr_setstacksize failed");
 
-	threaded = true;
+	threaded = qtrue;
 	currentnumthreads = 0;
 	currentthreadid = 0;
 } //end of the function ThreadInitLock
@@ -567,7 +567,7 @@ void ThreadSetupLock(void)
 //===========================================================================
 void ThreadShutdownLock(void)
 {
-	threaded = false;
+	threaded = qfalse;
 } //end of the function ThreadShutdownLock
 //===========================================================================
 //
@@ -591,7 +591,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 	workcount = workcnt;
 	oldf = -1;
 	pacifier = showpacifier;
-	threaded = true;
+	threaded = qtrue;
 
 	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
 
@@ -627,7 +627,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 			Error ("pthread_join failed");
 	}
 
-	threaded = false;
+	threaded = qfalse;
 
 	end = I_FloatTime ();
 	if (pacifier)
@@ -855,7 +855,7 @@ void ThreadSetupLock(void)
 {
 	Log_Print("pthread multi-threading\n");
 
-	threaded = true;
+	threaded = qtrue;
 	currentnumthreads = 0;
 	currentthreadid = 0;
 } //end of the function ThreadInitLock
@@ -867,7 +867,7 @@ void ThreadSetupLock(void)
 //===========================================================================
 void ThreadShutdownLock(void)
 {
-	threaded = false;
+	threaded = qfalse;
 } //end of the function ThreadShutdownLock
 //===========================================================================
 //
@@ -934,7 +934,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 	workcount = workcnt;
 	oldf = -1;
 	pacifier = showpacifier;
-	threaded = true;
+	threaded = qtrue;
 
 	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
 
@@ -957,7 +957,7 @@ void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 			Error ("pthread_join failed");
 	}
 
-	threaded = false;
+	threaded = qfalse;
 
 	end = I_FloatTime ();
 	if (pacifier)
@@ -1169,7 +1169,7 @@ void ThreadSetupLock(void)
 
 	Log_Print("IRIX multi-threading\n");
 
-	threaded = true;
+	threaded = qtrue;
 	currentnumthreads = 0;
 	currentthreadid = 0;
 } //end of the function ThreadInitLock
@@ -1181,7 +1181,7 @@ void ThreadSetupLock(void)
 //===========================================================================
 void ThreadShutdownLock(void)
 {
-	threaded = false;
+	threaded = qfalse;
 } //end of the function ThreadShutdownLock
 //===========================================================================
 //
@@ -1200,7 +1200,7 @@ void RunThreadsOn (int workcnt, qboolean showpacifier, void(*func)(int))
 	workcount = workcnt;
 	oldf = -1;
 	pacifier = showpacifier;
-	threaded = true;
+	threaded = qtrue;
 
 	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
 
@@ -1227,7 +1227,7 @@ void RunThreadsOn (int workcnt, qboolean showpacifier, void(*func)(int))
 	for (i=0 ; i<numthreads-1 ; i++)
 		wait (NULL);
 
-	threaded = false;
+	threaded = qfalse;
 
 	end = I_FloatTime ();
 	if (pacifier)
