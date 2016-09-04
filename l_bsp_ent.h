@@ -53,7 +53,7 @@ extern	entity_t entities[MAX_MAP_ENTITIES];
 
 void StripTrailing(char *e);
 void SetKeyValue(entity_t *ent, char *key, char *value);
-char *ValueForKey(entity_t *ent, char *key); // will return "" if not present
+char *ValueForKey(entity_t *ent, const char *key); // will return "" if not present
 vec_t FloatForKey(entity_t *ent, char *key);
 void GetVectorForKey(entity_t *ent, char *key, vec3_t vec);
 qboolean ParseEntity(script_t *script);

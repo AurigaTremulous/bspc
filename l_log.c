@@ -43,7 +43,7 @@ logfile_t logfile;
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void Log_Open(char *filename)
+void Log_Open(const char *filename)
 {
 	if (!filename || !strlen(filename))
 	{
@@ -124,7 +124,7 @@ void Log_UnifyEndOfLine(char *buf)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void Log_Print(char *fmt, ...)
+void Log_Print(const char *fmt, ...)
 {
 	va_list ap;
 	char buf[2048];
@@ -155,14 +155,14 @@ void Log_Print(char *fmt, ...)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void Log_Write(char *fmt, ...)
+void Log_Write(const char *fmt, ...)
 {
 	va_list ap;
 	char buf[2048];
 
 	if (!logfile.fp) return;
 	va_start(ap, fmt);
-	vsprintf(buf, fmt, ap);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 	Log_UnifyEndOfLine(buf);
 	fprintf(logfile.fp, "%s", buf);
@@ -174,7 +174,7 @@ void Log_Write(char *fmt, ...)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void Log_WriteTimeStamped(char *fmt, ...)
+void Log_WriteTimeStamped(const char *fmt, ...)
 {
 	va_list ap;
 

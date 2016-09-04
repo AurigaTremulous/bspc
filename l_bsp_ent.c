@@ -145,7 +145,7 @@ void 	SetKeyValue (entity_t *ent, char *key, char *value)
 	ep->value = copystring(value);
 }
 
-char 	*ValueForKey (entity_t *ent, char *key)
+char 	*ValueForKey (entity_t *ent, const char *key)
 {
 	epair_t	*ep;
 	
@@ -165,7 +165,7 @@ vec_t	FloatForKey (entity_t *ent, char *key)
 
 void 	GetVectorForKey (entity_t *ent, char *key, vec3_t vec)
 {
-	char	*k;
+	const char	*k;
 	double	v1, v2, v3;
 
 	k = ValueForKey (ent, key);
