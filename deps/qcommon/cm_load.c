@@ -607,7 +607,6 @@ void CM_LoadMap( const char *name, qboolean clientload, int *checksum ) {
 	dheader_t		header;
 	int				length;
 	static unsigned	last_checksum;
-	int             raven;
 
 	if ( !name || !name[0] ) {
 		Com_Error( ERR_DROP, "CM_LoadMap: NULL name" );
@@ -664,14 +663,12 @@ void CM_LoadMap( const char *name, qboolean clientload, int *checksum ) {
 			Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i)"
 			, name, header.version, BSP_VERSION_QF );
 		}
-		raven = 1;
 	} 
 	else {
 		if ( header.version != BSP_VERSION && header.version != BSP_VERSION_QL ) {
 			Com_Error (ERR_DROP, "CM_LoadMap: %s has wrong version number (%i should be %i or %i)"
 			, name, header.version, BSP_VERSION, BSP_VERSION_QL );
 		}
-		raven = 0;
 	}
 
 	cmod_base = (byte *)buf;

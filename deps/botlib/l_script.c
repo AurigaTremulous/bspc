@@ -1440,7 +1440,7 @@ void FreeScript(script_t *script)
 void PS_SetBaseFolder(char *path)
 {
 #ifdef BSPC
-	sprintf(basefolder, path);
+	snprintf(basefolder, sizeof(basefolder), "%s", path);
 #else
 	Com_sprintf(basefolder, sizeof(basefolder), "%s", path);
 #endif

@@ -642,7 +642,7 @@ Byte swaps all data in a bsp file.
 */
 void Q2_SwapBSPFile (qboolean todisk)
 {
-	int				i, j, k;
+	int				i, j;
 	dmodel_t		*d;
 
 	

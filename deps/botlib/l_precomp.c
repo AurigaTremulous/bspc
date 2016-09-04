@@ -1692,7 +1692,6 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 	int questmarkintvalue = 0;
 	double questmarkfloatvalue = 0;
 	int gotquestmarkvalue = qfalse;
-	int lastoperatortype = 0;
 	//
 	operator_t operator_heap[MAX_OPERATORS];
 	int numoperators = 0;
@@ -2080,8 +2079,9 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 		if (integer) Log_Write("result value = %d", v1->intvalue);
 		else Log_Write("result value = %f", v1->floatvalue);
 #endif //DEBUG_EVAL
-		if (error) break;
-		lastoperatortype = o->operator;
+		if (error) {
+                    break;
+                }
 		//if not an operator with arity 1
 		if (o->operator != P_LOGIC_NOT
 				&& o->operator != P_BIN_NOT)
@@ -2097,10 +2097,18 @@ int PC_EvaluateTokens(source_t *source, token_t *tokens, signed long int *intval
 			FreeValue(v);
 		} //end if
 		//remove the operator
-		if (o->prev) o->prev->next = o->next;
-		else firstoperator = o->next;
-		if (o->next) o->next->prev = o->prev;
-		else lastoperator = o->prev;
+		if (o->prev) {
+                    o->prev->next = o->next;
+                }
+		else {
+                    firstoperator = o->next;
+                }
+		if (o->next) {
+                    o->next->prev = o->prev;
+                }
+		else {
+                    lastoperator = o->prev;
+                }
 		//FreeMemory(o);
 		FreeOperator(o);
 	} //end while
