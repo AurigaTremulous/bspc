@@ -24,6 +24,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "qcommon.h"
 #include "cm_polylib.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define	MAX_SUBMODELS			256
 #define	BOX_MODEL_HANDLE		255
 #define CAPSULE_MODEL_HANDLE	254
@@ -194,3 +198,7 @@ struct patchCollide_s	*CM_GeneratePatchCollide( int width, int height, vec3_t *p
 void CM_TraceThroughPatchCollide( traceWork_t *tw, const struct patchCollide_s *pc );
 qboolean CM_PositionTestInPatchCollide( traceWork_t *tw, const struct patchCollide_s *pc );
 void CM_ClearLevelPatches( void );
+
+#ifdef __cplusplus
+}
+#endif

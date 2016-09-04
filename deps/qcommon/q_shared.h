@@ -173,6 +173,11 @@ typedef int intptr_t;
 
 #include "q_platform.h"
 
+#ifdef __cplusplus
+extern "C" {  
+#endif
+	
+	
 //=============================================================
 
 typedef unsigned char 		byte;
@@ -1406,5 +1411,9 @@ typedef enum _flag_status {
 
 #define LERP( a, b, w ) ( ( a ) * ( 1.0f - ( w ) ) + ( b ) * ( w ) )
 #define LUMA( red, green, blue ) ( 0.2126f * ( red ) + 0.7152f * ( green ) + 0.0722f * ( blue ) )
+
+#ifdef __cplusplus
+}  
+#endif
 
 #endif	// __Q_SHARED_H

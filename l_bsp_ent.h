@@ -20,6 +20,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef MAX_MAP_ENTITIES
 #define	MAX_MAP_ENTITIES	2048
 #endif
@@ -56,3 +60,7 @@ qboolean ParseEntity(script_t *script);
 epair_t *ParseEpair(script_t *script);
 void PrintEntity(entity_t *ent);
 
+#ifdef __cplusplus
+}
+#endif
+	

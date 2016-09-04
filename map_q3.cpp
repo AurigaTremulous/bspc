@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void PrintContents(int contents);
+extern "C" void PrintContents(int contents);
 
 int	Q3_BrushContents(mapbrush_t *b)
 {

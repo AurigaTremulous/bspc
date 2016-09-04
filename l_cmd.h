@@ -45,6 +45,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <time.h>
 #include <stdarg.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifndef __BYTEBOOL__
 #define __BYTEBOOL__
 typedef enum {qfalse, qtrue} qboolean;
@@ -159,6 +163,10 @@ typedef struct
 	byte	*data;
 	int		count;
 } cblock_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

@@ -20,6 +20,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //a winding gives the bounding points of a convex polygon
 typedef struct
 {
@@ -118,3 +122,6 @@ int WindingsNonConvex(winding_t *w1, winding_t *w2,
 							 float dist1, float dist2);
 //#endif //ME
 
+#ifdef __cplusplus
+}
+#endif

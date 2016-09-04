@@ -21,8 +21,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "q3files.h"
-//#include "surfaceflags.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+	
 extern	int				q3_nummodels;
 extern	q3_dmodel_t		*q3_dmodels;//[MAX_MAP_MODELS];
 
@@ -79,3 +82,7 @@ extern	char			q3_dbrushsidetextured[Q3_MAX_MAP_BRUSHSIDES];
 void Q3_LoadBSPFile(struct quakefile_s *qf);
 void Q3_FreeMaxBSP(void);
 void Q3_ParseEntities (void);
+
+#ifdef __cplusplus
+}
+#endif

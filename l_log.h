@@ -20,6 +20,10 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //open a log file
 void Log_Open(char *filename);
 //close the current log file
@@ -40,3 +44,7 @@ void Log_Flush(void);
 #ifdef WINBSPC
 void WinBSPCPrint(char *str);
 #endif //WINBSPC
+
+#ifdef __cplusplus
+}
+#endif

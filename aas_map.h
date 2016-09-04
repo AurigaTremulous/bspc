@@ -20,4 +20,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+	
 void AAS_CreateMapBrushes(mapbrush_t *brush, entity_t *mapent, int addbevels);
+
+#ifdef __cplusplus
+}
+#endif
