@@ -405,7 +405,7 @@ qboolean Q3_ParseBSPEntity(int entnum)
 			mapent->modelnum = atoi(&model[1]);
 		} //end if
 	} //end if
-
+	
 	GetVectorForKey(mapent, "origin", mapent->origin);
 
 	//if this is the world entity it has model number zero
@@ -604,8 +604,6 @@ void AAS_ExpandMapBrush(mapbrush_t *brush, vec3_t mins, vec3_t maxs);
 
 void Q3_LoadMapFromBSP(struct quakefile_s *qf)
 {
-	int i;
-
 	Log_Print("-- Q3_LoadMapFromBSP --\n");
 	//loaded map type
 	loadedmaptype = MAPTYPE_QUAKE3;
@@ -617,15 +615,16 @@ void Q3_LoadMapFromBSP(struct quakefile_s *qf)
 	//create an index from bsp planes to map planes
 	//DPlanes2MapPlanes();
 	//clear brush model numbers
-	for (i = 0; i < MAX_MAPFILE_BRUSHES; i++)
+	for (int i = 0; i < MAX_MAPFILE_BRUSHES; ++i) {
 		brushmodelnumbers[i] = -1;
+	}
 
 	nummapbrushsides = 0;
 	num_entities = 0;
 
 	Q3_ParseEntities();
 	//
-	for (i = 0; i < num_entities; i++)
+	for (int i = 0; i < num_entities; ++i)
 	{
 		Q3_ParseBSPEntity(i);
 	} //end for
@@ -633,31 +632,13 @@ void Q3_LoadMapFromBSP(struct quakefile_s *qf)
 	AAS_CreateCurveBrushes();
 	//get the map mins and maxs from the world model
 	ClearBounds(map_mins, map_maxs);
-	for (i = 0; i < entities[0].numbrushes; i++)
+	for (int i = 0; i < entities[0].numbrushes; ++i)
 	{
 		if (mapbrushes[i].numsides <= 0)
 			continue;
 		AddPointToBounds (mapbrushes[i].mins, map_mins, map_maxs);
 		AddPointToBounds (mapbrushes[i].maxs, map_mins, map_maxs);
 	} //end for
-	/*/
-	for (i = 0; i < nummapbrushes; i++)
-	{
-		//if (!mapbrushes[i].original_sides) continue;
-		//AddBrushBevels(&mapbrushes[i]);
-		//AAS_ExpandMapBrush(&mapbrushes[i], mins, maxs);
-	} //end for*/
-	/*
-	for (i = 0; i < nummapbrushsides; i++)
-	{
-		Log_Write("side %d flags = %d", i, brushsides[i].flags);
-	} //end for
-	for (i = 0; i < nummapbrushes; i++)
-	{
-		Log_Write("brush contents: ");
-		PrintContents(mapbrushes[i].contents);
-		Log_Print("\n");
-	} //end for*/
 } //end of the function Q3_LoadMapFromBSP
 //===========================================================================
 //

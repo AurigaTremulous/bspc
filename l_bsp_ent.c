@@ -163,7 +163,7 @@ vec_t	FloatForKey (entity_t *ent, char *key)
 	return atof(k);
 }
 
-void 	GetVectorForKey (entity_t *ent, char *key, vec3_t vec)
+void 	GetVectorForKey (entity_t *ent, const char *key, vec3_t vec)
 {
 	const char	*k;
 	double	v1, v2, v3;

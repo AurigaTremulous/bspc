@@ -1321,7 +1321,7 @@ th_triangle_t *TH_CreateAASFaceTriangles(aas_face_t *face)
 //===========================================================================
 th_triangle_t *TH_AASToTriangleMesh(void)
 {
-	int i, j, facenum, otherareanum;
+	int i, j, facenum;
 	aas_face_t *face;
 	th_triangle_t *tri, *nexttri, *triangles;
 

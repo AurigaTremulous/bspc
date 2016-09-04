@@ -55,7 +55,7 @@ void StripTrailing(char *e);
 void SetKeyValue(entity_t *ent, char *key, char *value);
 char *ValueForKey(entity_t *ent, const char *key); // will return "" if not present
 vec_t FloatForKey(entity_t *ent, char *key);
-void GetVectorForKey(entity_t *ent, char *key, vec3_t vec);
+void GetVectorForKey(entity_t *ent, const char *key, vec3_t vec);
 qboolean ParseEntity(script_t *script);
 epair_t *ParseEpair(script_t *script);
 void PrintEntity(entity_t *ent);
