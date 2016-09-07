@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
-#include "qbsp.h"
+#include "aas_map.h"
 #include "l_mem.h"
 #include "botlib/aasfile.h"		//aas_bbox_t
 #include "aas_store.h"				//AAS_MAX_BBOXES
