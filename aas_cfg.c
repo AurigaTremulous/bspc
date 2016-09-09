@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include <float.h>
 
+#include "qcommon_local.h"
 #include "qbsp.h"
 #include "botlib/aasfile.h"
 #include "aas_store.h"
@@ -150,7 +151,7 @@ void DefaultCfg(void)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-char	* QDECL va( char *format, ... )
+char	* va( const char *format, ... )
 {
 	va_list		argptr;
 	static char		string[2][32000];	// in case va is called by nested functions

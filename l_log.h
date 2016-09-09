@@ -31,11 +31,11 @@ void Log_Close(void);
 //close log file if present
 void Log_Shutdown(void);
 //print on stdout and write to the current opened log file
-void Log_Print(const char *fmt, ...);
+void Log_Print(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 //write to the current opened log file
-void Log_Write(const char *fmt, ...);
+void Log_Write(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 //write to the current opened log file with a time stamp
-void Log_WriteTimeStamped(const char *fmt, ...);
+void Log_WriteTimeStamped(const char *fmt, ...) __attribute__ ((format (printf, 1, 2)));
 //returns the log file structure
 FILE *Log_FileStruct(void);
 //flush log file

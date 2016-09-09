@@ -155,7 +155,7 @@ char 	*ValueForKey (entity_t *ent, const char *key)
 	return "";
 }
 
-vec_t	FloatForKey (entity_t *ent, char *key)
+vec_t	FloatForKey (entity_t *ent, const char *key)
 {
 	char	*k;
 	

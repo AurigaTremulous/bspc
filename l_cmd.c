@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // cmdlib.c
 
+#include "qcommon_local.h"
 #include "l_cmd.h"
 #include "l_log.h"
 #include "l_mem.h"
@@ -186,7 +187,7 @@ void Error (const char *error, ...)
 	va_end(argptr);
 	printf("ERROR: %s\n", text);
 
-	Log_Write(text);
+	Log_Write("%s", text);
 	Log_Close();
 
 	exit (1);
@@ -202,7 +203,7 @@ void Warning(const char *warning, ...)
 	va_end(argptr);
 	printf("WARNING: %s\n", text);
 
-	Log_Write(text);
+	Log_Write("%s", text);
 } //end of the function Warning
 
 #endif
@@ -230,7 +231,7 @@ void qprintf(const char *format, ...)
 	va_end(argptr);
 } //end of the function qprintf
 
-void Com_Error(int level, char *error, ...)
+void Com_Error(int level, const char *error, ...)
 {
 	va_list argptr;
 	char text[1024];
@@ -249,7 +250,7 @@ void Com_Printf( const char *fmt, ... )
 	va_start(argptr, fmt);
 	vsnprintf(text, sizeof(text), fmt, argptr);
 	va_end(argptr);
-	Log_Print(text);
+	Log_Print("%s", text);
 } //end of the funcion Com_Printf
 
 /*

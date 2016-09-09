@@ -1101,43 +1101,8 @@ int TH_FindTetrahedron2(th_triangle_t *tri, int *triangles)
 void TH_TetrahedralDecomposition(th_triangle_t *triangles)
 {
 	int i, thtriangles[4], numtriangles;
-	th_triangle_t *donetriangles, *tri;
+	th_triangle_t *tri;
 
-	donetriangles = NULL;
-
-	/*
-	numtriangles = 0;
-	qprintf("%6d triangles", numtriangles);
-	for (tri = triangles; tri; tri = triangles)
-	{
-		qprintf("\r%6d", numtriangles++);
-		if (!TH_FindTetrahedron1(tri, thtriangles))
-		{
-//			if (!TH_FindTetrahedron2(tri, thtriangles))
-			{
-//				Error("triangle without tetrahedron");
-				TH_RemoveTriangleFromList(&triangles, tri);
-				continue;
-			} //end if
-		} //end if
-		//create a tetrahedron from the triangles
-		TH_CreateTetrahedron(thtriangles);
-		//
-		for (i = 0; i < 4; i++)
-		{
-			if (thworld.triangles[abs(thtriangles[i])].front &&
-				thworld.triangles[abs(thtriangles[i])].back)
-			{
-				TH_RemoveTriangleFromList(&triangles, &thworld.triangles[abs(thtriangles[i])]);
-				TH_AddTriangleToList(&donetriangles, &thworld.triangles[abs(thtriangles[i])]);
-				TH_FreeTriangleEdges(&thworld.triangles[abs(thtriangles[i])]);
-			} //end if
-			else
-			{
-				TH_AddTriangleToList(&triangles, &thworld.triangles[abs(thtriangles[i])]);
-			} //end else
-		} //end for
-	} //end for*/
 	qprintf("%6d tetrahedrons", thworld.numtetrahedrons);
 	do
 	{

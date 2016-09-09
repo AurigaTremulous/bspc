@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#include "qcommon_local.h"
 #include "qcommon/q_shared.h"
 #include "l_log.h"
 #include "l_qfiles.h"
@@ -153,7 +154,8 @@ void *BotImport_GetMemory(int size)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void BotImport_Print(int type, char *fmt, ...)
+void BotImport_Print(int type, const char *fmt, ...) __attribute__ ((format (printf, 2, 3)));
+void BotImport_Print(int type, const char *fmt, ...)
 {
 	va_list argptr;
 	char buf[1024];
@@ -161,7 +163,9 @@ void BotImport_Print(int type, char *fmt, ...)
 	va_start(argptr, fmt);
 	vsnprintf(buf, sizeof(buf), fmt, argptr);
 	fputs(buf, stdout);
-	if (buf[0] != '\r') Log_Write(buf);
+	if (buf[0] != '\r') {
+		Log_Write("%s", buf);
+	}
 	va_end(argptr);
 } //end of the function BotImport_Print
 //===========================================================================
@@ -200,7 +204,7 @@ void BotImport_BSPModelMinsMaxsOrigin(int modelnum, vec3_t angles, vec3_t outmin
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void Com_DPrintf(char *fmt, ...)
+void Com_DPrintf(const char *fmt, ...)
 {
 	va_list argptr;
 	char buf[1024];
@@ -208,7 +212,9 @@ void Com_DPrintf(char *fmt, ...)
 	va_start(argptr, fmt);
 	vsnprintf(buf, sizeof(buf), fmt, argptr);
 	fputs(buf, stdout);
-	if (buf[0] != '\r') Log_Write(buf);
+	if (buf[0] != '\r') {
+		Log_Write("%s", buf);
+	}
 	va_end(argptr);
 } //end of the function Com_DPrintf
 //===========================================================================
