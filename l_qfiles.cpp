@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //file extensions with their type
 typedef struct qfile_exttype_s
 {
-	char *extension;
+	const char *extension;
 	int type;
 } qfile_exttyp_t;
 
@@ -81,7 +81,7 @@ int QuakeFileExtensionType(char *extension)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-char *QuakeFileTypeExtension(int type)
+const char *QuakeFileTypeExtension(int type)
 {
 	int i;
 
@@ -113,7 +113,7 @@ int QuakeFileType(char *filename)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-char *StringContains(char *str1, char *str2, int casesensitive)
+char *StringContains(char *str1, const char *str2, int casesensitive)
 {
 	int len, i, j;
 
@@ -246,7 +246,6 @@ quakefile_t *FindQuakeFilesInZip(char *zipfile, char *filter)
 	unz_global_info gi;
 	char			filename_inzip[MAX_PATH];
 	unz_file_info	file_info;
-	int				i;
 	quakefile_t		*qfiles, *lastqf, *qf;
 
 	uf = unzOpen(zipfile);
@@ -258,7 +257,7 @@ quakefile_t *FindQuakeFilesInZip(char *zipfile, char *filter)
 
 	qfiles = NULL;
 	lastqf = NULL;
-	for (i = 0; i < gi.number_entry; i++)
+	for (unsigned int i = 0; i < gi.number_entry; i++)
 	{
 		err = unzGetCurrentFileInfo(uf, &file_info, filename_inzip, sizeof(filename_inzip), NULL,0,NULL,0);
 		if (err != UNZ_OK) break;
@@ -266,7 +265,7 @@ quakefile_t *FindQuakeFilesInZip(char *zipfile, char *filter)
 		ConvertPath(filename_inzip);
 		if (FileFilter(filter, filename_inzip, qfalse))
 		{
-			qf = malloc(sizeof(quakefile_t));
+			qf = (quakefile_t*)malloc(sizeof(quakefile_t));
 			if (!qf) Error("out of memory");
 			memset(qf, 0, sizeof(quakefile_t));
 			strcpy(qf->pakfile, zipfile);
@@ -304,7 +303,7 @@ quakefile_t *FindQuakeFilesInPak(char *pakfile, char *filter)
 	dsinpackfile_t *packfiles;
 	dpackfile_t *idpackfiles;
 	quakefile_t *qfiles, *lastqf, *qf;
-	int numpackdirs, i;
+	unsigned int numpackdirs;
 
 	qfiles = NULL;
 	lastqf = NULL;
@@ -344,7 +343,7 @@ quakefile_t *FindQuakeFilesInPak(char *pakfile, char *filter)
 		//convert to sin pack files
 		packfiles = (dsinpackfile_t *) malloc(numpackdirs * sizeof(dsinpackfile_t));
 		if (!packfiles) Error("out of memory");
-		for (i = 0; i < numpackdirs; i++)
+		for (unsigned int i = 0; i < numpackdirs; i++)
 		{
 			strcpy(packfiles[i].name, idpackfiles[i].name);
 			packfiles[i].filepos = LittleLong(idpackfiles[i].filepos);
@@ -367,19 +366,19 @@ quakefile_t *FindQuakeFilesInPak(char *pakfile, char *filter)
 			return NULL;
 		} //end if
 		fclose(fp);
-		for (i = 0; i < numpackdirs; i++)
+		for (unsigned int i = 0; i < numpackdirs; i++)
 		{
 			packfiles[i].filepos = LittleLong(packfiles[i].filepos);
 			packfiles[i].filelen = LittleLong(packfiles[i].filelen);
 		} //end for
 	} //end else
 	//
-	for (i = 0; i < numpackdirs; i++)
+	for (unsigned int i = 0; i < numpackdirs; i++)
 	{
 		ConvertPath(packfiles[i].name);
 		if (FileFilter(filter, packfiles[i].name, qfalse))
 		{
-			qf = malloc(sizeof(quakefile_t));
+			qf = (quakefile_t*)malloc(sizeof(quakefile_t));
 			if (!qf) Error("out of memory");
 			memset(qf, 0, sizeof(quakefile_t));
 			strcpy(qf->pakfile, pakfile);
@@ -415,7 +414,6 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 #else
 	glob_t globbuf;
 	struct stat statbuf;
-	int j;
 #endif
 	quakefile_t *qfiles, *lastqf, *qf;
 	char pakfile[_MAX_PATH], filename[_MAX_PATH], *str;
@@ -436,7 +434,7 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 			_stat(pakfile, &statbuf);
 #else
 		glob(pakfilter, 0, NULL, &globbuf);
-		for (j = 0; j < globbuf.gl_pathc; j++)
+		for (unsigned int j = 0; j < globbuf.gl_pathc; j++)
 		{
 			strcpy(pakfile, globbuf.gl_pathv[j]);
 			stat(pakfile, &statbuf);
@@ -500,12 +498,12 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 			strcat(filename, filedata.cFileName);
 #else
 		glob(filter, 0, NULL, &globbuf);
-		for (j = 0; j < globbuf.gl_pathc; j++)
+		for (unsigned int j = 0; j < globbuf.gl_pathc; j++)
 		{
 			strcpy(filename, globbuf.gl_pathv[j]);
 #endif
 			//
-			qf = malloc(sizeof(quakefile_t));
+			qf = (quakefile_t*)malloc(sizeof(quakefile_t));
 			if (!qf) Error("out of memory");
 			memset(qf, 0, sizeof(quakefile_t));
 			strcpy(qf->pakfile, "");
@@ -621,7 +619,6 @@ int LoadQuakeFile(quakefile_t *qf, void **bufferptr)
 int ReadQuakeFile(quakefile_t *qf, void *buffer, int offset, int length)
 {
 	FILE *fp;
-	int read;
 	unzFile zf;
 	char tmpbuf[1024];
 
@@ -636,8 +633,10 @@ int ReadQuakeFile(quakefile_t *qf, void *buffer, int offset, int length)
 		//
 		while(offset > 0)
 		{
-			read = offset;
-			if (read > sizeof(tmpbuf)) read = sizeof(tmpbuf);
+			unsigned read = offset;
+			if (read > sizeof(tmpbuf)) {
+				read = sizeof(tmpbuf);
+			}
 			unzReadCurrentFile(&qf->zipinfo, tmpbuf, read);
 			offset -= read;
 		} //end while

@@ -20,7 +20,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
-#include "qcommon/unzip.h"
+#include "unzip.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define QFILETYPE_UNKNOWN			0x8000
 #define QFILETYPE_PAK				0x0001
@@ -76,7 +80,7 @@ typedef struct quakefile_s
 } quakefile_t;
 
 //returns the file extension for the given type
-char *QuakeFileTypeExtension(int type);
+const char *QuakeFileTypeExtension(int type);
 //returns the file type for the given extension
 int QuakeFileExtensionType(char *extension);
 //return the Quake file type for the given file
@@ -89,3 +93,7 @@ quakefile_t *FindQuakeFiles(char *filter);
 int LoadQuakeFile(quakefile_t *qf, void **bufferptr);
 //read part of a Quake file into the buffer
 int ReadQuakeFile(quakefile_t *qf, void *buffer, int offset, int length);
+
+#ifdef __cplusplus
+}
+#endif

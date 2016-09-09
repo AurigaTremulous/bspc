@@ -24,6 +24,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 //=============================================================================
 
 // memory.h
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //#define MEMDEBUG
 #undef MEMDEBUG
 
@@ -49,3 +54,6 @@ int MemorySize(void *ptr);
 void PrintMemorySize(unsigned long size);
 int TotalAllocatedMemory(void);
 
+#ifdef __cplusplus
+}
+#endif

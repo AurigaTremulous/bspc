@@ -22,6 +22,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #define AREA_PORTAL			1
 
+#pragma once
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 //temporary AAS face
 typedef struct tmp_face_s
 {
@@ -134,3 +141,8 @@ void AAS_FlipAreaFaces(tmp_area_t *tmparea);
 int AAS_GapFace(tmp_face_t *tmpface, int side);
 //returns true if the face is a ground face
 int AAS_GroundFace(tmp_face_t *tmpface);
+
+#ifdef __cplusplus
+}
+#endif
+
