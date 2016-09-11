@@ -433,7 +433,7 @@ void MakeTreePortals (tree_t *tree);
 // glfile.c
 //=============================================================================
 
-void OutputWinding(winding_t *w, FILE *glview);
+void OutputWinding(const winding_t *w, FILE *glview);
 void WriteGLView(tree_t *tree, char *source);
 
 //=============================================================================

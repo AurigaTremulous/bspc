@@ -309,7 +309,7 @@ void AAS_MergeAreas(void)
 	AAS_RefreshMergedTree_r(tmpaasworld.nodes);
 } //end of the function AAS_MergeAreas*/
 
-int AAS_GroundArea(tmp_area_t *tmparea)
+static int AAS_GroundArea(const tmp_area_t *tmparea)
 {
 	tmp_face_t *face;
 	int side;

@@ -69,6 +69,25 @@ Mimic unix command line expansion
 int		ex_argc;
 char	*ex_argv[MAX_EX_ARGC];
 #ifdef _WIN32
+
+// FIXME: should include the slash, otherwise
+// backing to an empty path will be wrong when appending a slash
+static void ExtractFilePath (char *path, char *dest)
+{
+	char    *src;
+
+	src = path + strlen(path) - 1;
+
+//
+// back up until a \ or the start
+//
+	while (src != path && *(src-1) != '\\' && *(src-1) != '/')
+		src--;
+
+	memcpy (dest, path, src-path);
+	dest[src-path] = 0;
+}
+
 #include "io.h"
 void ExpandWildcards (int *argc, char ***argv)
 {
@@ -401,7 +420,7 @@ void Q_getwd (char *out, size_t size)
 }
 
 
-void Q_mkdir (char *path)
+static void Q_mkdir (char *path)
 {
 #ifdef WIN32
 	if (_mkdir (path) != -1)
@@ -535,31 +554,6 @@ extern "C" void Q_strncpyz( char *dest, const char *src, int destsize ) {
 	strncpy( dest, src, destsize-1 );
     dest[destsize-1] = 0;
 }
-
-char *strupr (char *start)
-{
-	char	*in;
-	in = start;
-	while (*in)
-	{
-		*in = toupper(*in);
-		in++;
-	}
-	return start;
-}
-
-char *strlower (char *start)
-{
-	char	*in;
-	in = start;
-	while (*in)
-	{
-		*in = tolower(*in); 
-		in++;
-	}
-	return start;
-}
-
 
 /*
 =============================================================================
@@ -792,28 +786,7 @@ void    StripExtension (char *path)
 }
 
 
-/*
-====================
-Extract file parts
-====================
-*/
-// FIXME: should include the slash, otherwise
-// backing to an empty path will be wrong when appending a slash
-void ExtractFilePath (char *path, char *dest)
-{
-	char    *src;
 
-	src = path + strlen(path) - 1;
-
-//
-// back up until a \ or the start
-//
-	while (src != path && *(src-1) != '\\' && *(src-1) != '/')
-		src--;
-
-	memcpy (dest, path, src-path);
-	dest[src-path] = 0;
-}
 
 void ExtractFileBase (char *path, char *dest)
 {

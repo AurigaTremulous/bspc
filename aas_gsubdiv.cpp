@@ -29,8 +29,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #define FACECLIP_EPSILON			0.2
 #define FACE_EPSILON					1.0
 
-int numgravitationalsubdivisions = 0;
-int numladdersubdivisions = 0;
+static int numgravitationalsubdivisions = 0;
+static int numladdersubdivisions = 0;
 
 //NOTE: only do gravitational subdivision BEFORE area merging!!!!!!!
 //			because the bsp tree isn't refreshes like with ladder subdivision

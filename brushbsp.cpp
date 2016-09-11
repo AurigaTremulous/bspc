@@ -575,15 +575,14 @@ int BoxOnPlaneSide (vec3_t mins, vec3_t maxs, plane_t *plane)
 	return side;
 }
 #else
-extern "C" int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, plane_t *p)
+extern "C" int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, const plane_t *p)
 {
 	float	dist1, dist2;
-	int sides;
+	int sides = 0;
 
 	// axial planes are easy
 	if (p->type < 3)
 	{
-		sides = 0;
 		if (emaxs[p->type] > p->dist+PLANESIDE_EPSILON) sides |= PSIDE_FRONT;
 		if (emins[p->type] < p->dist-PLANESIDE_EPSILON) sides |= PSIDE_BACK;
 		return sides;
@@ -645,7 +644,7 @@ extern "C" int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, plane_t *p)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int QuickTestBrushToPlanenum (bspbrush_t *brush, int planenum, int *numsplits)
+int QuickTestBrushToPlanenum (const bspbrush_t *brush, int planenum, int *numsplits)
 {
 	int i, num;
 	plane_t *plane;

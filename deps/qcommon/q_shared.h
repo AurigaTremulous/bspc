@@ -675,7 +675,7 @@ void AxisClear( vec3_t axis[3] );
 void AxisCopy( vec3_t in[3], vec3_t out[3] );
 
 void SetPlaneSignbits( struct cplane_s *out );
-int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, struct cplane_s *plane);
+int BoxOnPlaneSide (const vec3_t emins, const vec3_t emaxs, struct cplane_s *plane);
 
 qboolean BoundsIntersect(const vec3_t mins, const vec3_t maxs,
 		const vec3_t mins2, const vec3_t maxs2);
@@ -800,7 +800,6 @@ int		Q_stricmp (const char *s1, const char *s2);
 int		Q_strncmp (const char *s1, const char *s2, int n);
 int		Q_stricmpn (const char *s1, const char *s2, int n);
 char	*Q_strlwr( char *s1 );
-char	*Q_strupr( char *s1 );
 const char	*Q_stristr( const char *s, const char *find);
 
 // buffer size safe library replacements

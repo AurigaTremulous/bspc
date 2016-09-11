@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "qbsp.h"
 
-int		c_glfaces;
+static int		c_glfaces;
 
-int PortalVisibleSides (portal_t *p)
+static int PortalVisibleSides (const portal_t *p)
 {
 	int		fcon, bcon;
 
@@ -46,7 +46,7 @@ int PortalVisibleSides (portal_t *p)
 	return 0;
 }
 
-void OutputWinding (winding_t *w, FILE *glview)
+void OutputWinding (const winding_t *w, FILE *glview)
 {
 	static	int	level = 128;
 	vec_t		light;

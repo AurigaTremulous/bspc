@@ -28,15 +28,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef __CMDLIB__
 #define __CMDLIB__
 
-#ifdef _WIN32
-#pragma warning(disable : 4244)     // MIPS
-#pragma warning(disable : 4136)     // X86
-#pragma warning(disable : 4051)     // ALPHA
-
-#pragma warning(disable : 4018)     // signed/unsigned mismatch
-#pragma warning(disable : 4305)     // truncate from double to float
-#endif
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -72,16 +63,12 @@ typedef unsigned char byte;
 extern int myargc;
 extern char **myargv;
 
-char *strupr (char *in);
-char *strlower (char *in);
 int Q_strncasecmp (const char *s1, const char *s2, int n);
 int Q_strcasecmp (const char *s1, const char *s2);
 EXTERNC void Q_strncpyz( char *dest, const char *src, int destsize );
 void Q_getwd (char *out, size_t size);
 
 int Q_filelength (FILE *f);
-
-void	Q_mkdir (char *path);
 
 extern	char		qdir[1024];
 extern	char		gamedir[1024];
@@ -113,7 +100,6 @@ void 	DefaultPath (char *path, char *basepath);
 void 	StripFilename (char *path);
 void 	StripExtension (char *path);
 
-void 	ExtractFilePath (char *path, char *dest);
 void 	ExtractFileBase (char *path, char *dest);
 void	ExtractFileExtension (const char *path, char *dest);
 
