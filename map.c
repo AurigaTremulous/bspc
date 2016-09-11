@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "qbsp.h"
-#include "l_bsp_hl.h"
 #include "l_bsp_q1.h"
 #include "l_bsp_q2.h"
 #include "l_bsp_q3.h"
@@ -1261,14 +1260,6 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 		Q1_AllocMaxBSP();
 		Q1_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
 		Q1_FreeMaxBSP();
-	} //end if
-	//Half-Life also only uses a version number
-	else if (idheader.ident == HL_BSPVERSION)
-	{
-		ResetMapLoading();
-		HL_AllocMaxBSP();
-		HL_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
-		HL_FreeMaxBSP();
 	} //end if
 	else
 	{
