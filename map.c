@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "qbsp.h"
 #include "l_bsp_q2.h"
 #include "l_bsp_q3.h"
-#include "l_bsp_sin.h"
 #include "l_mem.h"
 #include "botlib/aasfile.h"		//aas_bbox_t
 #include "aas_store.h"		//AAS_MAX_BBOXES
@@ -45,10 +44,6 @@ int					mapplaneusers[MAX_MAPFILE_PLANES];
 #define				PLANE_HASHES	1024
 plane_t				*planehash[PLANE_HASHES];
 vec3_t				map_mins, map_maxs;
-
-#ifdef SIN
-textureref_t		side_newrefs[MAX_MAPFILE_BRUSHSIDES];
-#endif
 
 map_texinfo_t		map_texinfo[MAX_MAPFILE_TEXINFO];
 int					map_numtexinfo;
@@ -337,9 +332,6 @@ void AddBrushBevels (mapbrush_t *b)
 	int		i, j, k, l, order;
 	side_t	sidetemp;
 	brush_texture_t	tdtemp;
-#ifdef SIN
-   textureref_t trtemp;
-#endif
 	side_t	*s, *s2;
 	vec3_t	normal;
 	float	dist;
@@ -376,9 +368,6 @@ void AddBrushBevels (mapbrush_t *b)
 					dist = -b->mins[axis];
 				s->planenum = FindFloatPlane (normal, dist);
 				s->texinfo = b->original_sides[0].texinfo;
-#ifdef SIN
-				s->lightinfo = b->original_sides[0].lightinfo;
-#endif
 				s->contents = b->original_sides[0].contents;
 				s->flags |= SFL_BEVEL;
 				c_boxbevels++;
@@ -395,12 +384,6 @@ void AddBrushBevels (mapbrush_t *b)
 				tdtemp = side_brushtextures[j+order];
 				side_brushtextures[j+order] = side_brushtextures[j+i];
 				side_brushtextures[j+i] = tdtemp;
-
-#ifdef SIN
-				trtemp = side_newrefs[j+order];
-				side_newrefs[j+order] = side_newrefs[j+i];
-				side_newrefs[j+i] = trtemp;
-#endif
 			}
 		}
 	}
@@ -714,11 +697,7 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 				if (brush->contents & CONTENTS_PLAYERCLIP)
 				{
 					//player clip
-					if (loadedmaptype == MAPTYPE_SIN)
-					{
-						if (fprintf(fp, "generic/misc/clip 0 0 0 1 1") < 0) return qfalse;
-					} //end if
-					else if (loadedmaptype == MAPTYPE_QUAKE2)
+					if (loadedmaptype == MAPTYPE_QUAKE2)
 					{	//FIXME: don't always use e1u1
 						if (fprintf(fp, "e1u1/clip 0 0 0 1 1") < 0) return qfalse;
 					} //end else
@@ -734,11 +713,7 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 				else if (brush->contents == CONTENTS_MONSTERCLIP)
 				{
 					//monster clip
-					if (loadedmaptype == MAPTYPE_SIN)
-					{
-						if (fprintf(fp, "generic/misc/monster 0 0 0 1 1") < 0) return qfalse;
-					} //end if
-					else if (loadedmaptype == MAPTYPE_QUAKE2)
+					if (loadedmaptype == MAPTYPE_QUAKE2)
 					{
 						if (fprintf(fp, "e1u1/clip_mon 0 0 0 1 1") < 0) return qfalse;
 					} //end else
@@ -751,21 +726,6 @@ qboolean WriteMapBrush(FILE *fp, mapbrush_t *brush, vec3_t origin)
 				{
 					if (fprintf(fp, "clip 0 0 0 1 1") < 0) return qfalse;
 					Log_Write("brush->contents = %d\n", brush->contents);
-				} //end else
-			} //end if
-			else if (loadedmaptype == MAPTYPE_SIN && s->texinfo == 0)
-			{
-				if (brush->contents & CONTENTS_DUMMYFENCE)
-				{
-					if (fprintf(fp, "generic/misc/fence 0 0 0 1 1") < 0) return qfalse;
-				} //end if
-				else if (brush->contents & CONTENTS_MIST)
-				{
-					if (fprintf(fp, "generic/misc/volumetric_base 0 0 0 1 1") < 0) return qfalse;
-				} //end if
-				else //unknown so far
-				{
-					if (fprintf(fp, "generic/misc/red 0 0 0 1 1") < 0) return qfalse;
 				} //end else
 			} //end if
 			else if (loadedmaptype == MAPTYPE_QUAKE3)
@@ -871,20 +831,9 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 			//free the winding
 			FreeWinding(w);
 			//write origin texture:
-			// CONTENTS_ORIGIN = 16777216
-			// SURF_NODRAW = 128
-			if (loadedmaptype == MAPTYPE_SIN)
-			{
-				if (fprintf(fp, "generic/misc/origin 0 0 0 1 1") < 0) return qfalse;
-			} //end if
-			else if (loadedmaptype == MAPTYPE_HALFLIFE)
-			{
-				if (fprintf(fp, "origin 0 0 0 1 1") < 0) return qfalse;
-			} //end if
-			else
-			{
-				if (fprintf(fp, "e1u1/origin 0 0 0 1 1") < 0) return qfalse;
-			} //end else
+			if (fprintf(fp, "e1u1/origin 0 0 0 1 1") < 0) { 
+				return qfalse; 
+			}
 			//Quake2 extra brush side info
 			if (loadedmaptype == MAPTYPE_QUAKE2)
 			{
@@ -963,11 +912,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 			"// damages and other remedies. If you are uncertain about your rights, contact\n"
 			"// your legal advisor.\n"
 			"//\n") < 0) return qfalse;
-	if (loadedmaptype == MAPTYPE_SIN)
-	{
-		if (fprintf(fp,
-						"// generic/misc/red is used for unknown textures\n") < 0) return qfalse;
-	} //end if
+	
 	if (fprintf(fp,"//\n"
 						"//=====================================================\n") < 0) return qfalse;
 	//write out all the entities
@@ -995,8 +940,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 			strcpy(value, ep->value);
 			StripTrailing(value);
 			//
-			if (loadedmaptype == MAPTYPE_QUAKE2 ||
-					loadedmaptype == MAPTYPE_SIN)
+			if (loadedmaptype == MAPTYPE_QUAKE2)
 			{
 				//don't write an origin for BSP models
 				if (mapent->modelnum >= 0 && !strcmp(key, "origin")) continue;
@@ -1125,7 +1069,6 @@ void ResetMapLoading(void)
 	epair_t *ep, *nextep;
 
 	Q2_ResetMapLoading();
-	Sin_ResetMapLoading();
 
 	//free all map brush side windings
 	for (i = 0; i < nummapbrushsides; i++)
@@ -1242,16 +1185,6 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 		Q2_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
 		Q2_FreeMaxBSP();
 	} //endif
-	//Sin BSP file
-	else if ((idheader.ident == SIN_BSPHEADER && idheader.version == SIN_BSPVERSION) ||
-				//the dorks gave the same format another ident and verions
-				(idheader.ident == SINGAME_BSPHEADER && idheader.version == SINGAME_BSPVERSION))
-	{
-		ResetMapLoading();
-		Sin_AllocMaxBSP();
-		Sin_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
-		Sin_FreeMaxBSP();
-	} //end if
 	else {
 		Error("unknown BSP format %c%c%c%c, version %d\n",
 										(idheader.ident & 0xFF),
