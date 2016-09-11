@@ -422,7 +422,7 @@ void Q_getwd (char *out, size_t size)
 
 static void Q_mkdir (char *path)
 {
-#ifdef WIN32
+#if defined(WIN32) || defined(_WIN32)
 	if (_mkdir (path) != -1)
 		return;
 #else

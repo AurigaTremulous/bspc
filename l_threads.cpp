@@ -118,15 +118,15 @@ void RunThreadsOnIndividual (int workcnt, qboolean showpacifier, void(*func)(int
 typedef struct thread_s
 {
 	HANDLE handle;
-	int threadid;
-	int id;
+	long unsigned int threadid;
+	LPDWORD id;
 	struct thread_s *next;
 } thread_t;
 
 thread_t *firstthread;
 thread_t *lastthread;
 int currentnumthreads;
-int currentthreadid;
+long unsigned int currentthreadid;
 
 int numthreads = 1;
 CRITICAL_SECTION crit;
@@ -261,7 +261,7 @@ void ThreadSemaphoreIncrease(int count)
 //===========================================================================
 void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
 {
-	int		threadid[MAX_THREADS];
+	long unsigned int		threadid[MAX_THREADS];
 	HANDLE	threadhandle[MAX_THREADS];
 	int		i;
 	int		start, end;
@@ -339,7 +339,7 @@ void AddThread(void (*func)(int))
 			return;
 		} //end if
 		//allocate new thread
-		thread = GetMemory(sizeof(thread_t));
+		thread = (thread_t*)GetMemory(sizeof(thread_t));
 		if (!thread) Error("can't allocate memory for thread\n");
 
 		//
@@ -350,7 +350,7 @@ void AddThread(void (*func)(int))
 				   (LPTHREAD_START_ROUTINE)func,	// LPTHREAD_START_ROUTINE lpStartAddr,
 				   (LPVOID) thread->threadid,			// LPVOID lpvThreadParm,
 					0,						// DWORD fdwCreate,
-					&thread->id);
+					thread->id);
 
 		//add the thread to the end of the list
 		thread->next = NULL;
@@ -454,7 +454,7 @@ int GetNumThreads(void)
 typedef struct thread_s
 {
 	pthread_t thread;
-	int threadid;
+	LPDWORD threadid;
 	int id;
 	struct thread_s *next;
 } thread_t;

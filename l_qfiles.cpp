@@ -425,7 +425,7 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 	if (pakfilter && strlen(pakfilter))
 	{
 #if defined(WIN32)|defined(_WIN32)
-		handle = FindFirstFile(pakfilter, &filedata);
+		handle = static_cast<HWND>(FindFirstFile(pakfilter, &filedata));
 		done = (handle == INVALID_HANDLE_VALUE);
 		while(!done)
 		{
@@ -490,7 +490,7 @@ quakefile_t *FindQuakeFilesWithPakFilter(char *pakfilter, char *filter)
 	else
 	{
 #if defined(WIN32)|defined(_WIN32)
-		handle = FindFirstFile(filter, &filedata);
+		handle = static_cast<HWND>(FindFirstFile(filter, &filedata));
 		done = (handle == INVALID_HANDLE_VALUE);
 		while(!done)
 		{

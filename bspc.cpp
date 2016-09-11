@@ -433,7 +433,7 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 	strcat(filter, "*");
 
 #if defined(WIN32)|defined(_WIN32)
-	handle = FindFirstFile(filter, &filedata);
+	handle = static_cast<HWND>(FindFirstFile(filter, &filedata));
 	int done = (handle == INVALID_HANDLE_VALUE);
 	while(!done)
 	{
