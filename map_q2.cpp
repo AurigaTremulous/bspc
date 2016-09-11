@@ -989,14 +989,13 @@ void Q2_ParseBSPBrushes(entity_t *mapent)
 qboolean Q2_ParseBSPEntity(int entnum)
 {
 	entity_t	*mapent;
-	char *model;
 
 	mapent = &entities[entnum];//num_entities];
 	mapent->firstbrush = nummapbrushes;
 	mapent->numbrushes = 0;
 	mapent->modelnum = -1;	//-1 = no model
 
-	model = ValueForKey(mapent, "model");
+	const char* model = ValueForKey(mapent, "model");
 	if (model && strlen(model))
 	{
 		if (*model != '*')
