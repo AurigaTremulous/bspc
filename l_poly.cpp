@@ -933,14 +933,14 @@ int WindingError(winding_t *w)
 
 	if (w->numpoints < 3)
 	{
-		sprintf(windingerror, "winding %i points", w->numpoints);
+		snprintf(windingerror, sizeof(windingerror), "winding %i points", w->numpoints);
 		return WE_NOTENOUGHPOINTS;
 	} //end if
 	
 	area = WindingArea(w);
 	if (area < 1)
 	{
-		sprintf(windingerror, "winding %f area", area);
+		snprintf(windingerror, sizeof(windingerror), "winding %f area", area);
 		return WE_SMALLAREA;
 	} //end if
 
@@ -954,7 +954,7 @@ int WindingError(winding_t *w)
 		{
 			if (p1[j] > BOGUS_RANGE || p1[j] < -BOGUS_RANGE)
 			{
-				sprintf(windingerror, "winding point %d BUGUS_RANGE \'%f %f %f\'", j, p1[0], p1[1], p1[2]);
+				snprintf(windingerror, sizeof(windingerror), "winding point %d BUGUS_RANGE \'%f %f %f\'", j, p1[0], p1[1], p1[2]);
 				return WE_POINTBOGUSRANGE;
 			} //end if
 		} //end for
@@ -965,7 +965,7 @@ int WindingError(winding_t *w)
 		d = DotProduct (p1, facenormal) - facedist;
 		if (d < -ON_EPSILON || d > ON_EPSILON)
 		{
-			sprintf(windingerror, "winding point %d off plane", i);
+			snprintf(windingerror, sizeof(windingerror), "winding point %d off plane", i);
 			return WE_POINTOFFPLANE;
 		} //end if
 	
@@ -975,7 +975,7 @@ int WindingError(winding_t *w)
 		
 		if (VectorLength (dir) < ON_EPSILON)
 		{
-			sprintf(windingerror, "winding degenerate edge %d-%d", i, j);
+			snprintf(windingerror, sizeof(windingerror), "winding degenerate edge %d-%d", i, j);
 			return WE_DEGENERATEEDGE;
 		} //end if
 			
@@ -992,7 +992,7 @@ int WindingError(winding_t *w)
 			d = DotProduct (w->p[j], edgenormal);
 			if (d > edgedist)
 			{
-				sprintf(windingerror, "winding non-convex");
+				snprintf(windingerror, sizeof(windingerror), "winding non-convex");
 				return WE_NONCONVEX;
 			} //end if
 		} //end for

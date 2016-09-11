@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // AAS,  Area Awareness System
 //===========================================================================
 
+#include "local.h"
 #include "qbsp.h"
 #include "l_mem.h"
 #include "botlib/aasfile.h"			//aas_bbox_t
@@ -405,7 +406,7 @@ void Q2_ParseBrush (script_t *script, entity_t *mapent)
 	//
 	if (b->contents & CONTENTS_ORIGIN)
 	{
-		char	string[32];
+		char	buffer[32];
 		vec3_t	origin;
 
 		if (num_entities == 1)
@@ -418,8 +419,8 @@ void Q2_ParseBrush (script_t *script, entity_t *mapent)
 		VectorAdd (b->mins, b->maxs, origin);
 		VectorScale (origin, 0.5, origin);
 
-		sprintf (string, "%i %i %i", (int)origin[0], (int)origin[1], (int)origin[2]);
-		SetKeyValue (&entities[b->entitynum], "origin", string);
+		snprintf (buffer, sizeof(buffer), "%i %i %i", (int)origin[0], (int)origin[1], (int)origin[2]);
+		SetKeyValue (&entities[b->entitynum], "origin", buffer);
 
 		VectorCopy (origin, entities[b->entitynum].origin);
 

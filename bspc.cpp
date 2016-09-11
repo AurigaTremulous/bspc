@@ -362,7 +362,7 @@ void Map2Bsp(char *mapfilename, char *outputfilename)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-static void AASOuputFile(quakefile_t *qf, char *outputpath, char *filename)
+static void AASOuputFile(quakefile_t *qf, const char *outputpath, char *filename)
 {
 	char ext[MAX_PATH];
 
@@ -477,12 +477,12 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 			//
 			for (qf = bspfiles; qf; qf = qf->next)
 			{
-				sprintf(aasfile, "%s/%s", qf->pakfile, qf->origname);
+				snprintf(aasfile, sizeof(aasfile), "%s/%s", qf->pakfile, qf->origname);
 				Log_Print("found %s\n", aasfile);
 				strcpy(&aasfile[strlen(aasfile)-strlen(".bsp")], ".aas");
 				for (qf2 = aasfiles; qf2; qf2 = qf2->next)
 				{
-					sprintf(buf, "%s/%s", qf2->pakfile, qf2->origname);
+					snprintf(buf, sizeof(buf), "%s/%s", qf2->pakfile, qf2->origname);
 					if (!Q_strcasecmp(aasfile, buf))
 					{
 						Log_Print("found %s\n", buf);
@@ -564,7 +564,7 @@ int main (int argc, char **argv)
 	start_time = I_FloatTime();
 
 	Log_Open("bspc.log");		//open a log file
-	Log_Print("BSPC version "BSPC_VERSION", %s %s\n", __DATE__, __TIME__);
+	Log_Print("BSPC version " BSPC_VERSION ", %s %s\n", __DATE__, __TIME__);
 #ifdef SMOKINGUNS
 	Log_Print("%s\n", SMOKINGUNS_MESSAGE);
 #endif
@@ -574,7 +574,10 @@ int main (int argc, char **argv)
 	{
 		if (!Q_strcasecmp(argv[i],"-threads"))
 		{
-			if (i + 1 >= argc) {i = 0; break;}
+			if (i + 1 >= argc) {
+				i = 0; 
+				break;
+			}
 			numthreads = atoi(argv[++i]);
 			Log_Print("threads = %d\n", numthreads);
 		} //end if
@@ -709,8 +712,13 @@ int main (int argc, char **argv)
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-output"))
 		{
-			if (i + 1 >= argc) {i = 0; break;}
-			if (access(argv[i+1], 0x04)) Warning("the folder %s does not exist", argv[i+1]);
+			if (i + 1 >= argc) {
+				i = 0; 
+				break;
+			}
+			if (access(argv[i+1], 0x04)) {
+				Warning("the folder %s does not exist", argv[i+1]);
+			}
 			strcpy(outputpath, argv[++i]);
 		} //end else if
 		else if (!Q_strcasecmp(argv[i], "-breadthfirst"))

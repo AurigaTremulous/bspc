@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#include "local.h"
 #include "qbsp.h"
 #include "l_bsp_q2.h"
 
@@ -32,7 +33,7 @@ textureref_t textureref[MAX_MAP_TEXTURES];
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int FindMiptex (char *name)
+int FindMiptex (const char *name)
 {
 	int i;
 	char path[1024];
@@ -50,7 +51,7 @@ int FindMiptex (char *name)
 	strcpy (textureref[i].name, name);
 
 	// load the miptex to get the flags and values
-	sprintf (path, "%stextures/%s.wal", gamedir, name);
+	snprintf (path, sizeof(path), "%stextures/%s.wal", gamedir, name);
 	if (TryLoadFile (path, (void **)&mt) != -1)
 	{
 		textureref[i].value = LittleLong (mt->value);

@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <unistd.h>
 #endif
 
+#include "local.h"
 #include "qbsp.h"
 
 //file extensions with their type
@@ -62,7 +63,7 @@ qfile_exttyp_t quakefiletypes[] =
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int QuakeFileExtensionType(char *extension)
+int QuakeFileExtensionType(const char *extension)
 {
 	int i;
 

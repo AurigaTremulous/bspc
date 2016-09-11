@@ -208,13 +208,11 @@ float TH_TriangleArea(th_triangle_t *tri)
 //===========================================================================
 float TH_TetrahedronVolume(th_tetrahedron_t *tetrahedron)
 {
-	int edgenum, verts[3], i, j, v2;
-	float volume, d;
-	th_triangle_t *tri, *tri2;
-	th_plane_t *plane;
+	int edgenum, verts[3], v2;
+	th_triangle_t *tri2;
 
-	tri = &thworld.triangles[abs(tetrahedron->triangles[0])];
-	for (i = 0; i < 3; i++)
+	th_triangle_t *tri = &thworld.triangles[abs(tetrahedron->triangles[0])];
+	for (int i = 0; i < 3; i++)
 	{
 		edgenum = tri->edges[i];
 		if (edgenum < 0) verts[i] = thworld.edges[abs(edgenum)].v[1];
@@ -222,9 +220,9 @@ float TH_TetrahedronVolume(th_tetrahedron_t *tetrahedron)
 	} //end for
 	//
 	tri2 = &thworld.triangles[abs(tetrahedron->triangles[1])];
-	for (j = 0; j < 3; j++)
+	for (int j = 0; j < 3; j++)
 	{
-		edgenum = tri2->edges[i];
+		edgenum = tri2->edges[j];
 		if (edgenum < 0) v2 = thworld.edges[abs(edgenum)].v[1];
 		else v2 = thworld.edges[edgenum].v[0];
 		if (v2 != verts[0] &&
@@ -232,9 +230,9 @@ float TH_TetrahedronVolume(th_tetrahedron_t *tetrahedron)
 			v2 != verts[2]) break;
 	} //end for
 
-	plane = &thworld.planes[tri->planenum];
-	d = -(DotProduct (thworld.vertexes[v2].v, plane->normal) - plane->dist);
-	volume = TH_TriangleArea(tri) * d / 3;
+	th_plane_t *plane = &thworld.planes[tri->planenum];
+	float d = -(DotProduct (thworld.vertexes[v2].v, plane->normal) - plane->dist);
+	float volume = TH_TriangleArea(tri) * d / 3;
 	return volume;
 } //end of the function TH_TetrahedronVolume
 //===========================================================================

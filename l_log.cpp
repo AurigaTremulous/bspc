@@ -130,7 +130,7 @@ void Log_Print(const char *fmt, ...)
 	char buf[2048];
 
 	va_start(ap, fmt);
-	vsprintf(buf, fmt, ap);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 
 	if (verbose)

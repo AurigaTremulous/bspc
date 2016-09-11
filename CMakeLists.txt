@@ -9,7 +9,7 @@ set(CMAKE_C_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} -O3")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Dstricmp=strcasecmp -DCom_Memcpy=memcpy -DCom_Memset=memset \
 	-DMAC_STATIC= -DQDECL= -DBSPC -D_FORTIFY_SOURCE=2 \
-	-I. -Ideps -Wall -Wsuggest-attribute=noreturn \
+	-I. -Ideps -std=c++11 -Wall -Wsuggest-attribute=noreturn \
 	-Wsuggest-attribute=format -ffast-math")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_DEBUG} -g -O1")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_RELEASE} -O3")

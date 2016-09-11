@@ -57,7 +57,7 @@ void LeakFile (tree_t *tree)
 	//
 	// write the points to the file
 	//
-	sprintf (filename, "%s.lin", source);
+	snprintf (filename, sizeof(filename), "%s.lin", source);
 	qprintf ("%s\n", filename);
 	linefile = fopen (filename, "w");
 	if (!linefile)

@@ -591,11 +591,12 @@ void MarkBrushBevels(mapbrush_t *brush)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int BrushExists(mapbrush_t *brush)
+int BrushExists(const mapbrush_t *brush)
 {
 	int i, s1, s2;
 	side_t *side1, *side2;
-	mapbrush_t *brush1, *brush2;
+	const mapbrush_t *brush1;
+	mapbrush_t *brush2;
 
 	for (i = 0; i < nummapbrushes; i++)
 	{
@@ -852,7 +853,7 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-mapbrush_t *GetAreaPortalBrush(entity_t *mapent)
+mapbrush_t *GetAreaPortalBrush(const entity_t *mapent)
 {
 	int portalnum, bn;
 	mapbrush_t *brush = NULL;
@@ -900,7 +901,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 	//
 	if (fprintf(fp,"//=====================================================\n"
 			"//\n"
-			"// map file created with BSPC "BSPC_VERSION"\n"
+			"// map file created with BSPC " BSPC_VERSION "\n"
 #ifdef SMOKINGUNS
 			"// "SMOKINGUNS_MESSAGE"\n"
 #endif

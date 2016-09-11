@@ -324,7 +324,7 @@ qboolean MakeBrushWindings(mapbrush_t *ob);
 //marks brush bevels of the brush as bevel
 void MarkBrushBevels(mapbrush_t *brush);
 //returns true if the map brush already exists
-int BrushExists(mapbrush_t *brush);
+int BrushExists(const mapbrush_t *brush);
 //loads a map from a bsp file
 int LoadMapFromBSP(struct quakefile_s *qf);
 //resets map loading
@@ -368,7 +368,6 @@ typedef struct
 
 extern	textureref_t	textureref[MAX_MAP_TEXTURES];
 
-int FindMiptex(char *name);
 int TexinfoForBrushTexture(plane_t *plane, brush_texture_t *bt, vec3_t origin);
 void TextureAxisFromPlane(plane_t *pln, vec3_t xv, vec3_t yv);
 
