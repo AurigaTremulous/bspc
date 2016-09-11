@@ -449,7 +449,7 @@ mapbrush_t *AAS_CopyMapBrush(mapbrush_t *brush, entity_t *mapent)
 //===========================================================================
 int mark_entities[MAX_MAP_ENTITIES];
 
-int AAS_AlwaysTriggered_r(char *targetname)
+int AAS_AlwaysTriggered_r(const char *targetname)
 {
 	int i;
 
@@ -482,7 +482,7 @@ int AAS_AlwaysTriggered_r(char *targetname)
 	return qfalse;
 }
 
-int AAS_AlwaysTriggered(char *targetname) {
+int AAS_AlwaysTriggered(const char *targetname) {
 	memset( mark_entities, 0, sizeof(mark_entities) );
 	return AAS_AlwaysTriggered_r( targetname );
 }
@@ -648,7 +648,6 @@ void AAS_PositionBrush(entity_t *mapent, mapbrush_t *brush)
 	side_t *s;
 	float newdist;
 	int i, notteam;
-	char *model;
 
 	if (!strcmp(ValueForKey(mapent, "classname"), "func_door_rotating"))
 	{
@@ -707,7 +706,7 @@ void AAS_PositionBrush(entity_t *mapent, mapbrush_t *brush)
 			//set mover contents
 			brush->contents = CONTENTS_MOVER;
 			//get the model number
-			model = ValueForKey(mapent, "model");
+			const char* model = ValueForKey(mapent, "model");
 			brush->modelnum = atoi(model+1);
 		} //end if
 	} //end else

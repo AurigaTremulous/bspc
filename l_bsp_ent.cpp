@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "l_math.h"
 #include "l_mem.h"
 #include "l_log.h"
-#include "botlib/l_script.h"
+#include "l_script.h"
 #include "l_bsp_ent.h"
 
 #define	MAX_KEY		32
@@ -55,7 +55,7 @@ epair_t *ParseEpair(script_t *script)
 	epair_t *e;
 	token_t token;
 
-	e = GetMemory(sizeof(epair_t));
+	e = (epair_t*)GetMemory(sizeof(epair_t));
 	memset (e, 0, sizeof(epair_t));
 	
 	PS_ExpectAnyToken(script, &token);
@@ -127,7 +127,7 @@ void PrintEntity (entity_t *ent)
 
 }
 
-void 	SetKeyValue (entity_t *ent, char *key, char *value)
+void 	SetKeyValue (entity_t *ent, const char *key, const char *value)
 {
 	epair_t	*ep;
 	
@@ -138,14 +138,14 @@ void 	SetKeyValue (entity_t *ent, char *key, char *value)
 			ep->value = copystring(value);
 			return;
 		}
-	ep = GetMemory(sizeof(*ep));
+	ep = (epair_t*)GetMemory(sizeof(*ep));
 	ep->next = ent->epairs;
 	ent->epairs = ep;
 	ep->key = copystring(key);
 	ep->value = copystring(value);
 }
 
-char 	*ValueForKey (entity_t *ent, const char *key)
+const char 	*ValueForKey (entity_t *ent, const char *key)
 {
 	epair_t	*ep;
 	
@@ -157,9 +157,7 @@ char 	*ValueForKey (entity_t *ent, const char *key)
 
 vec_t	FloatForKey (entity_t *ent, const char *key)
 {
-	char	*k;
-	
-	k = ValueForKey (ent, key);
+	const char	*k = ValueForKey (ent, key);
 	return atof(k);
 }
 

@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-extern "C" void PrintContents(int contents);
+
 
 int	Q3_BrushContents(mapbrush_t *b)
 {
@@ -389,14 +389,13 @@ void Q3_ParseBSPBrushes(entity_t *mapent)
 qboolean Q3_ParseBSPEntity(int entnum)
 {
 	entity_t *mapent;
-	char *model;
 
 	mapent = &entities[entnum];//num_entities];
 	mapent->firstbrush = nummapbrushes;
 	mapent->numbrushes = 0;
 	mapent->modelnum = -1;	//-1 = no BSP model
 
-	model = ValueForKey(mapent, "model");
+	const char* model = ValueForKey(mapent, "model");
 	if (model && strlen(model))
 	{
 		if (*model == '*')

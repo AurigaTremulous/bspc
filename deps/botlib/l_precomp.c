@@ -120,7 +120,7 @@ define_t *globaldefines;
 // Returns:					-
 // Changes Globals:		-
 //============================================================================
-void QDECL SourceError(source_t *source, char *str, ...)
+void QDECL SourceError(source_t *source, const char *str, ...)
 {
 	char text[1024];
 	va_list ap;
@@ -144,7 +144,7 @@ void QDECL SourceError(source_t *source, char *str, ...)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void QDECL SourceWarning(source_t *source, char *str, ...)
+void QDECL SourceWarning(source_t *source, const char *str, ...)
 {
 	char text[1024];
 	va_list ap;

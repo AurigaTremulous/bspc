@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#include "qbsp.h"
 #include "l_cmd.h"
 #include "l_math.h"
 #include "l_mem.h"
 #include "l_log.h"
 #include "l_poly.h"
-#include "botlib/l_script.h"
+#include "l_script.h"
 #include "q2files.h"
 #include "l_bsp_q2.h"
 #include "l_bsp_ent.h"
@@ -855,16 +856,12 @@ LoadBSPFile
 */
 void Q2_LoadBSPFile(char *filename, int offset, int length)
 {
-	int			i;
-	
-//
-// load the file header
-//
 	LoadFile (filename, (void **)&header, offset, length);
 
 // swap the header
-	for (i=0 ; i< sizeof(dheader_t)/4 ; i++)
+	for (size_t i=0 ; i< sizeof(dheader_t)/4 ; i++) {
 		((int *)header)[i] = LittleLong ( ((int *)header)[i]);
+	}
 
 	if (header->ident != IDBSPHEADER)
 		Error ("%s is not a IBSP file", filename);
@@ -913,19 +910,19 @@ Only loads the texinfo lump, so qdata can scan for textures
 */
 void	Q2_LoadBSPFileTexinfo (char *filename)
 {
-	int			i;
 	FILE		*f;
-	int		length, ofs;
+	int		ofs;
 
-	header = GetMemory(sizeof(dheader_t));
+	header = (dheader_t*)GetMemory(sizeof(dheader_t));
 
 	f = fopen (filename, "rb");
 	if (fread (header, sizeof(dheader_t), 1, f) != sizeof(dheader_t))
 		Error ("%s file is corrupted at the header", filename);
 
 // swap the header
-	for (i=0 ; i< sizeof(dheader_t)/4 ; i++)
+	for (size_t i=0 ; i< sizeof(dheader_t)/4 ; i++) {
 		((int *)header)[i] = LittleLong ( ((int *)header)[i]);
+	}
 
 	if (header->ident != IDBSPHEADER)
 		Error ("%s is not a IBSP file", filename);
@@ -933,7 +930,7 @@ void	Q2_LoadBSPFileTexinfo (char *filename)
 		Error ("%s is version %i, not %i", filename, header->version, BSPVERSION);
 
 
-	length = header->lumps[LUMP_TEXINFO].filelen;
+	size_t length = header->lumps[LUMP_TEXINFO].filelen;
 	ofs = header->lumps[LUMP_TEXINFO].fileofs;
 
 	fseek (f, ofs, SEEK_SET);

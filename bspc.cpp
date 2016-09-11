@@ -33,9 +33,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <sys/stat.h>
 #include "qbsp.h"
 #include "l_mem.h"
-#include "botlib/aasfile.h"
-#include "botlib/be_aas_cluster.h"
-#include "botlib/be_aas_optimize.h"
+#include "aasfile.h"
+#include "be_aas_cluster.h"
+#include "be_aas_optimize.h"
 #include "aas_create.h"
 #include "aas_store.h"
 #include "aas_file.h"
@@ -75,7 +75,7 @@ qboolean	lessbrushes;		//create less brushes instead of correct texture placemen
 qboolean	cancelconversion;	//qtrue if the conversion is being cancelled
 qboolean	noliquids;			//no liquids when writing map file
 qboolean	forcesidesvisible;	//force all brush sides to be visible when loaded from bsp
-qboolean	capsule_collision = 0;
+qboolean	capsule_collision = qfalse;
 
 /*
 ============================================================================
@@ -423,7 +423,6 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 #else
 	glob_t globbuf;
 	struct stat statbuf;
-	int j;
 #endif
 	char filter[_MAX_PATH], bspfilter[_MAX_PATH], aasfilter[_MAX_PATH];
 	char aasfile[_MAX_PATH], buf[_MAX_PATH], foldername[_MAX_PATH];
@@ -445,7 +444,7 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 		_stat(foldername, &statbuf);
 #else
 	glob(filter, 0, NULL, &globbuf);
-	for (j = 0; j < globbuf.gl_pathc; j++)
+	for (size_t j = 0; j < globbuf.gl_pathc; j++)
 	{
 		strcpy(foldername, globbuf.gl_pathv[j]);
 		stat(foldername, &statbuf);
@@ -518,10 +517,10 @@ static quakefile_t *GetArgumentFiles(int argc, char * argv[], int *i, const char
 	for (; (*i)+1 < argc && argv[(*i)+1][0] != '-'; (*i)++)
 	{
 		strcpy(buf, argv[(*i)+1]);
-		for (j = strlen(buf)-1; j >= strlen(buf)-4; j--) {
+		for (j = static_cast<int>(strlen(buf))-1; j >= static_cast<int>(strlen(buf))-4; j--) {
 			if (buf[j] == '.') break;
 		}
-		if (j >= strlen(buf)-4) {
+		if (j >= static_cast<int>(strlen(buf))-4) {
 			strcpy(&buf[j+1], ext);
 		}
 		qf = FindQuakeFiles(buf);
@@ -816,7 +815,7 @@ int main (int argc, char **argv)
 					Log_Print("bsp2aas: %s to %s\n", qf->origname, filename);
 					if (qf->type != QFILETYPE_BSP) Warning("%s is probably not a BSP file\n", qf->origname);
 					//set before map loading
-					create_aas = 1;
+					create_aas = qtrue;
 					LoadMapFromBSP(qf);
 					//create the AAS file
 					AAS_Create(filename);
@@ -859,7 +858,7 @@ int main (int argc, char **argv)
 						Warning("AAS file %s not found in output folder\n", filename);
 						Log_Print("creating %s...\n", filename);
 						//set before map loading
-						create_aas = 1;
+						create_aas = qtrue;
 						LoadMapFromBSP(qf);
 						//create the AAS file
 						AAS_Create(filename);
@@ -912,7 +911,7 @@ int main (int argc, char **argv)
 						Warning("AAS file %s not found in output folder\n", filename);
 						Log_Print("creating %s...\n", filename);
 						//set before map loading
-						create_aas = 1;
+						create_aas = qtrue;
 						LoadMapFromBSP(qf);
 						//create the AAS file
 						AAS_Create(filename);

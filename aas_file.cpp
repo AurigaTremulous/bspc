@@ -193,12 +193,12 @@ void AAS_DumpAASData(void)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-char *AAS_LoadAASLump(FILE *fp, int offset, int length, void *buf)
+char *AAS_LoadAASLump(FILE *fp, int offset, size_t length, void *buf)
 {
 	if (!length)
 	{
 		printf("lump size 0\n");
-		return buf;
+		return static_cast<char*>(buf);
 	} //end if
 	//seek to the data
 	if (fseek(fp, offset, SEEK_SET))
@@ -219,7 +219,7 @@ char *AAS_LoadAASLump(FILE *fp, int offset, int length, void *buf)
 		fclose(fp);
 		return NULL;
 	} //end if
-	return buf;
+	return static_cast<char*>(buf);
 } //end of the function AAS_LoadAASLump
 //===========================================================================
 //
@@ -419,7 +419,7 @@ int AAS_WriteAASLump(FILE *fp, aas_header_t *h, int lumpnum, void *data, int len
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void AAS_ShowNumReachabilities(int tt, char *name)
+void AAS_ShowNumReachabilities(int tt, const char *name)
 {
 	int i, num;
 

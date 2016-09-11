@@ -40,7 +40,7 @@ portal_t *AllocPortal (void)
 {
 	portal_t	*p;
 	
-	p = GetMemory(sizeof(portal_t));
+	p = (portal_t*)GetMemory(sizeof(portal_t));
 	memset (p, 0, sizeof(portal_t));
 
 	if (numthreads == 1)
@@ -845,7 +845,6 @@ qboolean FloodEntities (tree_t *tree)
 	int i;
 	int x, y;
 	vec3_t origin;
-	char *cl;
 	qboolean inside;
 	node_t *headnode;
 
@@ -860,7 +859,7 @@ qboolean FloodEntities (tree_t *tree)
 		GetVectorForKey(&entities[i], "origin", origin);
 		if (VectorCompare(origin, vec3_origin)) continue;
 
-		cl = ValueForKey(&entities[i], "classname");
+		const char* cl = ValueForKey(&entities[i], "classname");
 		origin[2] += 1;	//so objects on floor are ok
 
 //		Log_Print("flooding from entity %d: %s\n", i, cl);

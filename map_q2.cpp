@@ -458,7 +458,7 @@ void Q2_MoveBrushesToWorld (entity_t *mapent)
 	newbrushes = mapent->numbrushes;
 	worldbrushes = entities[0].numbrushes;
 
-	temp = GetMemory(newbrushes*sizeof(mapbrush_t));
+	temp = (mapbrush_t*)GetMemory(newbrushes*sizeof(mapbrush_t));
 	memcpy (temp, mapbrushes + mapent->firstbrush, newbrushes*sizeof(mapbrush_t));
 
 #if	0		// let them keep their original brush numbers
@@ -580,7 +580,7 @@ qboolean	Q2_ParseMapEntity(script_t *script)
 		c_areaportals++;
 		mapent->areaportalnum = c_areaportals;
 		// set the portal number as "style"
-		sprintf (str, "%i", c_areaportals);
+		snprintf (str, sizeof(str), "%i", c_areaportals);
 		SetKeyValue (mapent, "style", str);
 		Q2_MoveBrushesToWorld (mapent);
 		return qtrue;
@@ -989,14 +989,13 @@ void Q2_ParseBSPBrushes(entity_t *mapent)
 qboolean Q2_ParseBSPEntity(int entnum)
 {
 	entity_t	*mapent;
-	char *model;
 
 	mapent = &entities[entnum];//num_entities];
 	mapent->firstbrush = nummapbrushes;
 	mapent->numbrushes = 0;
 	mapent->modelnum = -1;	//-1 = no model
 
-	model = ValueForKey(mapent, "model");
+	const char* model = ValueForKey(mapent, "model");
 	if (model && strlen(model))
 	{
 		if (*model != '*')

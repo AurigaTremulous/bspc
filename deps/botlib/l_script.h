@@ -29,6 +29,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  *
  *****************************************************************************/
 
+#pragma once
+
 //undef if binary numbers of the form 0b... or 0B... are not allowed
 #define BINARYNUMBERS
 //undef if not using the token.intvalue and token.floatvalue
@@ -194,7 +196,7 @@ typedef struct script_s
 //read a token from the script
 int PS_ReadToken(script_t *script, token_t *token);
 //expect a certain token
-int PS_ExpectTokenString(script_t *script, char *string);
+int PS_ExpectTokenString(script_t *script, const char *string);
 //expect a certain token type
 int PS_ExpectTokenType(script_t *script, int type, int subtype, token_t *token);
 //expect a token
@@ -234,7 +236,7 @@ char *PunctuationFromNum(script_t *script, int num);
 //load a script from the given file at the given offset with the given length
 script_t *LoadScriptFile(const char *filename);
 //load a script from the given memory with the given length
-script_t *LoadScriptMemory(char *ptr, int length, char *name);
+script_t *LoadScriptMemory(char *ptr, int length, const char *name);
 //free a script
 void FreeScript(script_t *script);
 //set the base folder to load files from

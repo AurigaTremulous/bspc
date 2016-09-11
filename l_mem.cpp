@@ -406,7 +406,7 @@ void Hunk_ClearHigh(void)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void *Hunk_Alloc(int size)
+extern "C" void *Hunk_Alloc(int size)
 {
 	memhunk_t *h;
 
@@ -414,7 +414,7 @@ void *Hunk_Alloc(int size)
 		return NULL;
 	}
 
-	h = GetClearedMemory(size + sizeof(memhunk_t));
+	h = (memhunk_t*)GetClearedMemory(size + sizeof(memhunk_t));
 	h->ptr = (char *) h + sizeof(memhunk_t);
 	h->next = memhunk_high;
 	memhunk_high = h;
@@ -427,7 +427,7 @@ void *Hunk_Alloc(int size)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void *Z_Malloc(int size)
+extern "C" void *Z_Malloc(int size)
 {
 	return GetClearedMemory(size);
 } //end of the function Z_Malloc
@@ -437,7 +437,7 @@ void *Z_Malloc(int size)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void Z_Free (void *ptr)
+extern "C" void Z_Free (void *ptr)
 {
 	FreeMemory(ptr);
 } //end of the function Z_Free

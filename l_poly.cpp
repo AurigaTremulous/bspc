@@ -72,7 +72,7 @@ winding_t *AllocWinding (int points)
 	int			s;
 
 	s = sizeof(*w) + (points > 4 ? sizeof(vec3_t)*(points-4) : 0);
-	w = GetMemory(s);
+	w = (winding_t*)GetMemory(s);
 	memset(w, 0, s);
 
 	if (numthreads == 1)

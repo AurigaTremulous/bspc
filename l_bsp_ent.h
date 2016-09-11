@@ -20,6 +20,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#pragma once
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -52,8 +54,8 @@ extern	int num_entities;
 extern	entity_t entities[MAX_MAP_ENTITIES];
 
 void StripTrailing(char *e);
-void SetKeyValue(entity_t *ent, char *key, char *value);
-char *ValueForKey(entity_t *ent, const char *key); // will return "" if not present
+void SetKeyValue(entity_t *ent, const char *key, const char *value);
+const char *ValueForKey(entity_t *ent, const char *key); // will return "" if not present
 vec_t FloatForKey(entity_t *ent, const char *key);
 void GetVectorForKey(entity_t *ent, const char *key, vec3_t vec);
 qboolean ParseEntity(script_t *script);

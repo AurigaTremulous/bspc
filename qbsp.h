@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "l_math.h"
 #include "l_poly.h"
 #include "l_threads.h"
-#include "botlib/l_script.h"
+#include "l_script.h"
 #include "l_bsp_ent.h"
 #include "q2files.h"
 #include "l_mem.h"
@@ -411,6 +411,7 @@ int BrushMostlyOnSide(bspbrush_t *brush, plane_t *plane);
 qboolean WindingIsHuge(winding_t *w);
 qboolean WindingIsTiny(winding_t *w);
 void ResetBrushBSP(void);
+void PrintContents(int contents);
 
 //=============================================================================
 // portals.c
