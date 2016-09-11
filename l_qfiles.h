@@ -84,7 +84,7 @@ typedef struct quakefile_s
 //returns the file extension for the given type
 const char *QuakeFileTypeExtension(int type);
 //return the Quake file type for the given file
-int QuakeFileType(char *filename);
+int QuakeFileType(const char *filename);
 //returns true if the filename complies to the filter
 int FileFilter(char *filter, char *filename, int casesensitive);
 //find Quake files using the given filter

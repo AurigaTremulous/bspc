@@ -45,8 +45,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <time.h>
 #include <stdarg.h>
 
+
 #ifdef __cplusplus
-extern "C" {
+#define EXTERNC extern "C"
+#else 
+#define EXTERNC 
 #endif
 
 #ifndef __BYTEBOOL__
@@ -73,11 +76,10 @@ char *strupr (char *in);
 char *strlower (char *in);
 int Q_strncasecmp (const char *s1, const char *s2, int n);
 int Q_strcasecmp (const char *s1, const char *s2);
-void Q_strncpyz( char *dest, const char *src, int destsize );
+EXTERNC void Q_strncpyz( char *dest, const char *src, int destsize );
 void Q_getwd (char *out, size_t size);
 
 int Q_filelength (FILE *f);
-int	FileTime (char *path);
 
 void	Q_mkdir (char *path);
 
@@ -91,7 +93,7 @@ char *ExpandPathAndArchive (char *path);
 
 double I_FloatTime (void);
 
-void Error(const char *error, ...) __attribute__ ((format (printf, 1, 2))) __attribute__ ((noreturn));
+EXTERNC void Error(const char *error, ...) __attribute__ ((format (printf, 1, 2))) __attribute__ ((noreturn));
 void Warning(const char *warning, ...) __attribute__ ((format (printf, 1, 2)));
 
 int		CheckParm (char *check);
@@ -113,7 +115,7 @@ void 	StripExtension (char *path);
 
 void 	ExtractFilePath (char *path, char *dest);
 void 	ExtractFileBase (char *path, char *dest);
-void	ExtractFileExtension (char *path, char *dest);
+void	ExtractFileExtension (const char *path, char *dest);
 
 int 	ParseNum (char *str);
 
@@ -164,9 +166,6 @@ typedef struct
 	int		count;
 } cblock_t;
 
-#ifdef __cplusplus
-}
-#endif
 
 #endif
 

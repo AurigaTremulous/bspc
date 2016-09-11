@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "local.h"
 #include "qbsp.h"
+#include "l_qfiles.h"
 
 //file extensions with their type
 typedef struct qfile_exttype_s

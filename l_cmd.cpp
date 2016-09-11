@@ -177,7 +177,7 @@ Error
 For abnormal program terminations in console apps
 =================
 */
-void Error (const char *error, ...)
+extern "C" void Error (const char *error, ...)
 {
 	va_list argptr;
 	char	text[1024];
@@ -267,10 +267,10 @@ gamedir will hold qdir + the game directory (id1, id2, etc)
 char		qdir[1024];
 char		gamedir[1024];
 
-void SetQdirFromPath (char *path)
+void SetQdirFromPath (const char *path)
 {
 	char	temp[1024];
-	char	*c;
+	const char	*c;
 	int		len;
 
 	if (!(path[0] == '/' || path[0] == '\\' || path[1] == ':'))
@@ -283,7 +283,7 @@ void SetQdirFromPath (char *path)
 	// search for "quake2" in path
 
 	len = strlen(BASEDIRNAME);
-	for (c=path+strlen(path)-1 ; c != path ; c--)
+	for (c=path+strlen(path)-1 ; c != path ; c--) {
 		if (!Q_strncasecmp (c, BASEDIRNAME, len))
 		{
 			strncpy (qdir, path, c+len+1-path);
@@ -302,10 +302,11 @@ void SetQdirFromPath (char *path)
 			Error ("No gamedir in %s", path);
 			return;
 		}
+	}
 	Error ("SetQdirFromPath: no '%s' in %s", BASEDIRNAME, path);
 }
 
-char *ExpandArg (char *path)
+char *ExpandArg (const char *path)
 {
 	static char full[1024];
 
@@ -348,8 +349,7 @@ char *ExpandPathAndArchive (char *path)
 
 char *copystring(const char *s)
 {
-	char	*b;
-	b = (char*)GetMemory(strlen(s)+1);
+	char	*b = (char*)GetMemory(strlen(s)+1);
 	strcpy (b, s);
 	return b;
 }
@@ -413,25 +413,6 @@ void Q_mkdir (char *path)
 	if (errno != EEXIST)
 		Error ("mkdir %s: %s",path, strerror(errno));
 }
-
-/*
-============
-FileTime
-
-returns -1 if not present
-============
-*/
-int	FileTime (char *path)
-{
-	struct	stat	buf;
-	
-	if (stat (path,&buf) == -1)
-		return -1;
-	
-	return buf.st_mtime;
-}
-
-
 
 /*
 ==============
@@ -550,7 +531,7 @@ extern "C" int Q_stricmp (char *s1, char *s2)
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
-void Q_strncpyz( char *dest, const char *src, int destsize ) {
+extern "C" void Q_strncpyz( char *dest, const char *src, int destsize ) {
 	strncpy( dest, src, destsize-1 );
     dest[destsize-1] = 0;
 }
@@ -854,11 +835,9 @@ void ExtractFileBase (char *path, char *dest)
 	*dest = 0;
 }
 
-void ExtractFileExtension (char *path, char *dest)
+void ExtractFileExtension (const char *path, char *dest)
 {
-	char    *src;
-
-	src = path + strlen(path) - 1;
+	const char    *src = path + strlen(path) - 1;
 
 //
 // back up until a . or the start
