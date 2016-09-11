@@ -21,7 +21,6 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "qbsp.h"
-#include "l_bsp_q1.h"
 #include "l_bsp_q2.h"
 #include "l_bsp_q3.h"
 #include "l_bsp_sin.h"
@@ -1253,16 +1252,7 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 		Sin_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
 		Sin_FreeMaxBSP();
 	} //end if
-	//the Quake1 bsp files don't have a ident only a version
-	else if (idheader.ident == Q1_BSPVERSION)
-	{
-		ResetMapLoading();
-		Q1_AllocMaxBSP();
-		Q1_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
-		Q1_FreeMaxBSP();
-	} //end if
-	else
-	{
+	else {
 		Error("unknown BSP format %c%c%c%c, version %d\n",
 										(idheader.ident & 0xFF),
 										((idheader.ident >> 8) & 0xFF),
