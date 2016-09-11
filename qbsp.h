@@ -288,11 +288,8 @@ extern	map_texinfo_t		map_texinfo[MAX_MAPFILE_TEXINFO];
 extern	int					map_numtexinfo;
 #define NODESTACKSIZE		1024
 
-#define MAPTYPE_QUAKE1		1
 #define MAPTYPE_QUAKE2		2
 #define MAPTYPE_QUAKE3		3
-#define MAPTYPE_HALFLIFE	4
-#define MAPTYPE_SIN			5
 
 extern	int nodestack[NODESTACKSIZE];
 extern	int *nodestackptr;
@@ -348,41 +345,11 @@ void Q2_LoadMapFile(char *filename);
 void Q2_LoadMapFromBSP(char *filename, int offset, int length);
 
 //=============================================================================
-// map_q1.c
-//=============================================================================
-
-void Q1_ResetMapLoading(void);
-//loads a Quake2 map file
-void Q1_LoadMapFile(char *filename);
-//loads a map from a Quake1 bsp file
-void Q1_LoadMapFromBSP(char *filename, int offset, int length);
-
-//=============================================================================
 // map_q3.c
 //=============================================================================
 void Q3_ResetMapLoading(void);
 //loads a map from a Quake3 bsp file
 void Q3_LoadMapFromBSP(struct quakefile_s *qf);
-
-//=============================================================================
-// map_sin.c
-//=============================================================================
-
-void Sin_ResetMapLoading(void);
-//loads a Sin map file
-void Sin_LoadMapFile(char *filename);
-//loads a map from a Sin bsp file
-void Sin_LoadMapFromBSP(char *filename, int offset, int length);
-
-//=============================================================================
-// map_hl.c
-//=============================================================================
-
-void HL_ResetMapLoading(void);
-//loads a Half-Life map file
-void HL_LoadMapFile(char *filename);
-//loads a map from a Half-Life bsp file
-void HL_LoadMapFromBSP(char *filename, int offset, int length);
 
 //=============================================================================
 // textures.c
