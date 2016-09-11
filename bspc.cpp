@@ -423,7 +423,6 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 #else
 	glob_t globbuf;
 	struct stat statbuf;
-	int j;
 #endif
 	char filter[_MAX_PATH], bspfilter[_MAX_PATH], aasfilter[_MAX_PATH];
 	char aasfile[_MAX_PATH], buf[_MAX_PATH], foldername[_MAX_PATH];
@@ -445,7 +444,7 @@ static void CreateAASFilesForAllBSPFiles(const char *quakepath)
 		_stat(foldername, &statbuf);
 #else
 	glob(filter, 0, NULL, &globbuf);
-	for (j = 0; j < globbuf.gl_pathc; j++)
+	for (size_t j = 0; j < globbuf.gl_pathc; j++)
 	{
 		strcpy(foldername, globbuf.gl_pathv[j]);
 		stat(foldername, &statbuf);
@@ -518,10 +517,10 @@ static quakefile_t *GetArgumentFiles(int argc, char * argv[], int *i, const char
 	for (; (*i)+1 < argc && argv[(*i)+1][0] != '-'; (*i)++)
 	{
 		strcpy(buf, argv[(*i)+1]);
-		for (j = strlen(buf)-1; j >= strlen(buf)-4; j--) {
+		for (j = static_cast<int>(strlen(buf))-1; j >= static_cast<int>(strlen(buf))-4; j--) {
 			if (buf[j] == '.') break;
 		}
-		if (j >= strlen(buf)-4) {
+		if (j >= static_cast<int>(strlen(buf))-4) {
 			strcpy(&buf[j+1], ext);
 		}
 		qf = FindQuakeFiles(buf);

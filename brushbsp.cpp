@@ -67,7 +67,7 @@ int c_peak_totalbspmemory;
 typedef struct cname_s
 {
 	int value;
-	char *name;
+	const char *name;
 } cname_t;
 
 cname_t contentnames[] =

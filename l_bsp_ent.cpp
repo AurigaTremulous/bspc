@@ -127,7 +127,7 @@ void PrintEntity (entity_t *ent)
 
 }
 
-void 	SetKeyValue (entity_t *ent, char *key, char *value)
+void 	SetKeyValue (entity_t *ent, const char *key, const char *value)
 {
 	epair_t	*ep;
 	

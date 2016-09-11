@@ -580,7 +580,7 @@ qboolean	Q2_ParseMapEntity(script_t *script)
 		c_areaportals++;
 		mapent->areaportalnum = c_areaportals;
 		// set the portal number as "style"
-		sprintf (str, "%i", c_areaportals);
+		snprintf (str, sizeof(str), "%i", c_areaportals);
 		SetKeyValue (mapent, "style", str);
 		Q2_MoveBrushesToWorld (mapent);
 		return qtrue;

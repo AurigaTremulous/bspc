@@ -911,7 +911,7 @@ Only loads the texinfo lump, so qdata can scan for textures
 void	Q2_LoadBSPFileTexinfo (char *filename)
 {
 	FILE		*f;
-	int		length, ofs;
+	int		ofs;
 
 	header = (dheader_t*)GetMemory(sizeof(dheader_t));
 
@@ -930,7 +930,7 @@ void	Q2_LoadBSPFileTexinfo (char *filename)
 		Error ("%s is version %i, not %i", filename, header->version, BSPVERSION);
 
 
-	length = header->lumps[LUMP_TEXINFO].filelen;
+	size_t length = header->lumps[LUMP_TEXINFO].filelen;
 	ofs = header->lumps[LUMP_TEXINFO].fileofs;
 
 	fseek (f, ofs, SEEK_SET);

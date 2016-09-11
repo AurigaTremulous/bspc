@@ -917,7 +917,7 @@ int PS_ReadToken(script_t *script, token_t *token)
 // Returns:					-
 // Changes Globals:		-
 //============================================================================
-int PS_ExpectTokenString(script_t *script, char *string)
+int PS_ExpectTokenString(script_t *script, const char *string)
 {
 	token_t token;
 
@@ -1384,7 +1384,7 @@ script_t *LoadScriptFile(const char *filename)
 // Returns:				-
 // Changes Globals:		-
 //============================================================================
-script_t *LoadScriptMemory(char *ptr, int length, char *name)
+script_t *LoadScriptMemory(char *ptr, int length, const char *name)
 {
 	void *buffer;
 	script_t *script;

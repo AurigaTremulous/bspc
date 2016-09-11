@@ -346,7 +346,7 @@ char *ExpandPathAndArchive (char *path)
 }
 
 
-char *copystring(char *s)
+char *copystring(const char *s)
 {
 	char	*b;
 	b = (char*)GetMemory(strlen(s)+1);
