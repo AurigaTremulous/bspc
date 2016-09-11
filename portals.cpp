@@ -40,7 +40,7 @@ portal_t *AllocPortal (void)
 {
 	portal_t	*p;
 	
-	p = GetMemory(sizeof(portal_t));
+	p = (portal_t*)GetMemory(sizeof(portal_t));
 	memset (p, 0, sizeof(portal_t));
 
 	if (numthreads == 1)

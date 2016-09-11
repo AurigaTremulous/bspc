@@ -24,12 +24,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "qcommon_local.h"
 #include "qbsp.h"
-#include "botlib/aasfile.h"
+#include "aasfile.h"
 #include "aas_store.h"
 #include "aas_cfg.h"
-#include "botlib/l_precomp.h"
-#include "botlib/l_struct.h"
-#include "botlib/l_libvar.h"
+#include "l_precomp.h"
+#include "l_struct.h"
+#include "l_libvar.h"
 
 #include <stddef.h>
 

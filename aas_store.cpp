@@ -490,13 +490,12 @@ qboolean AAS_FindHashedEdge(int v1num, int v2num, int *edgenum)
 qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 {
 	int v1num, v2num;
-	qboolean found;
 
 	//the first edge is a dummy
 	if (aasworld.numedges == 0) aasworld.numedges = 1;
 
-	found = AAS_GetVertex(v1, &v1num);
-	found &= AAS_GetVertex(v2, &v2num);
+	qboolean found = AAS_GetVertex(v1, &v1num);
+	qboolean found2 = AAS_GetVertex(v2, &v2num);
 	//if one of the vertexes was outside the valid range
 	if (v1num == -1 || v2num == -1)
 	{
@@ -510,7 +509,7 @@ qboolean AAS_GetEdge(vec3_t v1, vec3_t v2, int *edgenum)
 		return qtrue;
 	} //end if
 	//if both vertexes where already stored
-	if (found)
+	if (found && found2)
 	{
 #ifdef EDGE_HASHING
 		if (AAS_FindHashedEdge(v1num, v2num, edgenum)) return qtrue;

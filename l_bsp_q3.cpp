@@ -20,12 +20,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
+#include "qbsp.h"
 #include "l_cmd.h"
 #include "l_math.h"
 #include "l_mem.h"
 #include "l_log.h"
 #include "l_poly.h"
-#include "botlib/l_script.h"
+#include "l_script.h"
 #include "l_qfiles.h"
 #include "l_bsp_q3.h"
 #include "l_bsp_ent.h"
@@ -614,14 +615,14 @@ static void Q3R_ConvertBSPData(void)
 	int i, j;
 
 	q3_numbrushsides = q3r_numbrushsides;
-	q3_dbrushsides = GetMemory(q3_numbrushsides * sizeof(q3_dbrushside_t));
+	q3_dbrushsides = (q3_dbrushside_t*)GetMemory(q3_numbrushsides * sizeof(q3_dbrushside_t));
 	for( i = 0; i < q3_numbrushsides; i++ ) {
 		q3_dbrushsides[i].planeNum = q3r_dbrushsides[i].planeNum;
 		q3_dbrushsides[i].shaderNum = q3r_dbrushsides[i].shaderNum;
 	}
 
 	q3_numDrawVerts = q3r_numDrawVerts;
-	q3_drawVerts = GetMemory(q3_numDrawVerts * sizeof(q3_drawVert_t));
+	q3_drawVerts = (q3_drawVert_t*)GetMemory(q3_numDrawVerts * sizeof(q3_drawVert_t));
 	for( i = 0; i < q3_numDrawVerts; i++ ) {
 		for( j = 0; j < 3; j++ ) {
 			q3_drawVerts[i].xyz[j] = q3r_drawVerts[i].xyz[j];
@@ -639,7 +640,7 @@ static void Q3R_ConvertBSPData(void)
 	}
 
 	q3_numDrawSurfaces = q3r_numDrawSurfaces;
-	q3_drawSurfaces = GetMemory(q3_numDrawSurfaces * sizeof(q3_dsurface_t));
+	q3_drawSurfaces = (q3_dsurface_t*)GetMemory(q3_numDrawSurfaces * sizeof(q3_dsurface_t));
 	for( i = 0; i < q3_numDrawSurfaces; i++ ) {
 		q3_drawSurfaces[i].shaderNum = q3r_drawSurfaces[i].shaderNum;
 		q3_drawSurfaces[i].fogNum = q3r_drawSurfaces[i].fogNum;
@@ -704,33 +705,33 @@ void	Q3_LoadBSPFile(struct quakefile_s *qf)
 		raven = 0;
 	}
 
-	q3_numShaders = Q3_CopyLump( header, Q3_LUMP_SHADERS, (void *) &q3_dshaders, sizeof(q3_dshader_t) );
-	q3_nummodels = Q3_CopyLump( header, Q3_LUMP_MODELS, (void *) &q3_dmodels, sizeof(q3_dmodel_t) );
-	q3_numplanes = Q3_CopyLump( header, Q3_LUMP_PLANES, (void *) &q3_dplanes, sizeof(q3_dplane_t) );
-	q3_numleafs = Q3_CopyLump( header, Q3_LUMP_LEAFS, (void *) &q3_dleafs, sizeof(q3_dleaf_t) );
-	q3_numnodes = Q3_CopyLump( header, Q3_LUMP_NODES, (void *) &q3_dnodes, sizeof(q3_dnode_t) );
-	q3_numleafsurfaces = Q3_CopyLump( header, Q3_LUMP_LEAFSURFACES, (void *) &q3_dleafsurfaces, sizeof(q3_dleafsurfaces[0]) );
-	q3_numleafbrushes = Q3_CopyLump( header, Q3_LUMP_LEAFBRUSHES, (void *) &q3_dleafbrushes, sizeof(q3_dleafbrushes[0]) );
-	q3_numbrushes = Q3_CopyLump( header, Q3_LUMP_BRUSHES, (void *) &q3_dbrushes, sizeof(q3_dbrush_t) );
-	q3_numFogs = Q3_CopyLump( header, Q3_LUMP_FOGS, (void *) &q3_dfogs, sizeof(q3_dfog_t) );
-	q3_numDrawIndexes = Q3_CopyLump( header, Q3_LUMP_DRAWINDEXES, (void *) &q3_drawIndexes, sizeof(q3_drawIndexes[0]) );
+	q3_numShaders = Q3_CopyLump( header, Q3_LUMP_SHADERS, (void**)&q3_dshaders, sizeof(q3_dshader_t) );
+	q3_nummodels = Q3_CopyLump( header, Q3_LUMP_MODELS, (void **) &q3_dmodels, sizeof(q3_dmodel_t) );
+	q3_numplanes = Q3_CopyLump( header, Q3_LUMP_PLANES, (void **) &q3_dplanes, sizeof(q3_dplane_t) );
+	q3_numleafs = Q3_CopyLump( header, Q3_LUMP_LEAFS, (void **) &q3_dleafs, sizeof(q3_dleaf_t) );
+	q3_numnodes = Q3_CopyLump( header, Q3_LUMP_NODES, (void **) &q3_dnodes, sizeof(q3_dnode_t) );
+	q3_numleafsurfaces = Q3_CopyLump( header, Q3_LUMP_LEAFSURFACES, (void **) &q3_dleafsurfaces, sizeof(q3_dleafsurfaces[0]) );
+	q3_numleafbrushes = Q3_CopyLump( header, Q3_LUMP_LEAFBRUSHES, (void **) &q3_dleafbrushes, sizeof(q3_dleafbrushes[0]) );
+	q3_numbrushes = Q3_CopyLump( header, Q3_LUMP_BRUSHES, (void **) &q3_dbrushes, sizeof(q3_dbrush_t) );
+	q3_numFogs = Q3_CopyLump( header, Q3_LUMP_FOGS, (void **) &q3_dfogs, sizeof(q3_dfog_t) );
+	q3_numDrawIndexes = Q3_CopyLump( header, Q3_LUMP_DRAWINDEXES, (void **) &q3_drawIndexes, sizeof(q3_drawIndexes[0]) );
 
 	if( raven ) {
-		q3r_numbrushsides = Q3_CopyLump( header, Q3_LUMP_BRUSHSIDES, (void *) &q3r_dbrushsides, sizeof(q3r_dbrushside_t) );
-		q3r_numDrawVerts = Q3_CopyLump( header, Q3_LUMP_DRAWVERTS, (void *) &q3r_drawVerts, sizeof(q3r_drawVert_t) );
-		q3r_numDrawSurfaces = Q3_CopyLump( header, Q3_LUMP_SURFACES, (void *) &q3r_drawSurfaces, sizeof(q3r_dsurface_t) );
+		q3r_numbrushsides = Q3_CopyLump( header, Q3_LUMP_BRUSHSIDES, (void **) &q3r_dbrushsides, sizeof(q3r_dbrushside_t) );
+		q3r_numDrawVerts = Q3_CopyLump( header, Q3_LUMP_DRAWVERTS, (void **) &q3r_drawVerts, sizeof(q3r_drawVert_t) );
+		q3r_numDrawSurfaces = Q3_CopyLump( header, Q3_LUMP_SURFACES, (void **) &q3r_drawSurfaces, sizeof(q3r_dsurface_t) );
 	}
 	else {
-		q3_numbrushsides = Q3_CopyLump( header, Q3_LUMP_BRUSHSIDES, (void *) &q3_dbrushsides, sizeof(q3_dbrushside_t) );
-		q3_numDrawVerts = Q3_CopyLump( header, Q3_LUMP_DRAWVERTS, (void *) &q3_drawVerts, sizeof(q3_drawVert_t) );
-		q3_numDrawSurfaces = Q3_CopyLump( header, Q3_LUMP_SURFACES, (void *) &q3_drawSurfaces, sizeof(q3_dsurface_t) );
+		q3_numbrushsides = Q3_CopyLump( header, Q3_LUMP_BRUSHSIDES, (void **) &q3_dbrushsides, sizeof(q3_dbrushside_t) );
+		q3_numDrawVerts = Q3_CopyLump( header, Q3_LUMP_DRAWVERTS, (void **) &q3_drawVerts, sizeof(q3_drawVert_t) );
+		q3_numDrawSurfaces = Q3_CopyLump( header, Q3_LUMP_SURFACES, (void **) &q3_drawSurfaces, sizeof(q3_dsurface_t) );
 	}
 
-	q3_numVisBytes = Q3_CopyLump( header, Q3_LUMP_VISIBILITY, (void *) &q3_visBytes, 1 );
-	q3_numLightBytes = Q3_CopyLump( header, Q3_LUMP_LIGHTMAPS, (void *) &q3_lightBytes, 1 );
-	q3_entdatasize = Q3_CopyLump( header, Q3_LUMP_ENTITIES, (void *) &q3_dentdata, 1);
+	q3_numVisBytes = Q3_CopyLump( header, Q3_LUMP_VISIBILITY, (void **) &q3_visBytes, 1 );
+	q3_numLightBytes = Q3_CopyLump( header, Q3_LUMP_LIGHTMAPS, (void **) &q3_lightBytes, 1 );
+	q3_entdatasize = Q3_CopyLump( header, Q3_LUMP_ENTITIES, (void **) &q3_dentdata, 1);
 
-	q3_numGridBytes = Q3_CopyLump( header, Q3_LUMP_LIGHTGRID, (void *) &q3_gridData, 1 );
+	q3_numGridBytes = Q3_CopyLump( header, Q3_LUMP_LIGHTGRID, (void **) &q3_gridData, 1 );
 
 	if( raven ) {
 		Q3R_ConvertBSPData();

@@ -349,7 +349,7 @@ char *ExpandPathAndArchive (char *path)
 char *copystring(char *s)
 {
 	char	*b;
-	b = GetMemory(strlen(s)+1);
+	b = (char*)GetMemory(strlen(s)+1);
 	strcpy (b, s);
 	return b;
 }
@@ -545,7 +545,7 @@ int Q_strcasecmp (const char *s1, const char *s2)
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
-int Q_stricmp (char *s1, char *s2)
+extern "C" int Q_stricmp (char *s1, char *s2)
 {
 	return Q_strncasecmp (s1, s2, 99999);
 }
@@ -1219,7 +1219,7 @@ void QCopyFile (char *from, char *to)
 	FreeMemory(buffer);
 }
 
-void FS_FreeFile(void *buf)
+extern "C" void FS_FreeFile(void *buf)
 {
 	FreeMemory(buf);
 } //end of the function FS_FreeFile

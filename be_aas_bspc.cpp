@@ -20,20 +20,19 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 ===========================================================================
 */
 
-#include "qcommon_local.h"
-
 #include "q_shared.h"
+#include "qcommon_local.h"
 #include "l_log.h"
 #include "l_qfiles.h"
-#include "botlib/l_memory.h"
-#include "botlib/l_script.h"
-#include "botlib/l_precomp.h"
-#include "botlib/l_struct.h"
-#include "botlib/aasfile.h"
-#include "botlib/botlib.h"
-#include "botlib/be_aas.h"
-#include "botlib/be_aas_def.h"
-#include "qcommon/cm_public.h"
+#include "l_memory.h"
+#include "l_script.h"
+#include "l_precomp.h"
+#include "l_struct.h"
+#include "aasfile.h"
+#include "botlib.h"
+#include "be_aas.h"
+#include "be_aas_def.h"
+#include "cm_public.h"
 #include "be_aas_bspc.h"
 
 #include <stdarg.h>
@@ -46,7 +45,7 @@ extern	qboolean capsule_collision;
 botlib_import_t botimport;
 clipHandle_t worldmodel;
 
-void Error (const char *error, ...);
+extern "C" void Error (const char *error, ...);
 
 //===========================================================================
 //
@@ -71,7 +70,7 @@ void AAS_Error(const char *fmt, ...)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-int Sys_MilliSeconds(void)
+extern "C" int Sys_MilliSeconds(void)
 {
 	return clock() * 1000 / CLOCKS_PER_SEC;
 } //end of the function Sys_MilliSeconds

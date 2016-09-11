@@ -406,7 +406,7 @@ node_t *AllocNode (void)
 {
 	node_t	*node;
 
-	node = GetMemory(sizeof(*node));
+	node = (node_t*)GetMemory(sizeof(*node));
 	memset (node, 0, sizeof(*node));
 	if (numthreads == 1)
 	{
@@ -423,10 +423,9 @@ node_t *AllocNode (void)
 bspbrush_t *AllocBrush (int numsides)
 {
 	bspbrush_t	*bb;
-	size_t		c;
-
-	c = offsetof(bspbrush_t, sides[numsides]);
-	bb = GetMemory(c);
+	//This will allocate a little too much memory but the original C code used a nasty hack for allocating sides. 
+	size_t		c = sizeof(bspbrush_t)+sizeof(side_t)*numsides;
+	bb = (bspbrush_t*)GetMemory(c);
 	memset (bb, 0, c);
 	if (numthreads == 1)
 	{
@@ -485,13 +484,12 @@ void FreeBrushList (bspbrush_t *brushes)
 bspbrush_t *CopyBrush (bspbrush_t *brush)
 {
 	bspbrush_t *newbrush;
-	size_t		size;
 	int			i;
 	
-	size = offsetof(bspbrush_t, sides[brush->numsides]);
-
+	size_t offset = offsetof(bspbrush_t, sides[0]) + sizeof(side_t) * brush->numsides;
+	
 	newbrush = AllocBrush (brush->numsides);
-	memcpy (newbrush, brush, size);
+	memcpy (newbrush, brush, offset);
 
 	for (i=0 ; i<brush->numsides ; i++)
 	{
@@ -577,7 +575,7 @@ int BoxOnPlaneSide (vec3_t mins, vec3_t maxs, plane_t *plane)
 	return side;
 }
 #else
-int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, plane_t *p)
+extern "C" int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, plane_t *p)
 {
 	float	dist1, dist2;
 	int sides;
@@ -943,16 +941,15 @@ void CheckPlaneAgainstParents (int pnum, node_t *node)
 qboolean CheckPlaneAgainstVolume (int pnum, node_t *node)
 {
 	bspbrush_t	*front, *back;
-	qboolean	good;
 
 	SplitBrush (node->volume, pnum, &front, &back);
 
-	good = (front && back);
+	bool good = (front && back);
 
 	if (front) FreeBrush (front);
 	if (back) FreeBrush (back);
 
-	return good;
+	return static_cast<qboolean>(good);
 } //end of the function CheckPlaneAgaintsVolume
 //===========================================================================
 // Using a hueristic, choses one of the sides out of the brushlist
