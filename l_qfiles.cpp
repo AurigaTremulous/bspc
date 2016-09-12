@@ -41,7 +41,7 @@ typedef struct qfile_exttype_s
 	int type;
 } qfile_exttyp_t;
 
-qfile_exttyp_t quakefiletypes[] =
+const qfile_exttyp_t quakefiletypes[] =
 {
 	{QFILEEXT_UNKNOWN, QFILETYPE_UNKNOWN},
 	{QFILEEXT_PAK, QFILETYPE_PAK},

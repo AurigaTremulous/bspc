@@ -41,12 +41,12 @@ that leads from the outside leaf to a specifically
 occupied leaf
 =============
 */
-void LeakFile (tree_t *tree)
+void LeakFile (const tree_t *tree)
 {
 	vec3_t	mid;
 	FILE	*linefile;
 	char	filename[1024];
-	node_t	*node;
+	const node_t	*node;
 	int		count;
 
 	if (!tree->outside_node.occupied)

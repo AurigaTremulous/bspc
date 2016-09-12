@@ -24,7 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "qbsp.h"
 #include "l_bsp_q2.h"
 
-int nummiptex;
+static int nummiptex;
 textureref_t textureref[MAX_MAP_TEXTURES];
 
 //===========================================================================
@@ -73,7 +73,7 @@ int FindMiptex (const char *name)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-vec3_t	baseaxis[18] =
+const vec3_t 	baseaxis[18] =
 {
 {0,0,1}, {1,0,0}, {0,-1,0},		// floor
 {0,0,-1}, {1,0,0}, {0,-1,0},		// ceiling

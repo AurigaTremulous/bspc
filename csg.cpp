@@ -30,8 +30,8 @@ there will be no brush overlap after csg phase
 
 */
 
-int minplanenums[3];
-int maxplanenums[3];
+static int minplanenums[3];
+static int maxplanenums[3];
 
 //===========================================================================
 //

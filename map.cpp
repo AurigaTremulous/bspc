@@ -853,7 +853,7 @@ qboolean WriteOriginBrush(FILE *fp, vec3_t origin)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-mapbrush_t *GetAreaPortalBrush(const entity_t *mapent)
+static mapbrush_t *GetAreaPortalBrush(const entity_t *mapent)
 {
 	int portalnum, bn;
 	mapbrush_t *brush = NULL;
