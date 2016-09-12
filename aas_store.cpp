@@ -50,11 +50,11 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 aas_t aasworld;
 
 //vertex hash
-int *aas_vertexchain;						// the next vertex in a hash chain
-int aas_hashverts[VERTEX_HASH_SIZE*VERTEX_HASH_SIZE];	// a vertex number, or 0 for no verts
+static int *aas_vertexchain;						// the next vertex in a hash chain
+static int aas_hashverts[VERTEX_HASH_SIZE*VERTEX_HASH_SIZE];	// a vertex number, or 0 for no verts
 //plane hash
-int *aas_planechain;
-int aas_hashplanes[PLANE_HASH_SIZE];
+static int *aas_planechain;
+static int aas_hashplanes[PLANE_HASH_SIZE];
 //edge hash
 int *aas_edgechain;
 int aas_hashedges[EDGE_HASH_SIZE];
@@ -81,7 +81,7 @@ typedef struct max_aas_s
 	int max_clusters;
 } max_aas_t;
 //maximums of everything
-max_aas_t max_aas;
+static max_aas_t max_aas;
 
 //===========================================================================
 //

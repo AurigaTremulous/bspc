@@ -382,36 +382,6 @@ bspbrush_t *SubtractBrush (bspbrush_t *a, bspbrush_t *b)
 	return out;
 } //end of the function SubtractBrush
 //===========================================================================
-// Returns a single brush made up by the intersection of the
-// two provided brushes, or NULL if they are disjoint.
-//
-// The originals are undisturbed.
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-bspbrush_t *IntersectBrush (bspbrush_t *a, bspbrush_t *b)
-{
-	int		i;
-	bspbrush_t	*front, *back;
-	bspbrush_t	*in;
-
-	in = a;
-	for (i=0 ; i<b->numsides && in ; i++)
-	{
-		SplitBrush2(in, b->sides[i].planenum, &front, &back);
-		if (in != a) FreeBrush(in);
-		if (front) FreeBrush(front);
-		in = back;
-	} //end for
-
-	if (in == a) return NULL;
-
-	in->next = NULL;
-	return in;
-} //end of the function IntersectBrush
-//===========================================================================
 // Returns qtrue if the two brushes definately do not intersect.
 // There will be qfalse negatives for some non-axial combinations.
 //
