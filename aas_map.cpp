@@ -403,7 +403,7 @@ qboolean AAS_MakeBrushWindings(mapbrush_t *ob)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-mapbrush_t *AAS_CopyMapBrush(mapbrush_t *brush, entity_t *mapent)
+mapbrush_t *AAS_CopyMapBrush(const mapbrush_t *brush, entity_t *mapent)
 {
 	int n;
 	mapbrush_t *newbrush;
@@ -451,13 +451,11 @@ int mark_entities[MAX_MAP_ENTITIES];
 
 int AAS_AlwaysTriggered_r(const char *targetname)
 {
-	int i;
-
-	if (!strlen(targetname)) {
+	if (targetname[0] == '\0') {
 		return qfalse;
 	}
 	//
-	for (i = 0; i < num_entities; i++) {
+	for (int i = 0; i < num_entities; i++) {
 		// if the entity will activate the given targetname
 		if ( !strcmp(targetname, ValueForKey(&entities[i], "target")) ) {
 			// if this activator is present in deathmatch
@@ -720,7 +718,6 @@ void AAS_PositionBrush(entity_t *mapent, mapbrush_t *brush)
 //===========================================================================
 void AAS_CreateMapBrushes(mapbrush_t *brush, entity_t *mapent, int addbevels)
 {
-	int i;
 	//side_t *s;
 	mapbrush_t *bboxbrushes[16];
 
@@ -833,12 +830,12 @@ void AAS_CreateMapBrushes(mapbrush_t *brush, entity_t *mapent, int addbevels)
 		//brush for the first bounding box
 		bboxbrushes[0] = brush;
 		//make a copy for the other bounding boxes
-		for (i = 1; i < cfg.numbboxes; i++)
+		for (int i = 1; i < cfg.numbboxes; i++)
 		{
 			bboxbrushes[i] = AAS_CopyMapBrush(brush, mapent);
 		} //end for
 		//expand every brush for it's bounding box and create windings
-		for (i = 0; i < cfg.numbboxes; i++)
+		for (int i = 0; i < cfg.numbboxes; i++)
 		{
 			AAS_ExpandMapBrush(bboxbrushes[i], cfg.bboxes[i].mins, cfg.bboxes[i].maxs);
 			bboxbrushes[i]->expansionbbox = cfg.bboxes[i].presencetype;

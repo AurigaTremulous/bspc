@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "l_log.h"
 #include "l_qfiles.h"
 
-#define BSPC_VERSION		"2.1h"
+#define BSPC_VERSION		"3.0"
 
 #ifdef SMOKINGUNS
 #define SMOKINGUNS_MESSAGE	"Customized for Smokin'Guns v0.2"

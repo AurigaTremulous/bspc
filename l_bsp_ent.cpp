@@ -115,17 +115,6 @@ qboolean	ParseEntity(script_t *script)
 	return qtrue;
 } //end of the function ParseEntity
 
-void PrintEntity (entity_t *ent)
-{
-	epair_t	*ep;
-	
-	printf ("------- entity %p -------\n", ent);
-	for (ep=ent->epairs ; ep ; ep=ep->next)
-	{
-		printf ("%s = %s\n", ep->key, ep->value);
-	}
-
-}
 
 void 	SetKeyValue (entity_t *ent, const char *key, const char *value)
 {

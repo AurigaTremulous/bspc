@@ -564,10 +564,8 @@ int main (int argc, char **argv)
 	start_time = I_FloatTime();
 
 	Log_Open("bspc.log");		//open a log file
-	Log_Print("BSPC version " BSPC_VERSION ", %s %s\n", __DATE__, __TIME__);
-#ifdef SMOKINGUNS
-	Log_Print("%s\n", SMOKINGUNS_MESSAGE);
-#endif
+	Log_Print("BSPC version " BSPC_VERSION "\n");
+	Log_Print("Sago's version from https://github.com/sago007/bspc\n");
 
 	DefaultCfg();
 	for (i = 1; i < argc; i++)

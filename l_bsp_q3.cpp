@@ -494,13 +494,11 @@ Byte swaps all data in a bsp file.
 =============
 */
 void Q3_SwapBSPFile( void ) {
-	int				i, *q3_vis;
-	
 	// models	
 	Q3_SwapBlock( (int *)q3_dmodels, q3_nummodels * sizeof( q3_dmodels[0] ) );
 
 	// shaders (don't swap the name)
-	for ( i = 0 ; i < q3_numShaders ; i++ ) {
+	for ( int i = 0 ; i < q3_numShaders ; i++ ) {
 		q3_dshaders[i].contentFlags = LittleLong( q3_dshaders[i].contentFlags );
 		q3_dshaders[i].surfaceFlags = LittleLong( q3_dshaders[i].surfaceFlags );
 	}
@@ -527,12 +525,12 @@ void Q3_SwapBSPFile( void ) {
 	Q3_SwapBlock( (int *)q3_dbrushsides, q3_numbrushsides * sizeof( q3_dbrushsides[0] ) );
 
 	// vis
-	q3_vis = (int *)&q3_visBytes;
+	int* q3_vis = (int *)&q3_visBytes;
 	q3_vis[0] = LittleLong( q3_vis[0] );
 	q3_vis[1] = LittleLong( q3_vis[1] );
 
 	// drawverts (don't swap colors )
-	for ( i = 0 ; i < q3_numDrawVerts ; i++ ) {
+	for ( int i = 0 ; i < q3_numDrawVerts ; i++ ) {
 		q3_drawVerts[i].lightmap[0] = LittleFloat( q3_drawVerts[i].lightmap[0] );
 		q3_drawVerts[i].lightmap[1] = LittleFloat( q3_drawVerts[i].lightmap[1] );
 		q3_drawVerts[i].st[0] = LittleFloat( q3_drawVerts[i].st[0] );
@@ -552,7 +550,7 @@ void Q3_SwapBSPFile( void ) {
 	Q3_SwapBlock( (int *)q3_drawSurfaces, q3_numDrawSurfaces * sizeof( q3_drawSurfaces[0] ) );
 
 	// fogs
-	for ( i = 0 ; i < q3_numFogs ; i++ ) {
+	for ( int i = 0 ; i < q3_numFogs ; i++ ) {
 		q3_dfogs[i].brushNum = LittleLong( q3_dfogs[i].brushNum );
 	}
 }
@@ -565,10 +563,8 @@ Q3_CopyLump
 =============
 */
 int Q3_CopyLump( q3_dheader_t	*header, int lump, void **dest, int size ) {
-	int		length, ofs;
-
-	length = header->lumps[lump].filelen;
-	ofs = header->lumps[lump].fileofs;
+	int length = header->lumps[lump].filelen;
+	int ofs = header->lumps[lump].fileofs;
 	
 	if ( length % size ) {
 		Error ("Q3_LoadBSPFile: odd lump size");
@@ -612,36 +608,34 @@ Q3R_ConvertBSPData
 */
 static void Q3R_ConvertBSPData(void)
 {
-	int i, j;
-
 	q3_numbrushsides = q3r_numbrushsides;
 	q3_dbrushsides = (q3_dbrushside_t*)GetMemory(q3_numbrushsides * sizeof(q3_dbrushside_t));
-	for( i = 0; i < q3_numbrushsides; i++ ) {
+	for( int i = 0; i < q3_numbrushsides; i++ ) {
 		q3_dbrushsides[i].planeNum = q3r_dbrushsides[i].planeNum;
 		q3_dbrushsides[i].shaderNum = q3r_dbrushsides[i].shaderNum;
 	}
 
 	q3_numDrawVerts = q3r_numDrawVerts;
 	q3_drawVerts = (q3_drawVert_t*)GetMemory(q3_numDrawVerts * sizeof(q3_drawVert_t));
-	for( i = 0; i < q3_numDrawVerts; i++ ) {
-		for( j = 0; j < 3; j++ ) {
+	for( int i = 0; i < q3_numDrawVerts; i++ ) {
+		for( int j = 0; j < 3; j++ ) {
 			q3_drawVerts[i].xyz[j] = q3r_drawVerts[i].xyz[j];
 			q3_drawVerts[i].normal[j] = q3r_drawVerts[i].normal[j];
 		}
-		for( j = 0; j < 2; j++ ) {
+		for( int j = 0; j < 2; j++ ) {
 			q3_drawVerts[i].st[j] = q3r_drawVerts[i].st[j];
 		}
-		for( j = 0; j < 2; j++ ) {
+		for( int j = 0; j < 2; j++ ) {
 			q3_drawVerts[i].lightmap[j] = q3r_drawVerts[i].lightmap[0][j];
 		}
-		for( j = 0; j < 4; j++ ) {
+		for( int j = 0; j < 4; j++ ) {
 			q3_drawVerts[i].color[j] = q3r_drawVerts[i].color[0][j];
 		}
 	}
 
 	q3_numDrawSurfaces = q3r_numDrawSurfaces;
 	q3_drawSurfaces = (q3_dsurface_t*)GetMemory(q3_numDrawSurfaces * sizeof(q3_dsurface_t));
-	for( i = 0; i < q3_numDrawSurfaces; i++ ) {
+	for( int i = 0; i < q3_numDrawSurfaces; i++ ) {
 		q3_drawSurfaces[i].shaderNum = q3r_drawSurfaces[i].shaderNum;
 		q3_drawSurfaces[i].fogNum = q3r_drawSurfaces[i].fogNum;
 		q3_drawSurfaces[i].surfaceType = q3r_drawSurfaces[i].surfaceType;
@@ -658,7 +652,7 @@ static void Q3R_ConvertBSPData(void)
 		q3_drawSurfaces[i].lightmapWidth = q3r_drawSurfaces[i].lightmapWidth;
 		q3_drawSurfaces[i].lightmapHeight = q3r_drawSurfaces[i].lightmapHeight;
 
-		for( j = 0; j < 3; j++ ) {
+		for( int j = 0; j < 3; j++ ) {
 			q3_drawSurfaces[i].lightmapOrigin[j] = q3r_drawSurfaces[i].lightmapOrigin[j];
 			q3_drawSurfaces[i].lightmapVecs[0][j] = q3r_drawSurfaces[i].lightmapVecs[0][j];
 			q3_drawSurfaces[i].lightmapVecs[1][j] = q3r_drawSurfaces[i].lightmapVecs[1][j];
@@ -754,69 +748,6 @@ void	Q3_LoadBSPFile(struct quakefile_s *qf)
 
 /*
 =============
-Q3_AddLump
-=============
-*/
-void Q3_AddLump( FILE *bspfile, q3_dheader_t *header, int lumpnum, void *data, int len ) {
-	q3_lump_t *lump;
-
-	lump = &header->lumps[lumpnum];
-	
-	lump->fileofs = LittleLong( ftell(bspfile) );
-	lump->filelen = LittleLong( len );
-	SafeWrite( bspfile, data, (len+3)&~3 );
-}
-
-/*
-=============
-Q3_WriteBSPFile
-
-Swaps the bsp file in place, so it should not be referenced again
-=============
-*/
-void	Q3_WriteBSPFile( char *filename )
-{
-	q3_dheader_t	outheader, *header;
-	FILE		*bspfile;
-
-	header = &outheader;
-	memset( header, 0, sizeof(q3_dheader_t) );
-	
-	Q3_SwapBSPFile();
-
-	header->ident = LittleLong( Q3_BSP_IDENT );
-	header->version = LittleLong( Q3_BSP_VERSION );
-	
-	bspfile = SafeOpenWrite( filename );
-	SafeWrite( bspfile, header, sizeof(q3_dheader_t) );	// overwritten later
-
-	Q3_AddLump( bspfile, header, Q3_LUMP_SHADERS, q3_dshaders, q3_numShaders*sizeof(q3_dshader_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_PLANES, q3_dplanes, q3_numplanes*sizeof(q3_dplane_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_LEAFS, q3_dleafs, q3_numleafs*sizeof(q3_dleaf_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_NODES, q3_dnodes, q3_numnodes*sizeof(q3_dnode_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_BRUSHES, q3_dbrushes, q3_numbrushes*sizeof(q3_dbrush_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_BRUSHSIDES, q3_dbrushsides, q3_numbrushsides*sizeof(q3_dbrushside_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_LEAFSURFACES, q3_dleafsurfaces, q3_numleafsurfaces*sizeof(q3_dleafsurfaces[0]) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_LEAFBRUSHES, q3_dleafbrushes, q3_numleafbrushes*sizeof(q3_dleafbrushes[0]) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_MODELS, q3_dmodels, q3_nummodels*sizeof(q3_dmodel_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_DRAWVERTS, q3_drawVerts, q3_numDrawVerts*sizeof(q3_drawVert_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_SURFACES, q3_drawSurfaces, q3_numDrawSurfaces*sizeof(q3_dsurface_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_VISIBILITY, q3_visBytes, q3_numVisBytes );
-	Q3_AddLump( bspfile, header, Q3_LUMP_LIGHTMAPS, q3_lightBytes, q3_numLightBytes );
-	Q3_AddLump( bspfile, header, Q3_LUMP_LIGHTGRID, q3_gridData, q3_numGridBytes );
-	Q3_AddLump( bspfile, header, Q3_LUMP_ENTITIES, q3_dentdata, q3_entdatasize );
-	Q3_AddLump( bspfile, header, Q3_LUMP_FOGS, q3_dfogs, q3_numFogs * sizeof(q3_dfog_t) );
-	Q3_AddLump( bspfile, header, Q3_LUMP_DRAWINDEXES, q3_drawIndexes, q3_numDrawIndexes * sizeof(q3_drawIndexes[0]) );
-	
-	fseek (bspfile, 0, SEEK_SET);
-	SafeWrite (bspfile, header, sizeof(q3_dheader_t));
-	fclose (bspfile);
-}
-
-//============================================================================
-
-/*
-=============
 Q3_PrintBSPFileSizes
 
 Dumps info about current file
@@ -875,10 +806,8 @@ Parses the q3_dentdata string into entities
 */
 void Q3_ParseEntities (void)
 {
-	script_t *script;
-
 	num_entities = 0;
-	script = LoadScriptMemory(q3_dentdata, q3_entdatasize, "*Quake3 bsp file");
+	script_t *script = LoadScriptMemory(q3_dentdata, q3_entdatasize, "*Quake3 bsp file");
 	SetScriptFlags(script, SCFL_NOSTRINGWHITESPACES |
 									SCFL_NOSTRINGESCAPECHARS);
 
@@ -888,48 +817,5 @@ void Q3_ParseEntities (void)
 
 	FreeScript(script);
 } //end of the function Q3_ParseEntities
-
-
-/*
-================
-Q3_UnparseEntities
-
-Generates the q3_dentdata string from all the entities
-================
-*/
-void Q3_UnparseEntities (void)
-{
-	char *buf, *end;
-	epair_t *ep;
-	char line[2048];
-	int i;
-	
-	buf = q3_dentdata;
-	end = buf;
-	*end = 0;
-	
-	for (i=0 ; i<num_entities ; i++)
-	{
-		ep = entities[i].epairs;
-		if (!ep)
-			continue;	// ent got removed
-		
-		strcat (end,"{\n");
-		end += 2;
-				
-		for (ep = entities[i].epairs ; ep ; ep=ep->next)
-		{
-			sprintf (line, "\"%s\" \"%s\"\n", ep->key, ep->value);
-			strcat (end, line);
-			end += strlen(line);
-		}
-		strcat (end,"}\n");
-		end += 2;
-
-		if (end > buf + Q3_MAX_MAP_ENTSTRING)
-			Error ("Entity text too long");
-	}
-	q3_entdatasize = end - buf + 1;
-} //end of the function Q3_UnparseEntities
 
 

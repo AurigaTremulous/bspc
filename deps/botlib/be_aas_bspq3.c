@@ -176,7 +176,7 @@ qboolean AAS_EntityCollision(int entnum,
 	botimport.EntityTrace(&enttrace, start, boxmins, boxmaxs, end, entnum, contentmask);
 	if (enttrace.fraction < trace->fraction)
 	{
-		Com_Memcpy(trace, &enttrace, sizeof(bsp_trace_t));
+		*trace = enttrace;
 		return qtrue;
 	} //end if
 	return qfalse;

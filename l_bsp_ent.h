@@ -60,7 +60,6 @@ vec_t FloatForKey(entity_t *ent, const char *key);
 void GetVectorForKey(const entity_t *ent, const char *key, vec3_t vec);
 qboolean ParseEntity(script_t *script);
 epair_t *ParseEpair(script_t *script);
-void PrintEntity(entity_t *ent);
 
 #ifdef __cplusplus
 }
