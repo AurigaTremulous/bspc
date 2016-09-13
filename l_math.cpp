@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "l_cmd.h"
 #include "l_math.h"
+#include <math.h>
 
 vec3_t vec3_origin = {0,0,0};
 

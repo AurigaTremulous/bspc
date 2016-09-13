@@ -88,19 +88,6 @@ void ThreadWorkerFunction(int threadnum)
 		workfunction(work);
 	} //end while
 } //end of the function ThreadWorkerFunction
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOnIndividual (int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	if (numthreads == -1)
-		ThreadSetDefault ();
-	workfunction = func;
-	RunThreadsOn (workcnt, showpacifier, ThreadWorkerFunction);
-} //end of the function RunThreadsOnIndividual
 
 
 //===================================================================
@@ -132,7 +119,6 @@ int numthreads = 1;
 CRITICAL_SECTION crit;
 HANDLE semaphore;
 static int enter;
-static int numwaitingthreads = 0;
 
 //===========================================================================
 //
@@ -253,66 +239,6 @@ void ThreadSemaphoreIncrease(int count)
 {
 	ReleaseSemaphore(semaphore, count, NULL);
 } //end of the function ThreadSemaphoreIncrease
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	long unsigned int		threadid[MAX_THREADS];
-	HANDLE	threadhandle[MAX_THREADS];
-	int		i;
-	int		start, end;
-
-	Log_Print("Win32 multi-threading\n");
-	start = I_FloatTime ();
-	dispatch = 0;
-	workcount = workcnt;
-	oldf = -1;
-	pacifier = showpacifier;
-	threaded = qtrue;
-
-	if (numthreads == -1)
-		ThreadSetDefault ();
-
-	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
-	//
-	// run threads in parallel
-	//
-	InitializeCriticalSection (&crit);
-
-	numwaitingthreads = 0;
-
-	if (numthreads == 1)
-	{	// use same thread
-		func (0);
-	} //end if
-	else
-	{
-//		printf("starting %d threads\n", numthreads);
-		for (i = 0; i < numthreads; i++)
-		{
-			threadhandle[i] = CreateThread(
-			   NULL,	// LPSECURITY_ATTRIBUTES lpsa,
-			   0,		// DWORD cbStack,
-			   (LPTHREAD_START_ROUTINE)func,	// LPTHREAD_START_ROUTINE lpStartAddr,
-			   (LPVOID)i,	// LPVOID lpvThreadParm,
-			   0,			//   DWORD fdwCreate,
-			   &threadid[i]);
-//			printf("started thread %d\n", i);
-		} //end for
-
-		for (i = 0; i < numthreads; i++)
-			WaitForSingleObject (threadhandle[i], INFINITE);
-	} //end else
-	DeleteCriticalSection (&crit);
-
-	threaded = qfalse;
-	end = I_FloatTime ();
-	if (pacifier) printf (" (%i)\n", end-start);
-} //end of the function RunThreadsOn
 //===========================================================================
 //
 // Parameter:				-
@@ -569,70 +495,7 @@ void ThreadShutdownLock(void)
 {
 	threaded = qfalse;
 } //end of the function ThreadShutdownLock
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	int		i;
-	pthread_t	work_threads[MAX_THREADS];
-	pthread_addr_t	status;
-	pthread_attr_t	attrib;
-	pthread_mutexattr_t	mattrib;
-	int		start, end;
 
-	Log_Print("pthread multi-threading\n");
-
-	start = I_FloatTime ();
-	dispatch = 0;
-	workcount = workcnt;
-	oldf = -1;
-	pacifier = showpacifier;
-	threaded = qtrue;
-
-	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
-
-	if (pacifier)
-		setbuf (stdout, NULL);
-
-	if (!my_mutex)
-	{
-		my_mutex = GetMemory(sizeof(*my_mutex));
-		if (pthread_mutexattr_create (&mattrib) == -1)
-			Error ("pthread_mutex_attr_create failed");
-		if (pthread_mutexattr_setkind_np (&mattrib, MUTEX_FAST_NP) == -1)
-			Error ("pthread_mutexattr_setkind_np failed");
-		if (pthread_mutex_init (my_mutex, mattrib) == -1)
-			Error ("pthread_mutex_init failed");
-	}
-
-	if (pthread_attr_create (&attrib) == -1)
-		Error ("pthread_attr_create failed");
-	if (pthread_attr_setstacksize (&attrib, 0x100000) == -1)
-		Error ("pthread_attr_setstacksize failed");
-	
-	for (i=0 ; i<numthreads ; i++)
-	{
-  		if (pthread_create(&work_threads[i], attrib
-		, (pthread_startroutine_t)func, (pthread_addr_t)i) == -1)
-			Error ("pthread_create failed");
-	}
-		
-	for (i=0 ; i<numthreads ; i++)
-	{
-		if (pthread_join (work_threads[i], &status) == -1)
-			Error ("pthread_join failed");
-	}
-
-	threaded = qfalse;
-
-	end = I_FloatTime ();
-	if (pacifier)
-		printf (" (%i)\n", end-start);
-} //end of the function RunThreadsOn
 //===========================================================================
 //
 // Parameter:				-
@@ -914,55 +777,7 @@ void ThreadSemaphoreIncrease(int count)
 		sem_post(&semaphore);
 	} //end for
 } //end of the function ThreadSemaphoreIncrease
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	int		i;
-	pthread_t	work_threads[MAX_THREADS];
-	void *pthread_return;
-	int		start, end;
 
-	Log_Print("pthread multi-threading\n");
-
-	start = I_FloatTime ();
-	dispatch = 0;
-	workcount = workcnt;
-	oldf = -1;
-	pacifier = showpacifier;
-	threaded = qtrue;
-
-	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
-
-	if (pacifier)
-		setbuf (stdout, NULL);
-
-	for (i=0 ; i<numthreads ; i++)
-	{
-		if (pthread_create(&work_threads[i],
-		                   NULL,
-		                   (pthread_startroutine_t)func,
-		                   (void *)(uintptr_t)i) == -1) {
-			Error ("pthread_create failed");
-		}
-	}
-
-	for (i=0 ; i<numthreads ; i++)
-	{
-		if (pthread_join(work_threads[i], &pthread_return) == -1)
-			Error ("pthread_join failed");
-	}
-
-	threaded = qfalse;
-
-	end = I_FloatTime ();
-	if (pacifier)
-		printf (" (%i)\n", end-start);
-} //end of the function RunThreadsOn
 //===========================================================================
 //
 // Parameter:				-
@@ -1183,56 +998,7 @@ void ThreadShutdownLock(void)
 {
 	threaded = qfalse;
 } //end of the function ThreadShutdownLock
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOn (int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	int		i;
-	int		pid[MAX_THREADS];
-	int		start, end;
 
-	start = I_FloatTime ();
-	dispatch = 0;
-	workcount = workcnt;
-	oldf = -1;
-	pacifier = showpacifier;
-	threaded = qtrue;
-
-	if (numthreads < 1 || numthreads > MAX_THREADS) numthreads = 1;
-
-	if (pacifier)
-		setbuf (stdout, NULL);
-
-	init_lock (&lck);
-
-	for (i=0 ; i<numthreads-1 ; i++)
-	{
-		pid[i] = sprocsp ( (void (*)(void *, size_t))func, PR_SALL, (void *)i
-			, NULL, 0x100000);
-//		pid[i] = sprocsp ( (void (*)(void *, size_t))func, PR_SALL, (void *)i
-//			, NULL, 0x80000);
-		if (pid[i] == -1)
-		{
-			perror ("sproc");
-			Error ("sproc failed");
-		}
-	}
-		
-	func(i);
-			
-	for (i=0 ; i<numthreads-1 ; i++)
-		wait (NULL);
-
-	threaded = qfalse;
-
-	end = I_FloatTime ();
-	if (pacifier)
-		printf (" (%i)\n", end-start);
-} //end of the function RunThreadsOn
 //===========================================================================
 //
 // Parameter:				-
@@ -1449,32 +1215,6 @@ void ThreadSemaphoreWait(void)
 void ThreadSemaphoreIncrease(int count)
 {
 } //end of the function ThreadSemaphoreIncrease
-//===========================================================================
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		-
-//===========================================================================
-void RunThreadsOn(int workcnt, qboolean showpacifier, void(*func)(int))
-{
-	int start, end;
-
-	Log_Print("no multi-threading\n");
-	dispatch = 0;
-	workcount = workcnt;
-	oldf = -1;
-	pacifier = showpacifier;
-	start = I_FloatTime (); 
-#ifdef NeXT
-	if (pacifier)
-		setbuf (stdout, NULL);
-#endif
-	func(0);
-
-	end = I_FloatTime ();
-	if (pacifier)
-		printf (" (%i)\n", end-start);
-} //end of the function RunThreadsOn
 //===========================================================================
 //
 // Parameter:				-

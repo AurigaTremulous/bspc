@@ -216,24 +216,6 @@ void Q3_SurfacePlane(q3_dsurface_t *surface, vec3_t normal, float *dist)
 		VectorNormalize(normal);
 		if (VectorLength(normal)) break;
 	} //end for*/
-/*
-	float dot;
-	for (i = 0; i < surface->numVerts; i++)
-	{
-		p0 = q3_drawVerts[surface->firstVert + ((i) % surface->numVerts)].xyz;
-		p1 = q3_drawVerts[surface->firstVert + ((i+1) % surface->numVerts)].xyz;
-		p2 = q3_drawVerts[surface->firstVert + ((i+2) % surface->numVerts)].xyz;
-		VectorSubtract(p0, p1, t1);
-		VectorSubtract(p2, p1, t2);
-		VectorNormalize(t1);
-		VectorNormalize(t2);
-		dot = DotProduct(t1, t2);
-		if (dot > -0.9 && dot < 0.9 &&
-			VectorLength(t1) > 0.1 && VectorLength(t2) > 0.1) break;
-	} //end for
-	CrossProduct(t1, t2, normal);
-	VectorNormalize(normal);
-*/
 	if (VectorLength(normal) < 0.9)
 	{
 		printf("surface %td bogus normal vector %f %f %f\n", surface - q3_drawSurfaces, normal[0], normal[1], normal[2]);

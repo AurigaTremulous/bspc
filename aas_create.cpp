@@ -1031,7 +1031,7 @@ void AAS_FlipSharedFaces(void)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void AAS_Create(char *aasfile)
+void AAS_Create(const char *aasfile)
 {
 	entity_t	*e;
 	tree_t *tree;

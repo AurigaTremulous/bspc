@@ -153,15 +153,9 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 	if (((area1faceflags & FACE_GROUND) && (area2faceflags & FACE_GAP)) ||
 			((area2faceflags & FACE_GROUND) && (area1faceflags & FACE_GAP)))
 	{
-//		Log_Print("   can't merge: ground/gap\n");
 		return qfalse;
 	} //end if
 
-//	Log_Print("merged area %d & %d to %d with %d faces\n", tmparea1->areanum, tmparea2->areanum, newarea->areanum, numfaces);
-//	return qfalse;
-	//
-	//AAS_CheckArea(tmparea1);
-	//AAS_CheckArea(tmparea2);
 	//create the new area
 	newarea = AAS_AllocTmpArea();
 	newarea->presencetype = tmparea1->presencetype;
@@ -226,88 +220,6 @@ int AAS_TryMergeFaceAreas(tmp_face_t *seperatingface)
 //	Log_Print("merged area %d & %d to %d with %d faces\n", tmparea1->areanum, tmparea2->areanum, newarea->areanum);
 	return qtrue;
 } //end of the function AAS_TryMergeFaceAreas
-//===========================================================================
-// try to merge areas
-// merged areas are added to the end of the convex area list so merging
-// will be tried for those areas as well
-//
-// Parameter:				-
-// Returns:					-
-// Changes Globals:		tmpaasworld
-//===========================================================================
-/*
-void AAS_MergeAreas(void)
-{
-	int side, nummerges;
-	tmp_area_t *tmparea, *othertmparea;
-	tmp_face_t *face;
-
-	nummerges = 0;
-	Log_Write("AAS_MergeAreas\r\n");
-	qprintf("%6d areas merged", 1);
-	//first merge grounded areas only
-	//NOTE: this is useless because the area settings aren't available yet
-	for (tmparea = tmpaasworld.areas; tmparea; tmparea = tmparea->l_next)
-	{
-//		Log_Print("checking area %d\n", i);
-		//if the area is invalid
-		if (tmparea->invalid)
-		{
-//			Log_Print("   area invalid\n");
-			continue;
-		} //end if
-		//
-//		if (!(tmparea->settings->areaflags & AREA_GROUNDED)) continue;
-		//
-		for (face = tmparea->tmpfaces; face; face = face->next[side])
-		{
-			side = (face->frontarea != tmparea);
-			//if the face has both a front and back area
-			if (face->frontarea && face->backarea)
-			{
-				//
-				if (face->frontarea == tmparea) othertmparea = face->backarea;
-				else othertmparea = face->frontarea;
-//				if (!(othertmparea->settings->areaflags & AREA_GROUNDED)) continue;
-//				Log_Print("  checking area %d with %d\n", face->frontarea, face->backarea);
-				if (AAS_TryMergeFaceAreas(face))
-				{
-					qprintf("\r%6d", ++nummerges);
-					break;
-				} //end if
-			} //end if
-		} //end for
-	} //end for
-	//merge all areas
-	for (tmparea = tmpaasworld.areas; tmparea; tmparea = tmparea->l_next)
-	{
-//		Log_Print("checking area %d\n", i);
-		//if the area is invalid
-		if (tmparea->invalid)
-		{
-//			Log_Print("   area invalid\n");
-			continue;
-		} //end if
-		//
-		for (face = tmparea->tmpfaces; face; face = face->next[side])
-		{
-			side = (face->frontarea != tmparea);
-			//if the face has both a front and back area
-			if (face->frontarea && face->backarea)
-			{
-//				Log_Print("  checking area %d with %d\n", face->frontarea, face->backarea);
-				if (AAS_TryMergeFaceAreas(face))
-				{
-					qprintf("\r%6d", ++nummerges);
-					break;
-				} //end if
-			} //end if
-		} //end for
-	} //end for
-	Log_Print("\r%6d areas merged\n", nummerges);
-	//refresh the merged tree
-	AAS_RefreshMergedTree_r(tmpaasworld.nodes);
-} //end of the function AAS_MergeAreas*/
 
 static int AAS_GroundArea(const tmp_area_t *tmparea)
 {

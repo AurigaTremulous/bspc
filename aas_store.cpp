@@ -1062,7 +1062,7 @@ void AAS_StoreBoundingBoxes(void)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void AAS_StoreFile(char *filename)
+void AAS_StoreFile(const char *filename)
 {
 	AAS_AllocMaxAAS();
 

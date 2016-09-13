@@ -71,4 +71,4 @@ typedef struct cfg_s
 extern cfg_t cfg;
 
 void DefaultCfg(void);
-int LoadCfgFile(char *filename);
+int LoadCfgFile(const char *filename);

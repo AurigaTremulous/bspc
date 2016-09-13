@@ -195,7 +195,7 @@ void SetCfgLibVars(void)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-int LoadCfgFile(char *filename)
+int LoadCfgFile(const char *filename)
 {
 	source_t *source;
 	token_t token;

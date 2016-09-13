@@ -756,10 +756,6 @@ void AAS_CreateMapBrushes(mapbrush_t *brush, entity_t *mapent, int addbevels)
 		brush->contents = CONTENTS_SOLID;
 		brush->leafnum = -1;
 	} //end if
-	//
-	//Log_Write("brush %d contents = ", brush->brushnum);
-	//PrintContents(brush->contents);
-	//Log_Write("\r\n");
 	//if not one of the following brushes then the brush is NOT used for AAS
 	if (!(brush->contents & (CONTENTS_SOLID
 									| CONTENTS_LADDER
