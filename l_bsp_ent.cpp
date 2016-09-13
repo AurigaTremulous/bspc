@@ -52,12 +52,11 @@ ParseEpair
 */
 epair_t *ParseEpair(script_t *script)
 {
-	epair_t *e;
-	token_t token;
 
-	e = (epair_t*)GetMemory(sizeof(epair_t));
+	epair_t *e = (epair_t*)GetMemory(sizeof(epair_t));
 	memset (e, 0, sizeof(epair_t));
 	
+	token_t token;
 	PS_ExpectAnyToken(script, &token);
 	StripDoubleQuotes(token.string);
 	if (strlen(token.string) >= MAX_KEY-1)

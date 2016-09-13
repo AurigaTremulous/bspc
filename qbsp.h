@@ -332,17 +332,7 @@ void ResetMapLoading(void);
 //print some map info
 void PrintMapInfo(void);
 //writes a map file (type depending on loaded map type)
-void WriteMapFile(char *filename);
-
-//=============================================================================
-// map_q2.c
-//=============================================================================
-
-void Q2_ResetMapLoading(void);
-//loads a Quake2 map file
-void Q2_LoadMapFile(char *filename);
-//loads a map from a Quake2 bsp file
-void Q2_LoadMapFromBSP(char *filename, int offset, int length);
+void WriteMapFile(const char *filename);
 
 //=============================================================================
 // map_q3.c

@@ -1009,7 +1009,7 @@ qboolean WriteMapFileSafe(FILE *fp)
 // Returns:					-
 // Changes Globals:		-
 //===========================================================================
-void WriteMapFile(char *filename)
+void WriteMapFile(const char *filename)
 {
 	FILE *fp;
 	double start_time;
@@ -1066,13 +1066,12 @@ void PrintMapInfo(void)
 //===========================================================================
 void ResetMapLoading(void)
 {
-	int i;
 	epair_t *ep, *nextep;
 
-	Q2_ResetMapLoading();
+	Q3_ResetMapLoading();
 
 	//free all map brush side windings
-	for (i = 0; i < nummapbrushsides; i++)
+	for (int i = 0; i < nummapbrushsides; i++)
 	{
 		if (brushsides[i].winding)
 		{
@@ -1105,7 +1104,7 @@ void ResetMapLoading(void)
 	c_clipbrushes = 0;
 	c_writtenbrushes = 0;
 	//clear the entities
-	for (i = 0; i < num_entities; i++)
+	for (int i = 0; i < num_entities; i++)
 	{
 		for (ep = entities[i].epairs; ep; ep = nextep)
 		{
@@ -1181,10 +1180,8 @@ int LoadMapFromBSP(struct quakefile_s *qf)
 	//Quake2 BSP file
 	else if (idheader.ident == Q2_BSPHEADER && idheader.version == Q2_BSPVERSION)
 	{
-		ResetMapLoading();
-		Q2_AllocMaxBSP();
-		Q2_LoadMapFromBSP(qf->filename, qf->offset, qf->length);
-		Q2_FreeMaxBSP();
+		Error("Quake 2 format not supported");
+		return qfalse;
 	} //endif
 	else {
 		Error("unknown BSP format %c%c%c%c, version %d\n",

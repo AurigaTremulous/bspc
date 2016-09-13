@@ -128,21 +128,6 @@ int	Q3_BrushContents(mapbrush_t *b)
 // Returns:				-
 // Changes Globals:		-
 //===========================================================================
-void Q3_DPlanes2MapPlanes(void)
-{
-	int i;
-
-	for (i = 0; i < q3_numplanes; i++)
-	{
-		dplanes2mapplanes[i] = FindFloatPlane(q3_dplanes[i].normal, q3_dplanes[i].dist);
-	} //end for
-} //end of the function Q3_DPlanes2MapPlanes
-//===========================================================================
-//
-// Parameter:			-
-// Returns:				-
-// Changes Globals:		-
-//===========================================================================
 void Q3_BSPBrushToMapBrush(q3_dbrush_t *bspbrush, entity_t *mapent)
 {
 	mapbrush_t *b;
@@ -611,8 +596,6 @@ void Q3_LoadMapFromBSP(struct quakefile_s *qf)
 	//load the bsp file
 	Q3_LoadBSPFile(qf);
 
-	//create an index from bsp planes to map planes
-	//DPlanes2MapPlanes();
 	//clear brush model numbers
 	for (int i = 0; i < MAX_MAPFILE_BRUSHES; ++i) {
 		brushmodelnumbers[i] = -1;
