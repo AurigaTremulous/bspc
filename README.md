@@ -1,7 +1,12 @@
 # bspc
 
 This is the [Quake III: Arena](http://www.idsoftware.com/games/quake/quake3-arena/) BSP-to-AAS compiler.
-This is a slight variaction that combines a couple of different versions from github into one.
+This is a slight variation that combines a couple of different versions from github into one.
+
+Another difference is that a lot of legacy support has been removed. Q1, Q2, Sin, Half-Life are no longer suported.
+This has reduced the number of code lines significantly.
+The basic source files has also been converted to C++11, to make future enhancement easier.
+The code is still a bit of a mine field but I am working on changing that.
 
 ## Downloading
 
@@ -9,10 +14,14 @@ You can download the latest version [here](https://github.com/sago007/bspc).
 
 ## Compiling
 
-Dead simple:
+Provided that you have CMake, A C compiler (clang or gcc) and a C++11 compiler (clang or gcc based) do:
 
 	cmake . && make
-	
+
+The Windows version is cross compiled using MXE (www.mxe.cc): 
+
+  i686-w64-mingw32.static-cmake . && make
+
 ## Usage
 
 Straight from the source:
