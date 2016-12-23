@@ -1,4 +1,4 @@
-# bspc
+# bspc [![Build Status](https://travis-ci.org/sago007/bspc.svg?branch=master)](https://travis-ci.org/sago007/bspc)
 
 This is the [Quake III: Arena](http://www.idsoftware.com/games/quake/quake3-arena/) BSP-to-AAS compiler.
 This is a slight variation that combines a couple of different versions from github into one.
